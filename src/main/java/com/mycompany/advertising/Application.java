@@ -30,3 +30,23 @@ public class Application extends SpringBootServletInitializer {
         };
     }
 }
+/*@Component
+class DemoCommandLineRunner implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        UserTo user = new UserTo();
+        user.setUsername("application-user");
+        user.setPassword(passwordEncoder.encode("password"));
+        user.grantAuthority(Role.ROLE_ADMIN);
+
+        userRepository.save(user);
+    }
+}*/
