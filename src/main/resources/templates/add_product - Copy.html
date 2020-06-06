@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- amir css core CSS -->
+    <link href="css/amir_css.css" rel="stylesheet">
+</head>
+<body>
+ <!--form action="/action_page.php">
+  <input type="file" name="pic" accept="image/*">
+  <input type="submit">
+</form-->
+ <form method="POST" enctype="multipart/form-data" action="/add_product">
+  <input type="file" name="pic" accept="image/*"/><br>
+	Description:<br>
+  <textarea class="description" name="description"></textarea><br><!--size="100"-->
+	Telegram Link:<br>
+  <input type="text" class="tel_link" name="tel_link"/>
+  <input type="submit" value="Submit"/>
+</form> 
+</body>
+</html>
