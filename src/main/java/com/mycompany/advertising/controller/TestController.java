@@ -15,7 +15,20 @@ import java.io.IOException;
 @Controller
 public class TestController {
     @GetMapping("/test")
-    public String login(Model model){
+    public String test(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username;
+        Object principal = auth.getPrincipal();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        model.addAttribute("var1", username);
+        return "test";
+    }
+    @GetMapping("/test/createAdminUser")
+    public String createAdminUser(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username;
         Object principal = auth.getPrincipal();

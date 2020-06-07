@@ -37,7 +37,7 @@ public class MessageController {
         return "add_product";
     }
 
-    @PostMapping("/addMessage")//PathVariable
+    @PostMapping("/addMessage")
     //@ResponseBody
     public String addMessage(Model model, @RequestParam(required = false, name = "pic") MultipartFile file,
                          @RequestParam(required = false, name = "description") String description,

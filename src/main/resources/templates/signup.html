@@ -19,17 +19,33 @@
   </head>
 
 	<body class="text-center">
-		<form class="form-signin" th:action="@{/login}" method="post">
+		<form class="form-signin" th:action="@{/signup}" method="post">
 			<img class="mb-4" src="share/Images/photo_2019-09-21_00-01-42.jpg" alt="" width="172" height="172">
-			<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+			<h1 class="h3 mb-3 font-weight-normal">Sign up page</h1>
 			<div><label><br/><input class="form-control" placeholder="User Name" type="text" name="username"/> </label></div>
-			<div><label><br/><input class="form-control" placeholder="Password"type="password" name="password"/> </label></div>
+			<div><label><br/><input class="form-control" placeholder="Password" id="password" type="password" name="password"/> </label></div>
+			<div><label><br/><input class="form-control" placeholder="confirm_password" id="confirm_password" type="password" name="confirm_password"/> </label></div>
 			<div class="checkbox mb-3">
 				<label>
 					<input type="checkbox" value="remember-me"> Remember me
 				</label>
 			</div>
-			<div><button class="btn btn-lg btn-primary btn-block" type="submit" value="Sign In">Sign in</button></div>
+			<div><button class="btn btn-lg btn-primary btn-block" type="submit" value="Sign Up">Sign up</button></div>
 		</form>
 	</body>
+	<script>
+		var password = document.getElementById("password")
+		  , confirm_password = document.getElementById("confirm_password");
+
+		function validatePassword(){
+		  if(password.value != confirm_password.value) {
+			confirm_password.setCustomValidity("Passwords Don't Match");
+		  } else {
+			confirm_password.setCustomValidity('');
+		  }
+		}
+
+		password.onchange = validatePassword;
+		confirm_password.onkeyup = validatePassword;
+	</script>
 </html>

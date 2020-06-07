@@ -32,7 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/index/**", "/share/**", "/t/**", "/test/**").permitAll()
+                .antMatchers("/", "/index/**", "/share/**", "/t/**", "/test/**", "/signup/**")
+                .permitAll()
                 .anyRequest().authenticated()
                 .antMatchers("/addMessage/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .and()
@@ -42,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
+        //for enabling multipart sending
+        http.csrf().disable();
     }
 
     @Bean
