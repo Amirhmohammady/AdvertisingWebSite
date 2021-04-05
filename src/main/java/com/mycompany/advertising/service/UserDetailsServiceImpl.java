@@ -20,13 +20,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<UserTo> user = userRepository.findByUsername(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<UserTo> user = userRepository.findByUsername(username);
 
         if (user.isPresent()){
             return user.get();
         }else{
-            throw new UsernameNotFoundException("Username" + s + "not found");//String.format("Username[%s] not found"));
+            throw new UsernameNotFoundException("Username" + username + "not found");//String.format("Username[%s] not found"));
         }
     }
 }

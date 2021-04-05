@@ -1,7 +1,10 @@
 package com.mycompany.advertising.model.to;
 
-import java.util.Date;
+import com.mycompany.advertising.entity.MessageStatus;
+
 import javax.persistence.*;
+import java.util.Date;
+
 /**
  * Created by Amir on 10/28/2019.
  */
@@ -10,12 +13,41 @@ public class MessageTo {
     @Id
     @GeneratedValue
     @Column(name = "ID", nullable = false)
-    private Long ID;
+    private Long id;
+    private Long ownerid;
     private String text;
     private String telegramlink;
     private Date startdate;
     private Date expiredate;
     private String imagename;
+    private String smallimagename;
+    @Enumerated(EnumType.STRING)
+    private MessageStatus status;
+    private String info;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
+    }
+
+    public String getSmallimagename() {
+        return smallimagename;
+    }
+
+    public void setSmallimagename(String smallimagename) {
+        this.smallimagename = smallimagename;
+    }
 
     public String getText() {
         return text;
@@ -25,8 +57,16 @@ public class MessageTo {
         this.text = text;
     }
 
-    public Long getID() {
-        return ID;
+    public Long getId() {
+        return id;
+    }
+
+    public Long getOwnerid() {
+        return ownerid;
+    }
+
+    public void setOwnerid(Long ownerid) {
+        this.ownerid = ownerid;
     }
 
     public Date getExpiredate() {

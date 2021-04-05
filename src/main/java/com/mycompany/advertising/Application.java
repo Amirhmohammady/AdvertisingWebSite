@@ -1,11 +1,10 @@
 package com.mycompany.advertising;
 
 import com.mycompany.advertising.api.StorageService;
-import com.mycompany.advertising.api.UserService;
+import com.mycompany.advertising.config.BCryptEncoderConfig;
+import com.mycompany.advertising.config.MainConfig;
 import com.mycompany.advertising.config.StorageProperties;
-import com.mycompany.advertising.entity.Role;
-import com.mycompany.advertising.model.to.UserTo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mycompany.advertising.config.WebSecurityConfig;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +12,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+
+//import com.mycompany.advertising.api.UserService;
+//import com.mycompany.advertising.entity.Role;
+//import com.mycompany.advertising.model.to.UserTo;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)

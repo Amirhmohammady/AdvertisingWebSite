@@ -1,0 +1,136 @@
+<!doctype html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Album example for Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/offcanvas/">
+    <link href="/share/css/bootstrap.css" rel="stylesheet">
+    <link href="/share/css/offcanvas.css" rel="stylesheet">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
+    <link href="/share/css/album.css" rel="stylesheet">
+</head>
+
+<body style="padding-top:0px;">
+<nav class="navbar navbar-expand navbar-inverse bg-inverse navbar-nav navbar-toggler"
+     style="display:flex;flex-flow:row;flex-wrap: wrap;Justify-content: space-between;">
+    <a href="/../addMessage" class="navbar-brand">Add your Message Here</a>
+
+    <div class="navbar-collapse" style="display:flex;flex-flow:row;flex-wrap: wrap;">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        <form class="form-inline my-lg-0" action="?" id="searchbar" method="get">
+            <input class="form-control mr-sm-2" placeholder="Search" type="text" id="search" name="search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <!--form action="?" method="Get" class="form-inline my-2 my-lg-0">
+            <select class="mdb-select colorful-select dropdown-primary md-form btn-outline-success" name="lan" id="lan" onchange="this.form.submit()">
+                <option value="" selected disabled hidden>lan</option>
+                <option value="en">En</option>
+                <option value="fa">Fa</option>
+            </select>
+        </form-->
+        <div class="dropdown">
+            <button class="btn btn-outline-success"
+                    style="max-width:100px;max-width:50px;display:inline-block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
+                    type="button" id="languagedropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Lan
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagedropdownMenu">
+                <a class="dropdown-item" href="?lan=en">English</a>
+                <a class="dropdown-item" href="?lan=fa">Farsi</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-outline-success my-sm-0"
+                    style="max-width:100px;max-width:50px;display:inline-block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
+                    type="button" id="profiledropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Amir Hosein
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profiledropdownMenu">
+                <a class="dropdown-item" href="/logout">Log out</a>
+                <a class="dropdown-item" href="/dashboard">Dashboard</a>
+                <!--button class="dropdown-item" type="button">Action</button>
+                <button class="dropdown-item" type="button">Another action</button>
+                <button class="dropdown-item" type="button">Something else here</button-->
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main role="main">
+
+    <div class="album py-5 bg-light">
+        <div class="container" style="margin:auto;width:90%;">
+
+            <div class="row" style="Display:flex;Justify-content:center;Flex-wrap:wrap;">
+                <div th:each="advertise : ${advertises}" class="col-md-2" style="width:200px;min-width:200px;max-width:200px;">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top rounded-circle img-thumbnail" style="height:180px;min-height:180px;max-height:180px;" th:src="'/t/' + ${advertise.smallimagename}"
+                             alt="Card image cap">
+
+                        <div class="card-body">
+                            <a class="h5" th:href="${advertise.telegramlink}">title </a>
+
+                            <p class="card-text"
+                               style="height:150px;min-height:150px;max-height:150px;overflow-y:hidden;">
+                                [[${advertise.text}]]</p>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+									<form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
+											th:action="'/edit/id='+@{${advertise.id}}" id="edit" method="get">
+										<input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
+											   name="pLink"> </input>
+										<button type="submit" class="btn btn-sm btn-outline-secondary">Edit</button>
+									</form>
+									<form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
+											th:action="'/delete/id='+@{${advertise.id}}" id="delete" method="get">
+										<input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
+											   name="pLink"> </input>
+										<button type="submit" class="btn btn-sm btn-outline-secondary">Delete
+										</button>
+									</form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="jumbotron text-center row" style="justify-content: center;">
+        <div class=".col-md-4 bg-faded btn-lg" style="margin: 15px;">
+            <h3 class="jumbotron-heading">Contact Us</h3>
+            <a class="lead text-muted" href="https://t.me/Amir_Hosein31">Telegram</a>
+        </div>
+        <div class=".col-md-4 bg-faded btn-lg" style="margin: 15px;">
+            <h3 class="jumbotron-heading">we are working on:</h3>
+            <a class="lead text-muted"></a>
+            <a class="lead text-muted"></a>
+        </div>
+    </div>
+
+</main>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="/share/js/popper.js"></script>
+<script src="/share/js/bootstrap.js"></script>
+<script src="/share/js/holder.js"></script>
+</body>
+</html>

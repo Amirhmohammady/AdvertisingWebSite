@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head>
+</head>
+<body>
+<span th:with="url=${#httpServletRequest.requestURI}">
+<span th:text="'www'+@{${url}}">
+</span>
+</span><br/>
+<a th:href="@{${#httpServletRequest.requestURI}}">Click to More</a>
+<h1 th:text = "#{welcome.text}"></h1>
+</body>
+</html>

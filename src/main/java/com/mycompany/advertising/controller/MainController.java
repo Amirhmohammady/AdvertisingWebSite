@@ -3,17 +3,23 @@ package com.mycompany.advertising.controller;
 import com.mycompany.advertising.api.MessageService;
 import com.mycompany.advertising.api.UserService;
 import com.mycompany.advertising.entity.Role;
+import com.mycompany.advertising.entity.UserIsAvailable;
 import com.mycompany.advertising.model.to.MessageTo;
 import com.mycompany.advertising.model.to.UserTo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -47,23 +53,50 @@ public class MainController {
         user.setUsername(username);
         user.setPassword(password);
         user.grantAuthority(Role.ROLE_USER);
-        userService.svaeUser(user);
+        try {
+            userService.svaeUser(user);
+        } catch (UserIsAvailable uia) {
 
+        }
         return "signup";
     }
 
     @GetMapping("/")
     public String defualt() {
-        return "redirect:/index";
+        return "redirect:/index/search=/page=1";
     }
 
     @GetMapping("/index")
     public String index(Model model) {
-        List<MessageTo> messageTos = messageService.getPageMessages(1);
+        return "redirect:/index/search=/page=1";
+    }
+
+    @GetMapping(value = "/index/search={search}/page={pagenumber}")//, produces = "text/plain;charset=UTF-8")
+    public String mainIndex(Model model, @PathVariable String search, @PathVariable int pagenumber,
+                            @RequestParam(required = false, name = "search") String search02,
+                            @RequestParam(required = false, name = "lan") String language,
+                            HttpServletRequest request, HttpServletResponse response) {
+
+        List<MessageTo> messageTos;
+        boolean hasparam = false;
+        if (language != null) {
+            hasparam = true;
+            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+            localeResolver.setLocale(request, response, StringUtils.parseLocaleString(language));
+        }
+        if (search02 != null) {
+            hasparam = true;
+            pagenumber = 1;
+            search = search02;
+        }
+        if (hasparam) return "redirect:/index/search=" + search + "/page=" + pagenumber;
+        if (pagenumber < 1) pagenumber = 1;
+        if (search == null | search.equals("")) {
+            messageTos = messageService.getPageMessages(pagenumber).getContent();
+        } else {
+            messageTos = messageService.getPageMessages(pagenumber, search).getContent();
+        }
         model.addAttribute("advertises", messageTos);
-        System.out.println("Amir index function!!!!!!!!!!!!!!!");
-        logger.fatal("Amir index function");
-        logger.fatal(messageTos);
         return "index";
     }
 
@@ -73,4 +106,5 @@ public class MainController {
         model.addAttribute("advertises", messageService.getPageMessages(pagenumber));
         return "index";
     }
+
 }

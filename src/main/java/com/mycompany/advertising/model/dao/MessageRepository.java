@@ -12,8 +12,14 @@ import java.util.List;
  * Created by Amir on 10/28/2019.
  */
 public interface MessageRepository extends JpaRepository<MessageTo,Long> {
+    //List<MessageTo> findAllByPrice(double price, Pageable pageable);
+    //List<Email> findByEmailIdInAndPincodeIn(List<String> emails, List<String> pinCodes);
+    //List<Transaction> findAllByIdOrParentId(Long id, Long parentId);
+    Page<MessageTo> findAllByTextOrTelegramlink(String text, String telegramlink, Pageable pageable);
     Page<MessageTo> findAll(Pageable page);
     List<MessageTo> findAll();
+    List<MessageTo> findAllById(Long id);
+    //List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
 }
 
 

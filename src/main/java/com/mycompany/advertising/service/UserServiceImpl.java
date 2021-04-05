@@ -5,6 +5,8 @@ import com.mycompany.advertising.entity.UserIsAvailable;
 import com.mycompany.advertising.model.dao.UserRepository;
 import com.mycompany.advertising.model.to.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,4 +35,17 @@ public class UserServiceImpl implements UserService {
             userRepository.save(userTo);
         }
     }
+
+    /*@Override
+    public UserTo getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
+        UserTo userTo;
+        if (principal instanceof UserTo) {
+            userTo = (UserTo)auth.getPrincipal();
+        } else {
+            userTo = null;
+        }
+        return userTo;
+    }*/
 }

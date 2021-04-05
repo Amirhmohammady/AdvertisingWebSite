@@ -22,6 +22,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--file.encoding>UTF-8</file.encoding-->
     </properties>
 
     <build>
@@ -30,7 +31,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <wait>1000</wait>
+                    <wait>2000</wait>
                     <maxAttempts>180</maxAttempts>
                 </configuration>
             </plugin>
