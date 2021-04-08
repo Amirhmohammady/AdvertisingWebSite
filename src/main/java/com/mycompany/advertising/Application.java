@@ -1,10 +1,7 @@
 package com.mycompany.advertising;
 
 import com.mycompany.advertising.api.StorageService;
-import com.mycompany.advertising.config.BCryptEncoderConfig;
-import com.mycompany.advertising.config.MainConfig;
 import com.mycompany.advertising.config.StorageProperties;
-import com.mycompany.advertising.config.WebSecurityConfig;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +17,9 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
+/*@PropertySources({
+        @PropertySource(value = "file:/application.properties", ignoreResourceNotFound = true)
+})*/
 public class Application extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

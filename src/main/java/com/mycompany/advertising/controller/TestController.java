@@ -3,10 +3,12 @@ package com.mycompany.advertising.controller;
 import com.mycompany.advertising.api.AuthenticationFacade;
 import com.mycompany.advertising.api.MessageService;
 import com.mycompany.advertising.api.UserService;
+import com.mycompany.advertising.api.language.MultiLanguageTipMessage;
 import com.mycompany.advertising.entity.Role;
 import com.mycompany.advertising.model.to.MessageTo;
 import com.mycompany.advertising.model.to.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,8 +72,13 @@ public class TestController {
         return "test3";
     }
 
+    @Autowired
+    MultiLanguageTipMessage multiLanguageTipMessage;
+
     @GetMapping(value = "/test4")//language test
     public String test4(Model model) {
+        model.addAttribute("tipmsg", multiLanguageTipMessage.getLastMessage());
+        model.addAttribute("language", LocaleContextHolder.getLocale().toString());
         return "test4";
     }
 
@@ -145,5 +152,11 @@ public class TestController {
     @GetMapping("/test6")//get current url
     public String test6() {
         return "test6";
+    }
+
+    @GetMapping("/testaddmessage/lan={language}/msg={message}")
+    public String testaddmessage(@PathVariable String language, @PathVariable String message) {
+        multiLanguageTipMessage.addMessage(language, message);
+        return "redirect:/test4";
     }
 }

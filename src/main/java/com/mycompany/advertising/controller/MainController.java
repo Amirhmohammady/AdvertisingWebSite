@@ -100,11 +100,11 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/index/page={pagenumber}")
+    /*@GetMapping("/index/page={pagenumber}")
     public String indexByPage(Model model, @PathVariable int pagenumber) {
         System.out.println("222222222222222222!!!!!!!!!!!!!!!");
         model.addAttribute("advertises", messageService.getPageMessages(pagenumber));
         return "index";
-    }
+    }*/
 
 }

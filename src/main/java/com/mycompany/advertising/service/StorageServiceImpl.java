@@ -113,6 +113,7 @@ public class StorageServiceImpl implements StorageService {
         try {
             Files.createDirectories(rootLocation);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new StorageException("Could not initialize storage", e);
         }
     }
