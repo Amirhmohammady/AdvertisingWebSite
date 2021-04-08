@@ -1,0 +1,267 @@
+body{
+	margin-top: 0px;
+}
+
+.ah01-navbar{
+	width:99%;
+	padding:10px;
+	background:#444;
+	margin-left: -4px;
+}
+
+.ah01-navbar #searchbox{
+	border: 2px solid rgba(0,0,0,.15);
+	height:30px;
+	border-radius: 6px;
+	list-style-type: none;
+}
+
+.ah01-navbar #leftdiv{
+	align-items: center;
+	height:100%;
+}
+
+.ah01-hide_dropdown_menu{
+
+}
+
+.ah01-show_dropdown_menu{
+
+}
+
+.ah01-show_in_row{
+	display:flex;
+	flex-flow:row;
+	flex-wrap: wrap;
+}
+
+.ah01-show_in_row_center{
+	display:flex;
+	flex-flow:row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.ah01-show_divs_in_row{
+
+}
+
+.ah01-row_wrap_space_between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+
+.ah01-row_wrap {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+
+.ah01-column_wrap_space_between {
+	display: flex;
+	align-content: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+
+.ah01-column-wrap  {
+   	display: flex;
+	align-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+
+.ah01-put_left{
+	position: absolute;
+	left: 0%;
+}
+
+.ah01-put_top{
+	position: absolute;
+	top: 0%;
+}
+
+.ah01-put_right{
+	position: absolute;
+	right: 0%;
+}
+
+.ah01-put_bottom{
+	position: absolute;
+	bottom: 0%;
+}
+
+.ah01-put_center_vertical{
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0%);
+}
+
+.ah01-put_center_horizontal{
+	position: absolute;
+	top: 50%;
+	transform: translate(0%, -50%);
+}
+
+.ah01-put_top_left{
+	position: absolute;
+	left: 0%;
+	top: 0%;
+}
+
+.ah01-put_top_center{
+	position: absolute;
+	left: 50%;
+	top: 0%;
+	transform: translate(-50%, 0%);
+}
+
+.ah01-put_top_right{
+	position: absolute;
+	right: 0%;
+	top: 0%;
+}
+
+.ah01-put_left_center{
+	position: absolute;
+	left: 0%;
+	top: 50%;
+	transform: translate(0%, -50%);
+}
+
+.ah01-put_center_center{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.ah01-put_right_center{
+	position: absolute;
+	right: 0%;
+	top: 50%;
+	transform: translate(0%, -50%);
+}
+
+.ah01-put_bottom_left{
+	position: absolute;
+	left: 0%;
+	bottom: 0%;
+}
+
+.ah01-put_bottom_center{
+	position: absolute;
+	left: 50%;
+	bottom: 0%;
+	transform: translate(-50%, 0%);
+}
+
+.ah01-put_bottom_right{
+	position: absolute;
+	right: 0%;
+	bottom: 0%;
+}
+
+.ah01-dropdown{
+	position: relative;
+	display: inline-block;
+}
+
+.ah01-dropdown-content{
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	margin-left: -40px;
+}
+
+.ah01-dropdown-content a:hover {
+	background-color: #ddd;
+}
+
+.ah01-dropspn{
+	margin-right: 12px;
+	font-size: 12px;
+	font-weight: 1000;
+	color: #00a0df; 
+}
+
+.ah01-dropspn:hover, .ah01-dropspn:focus{
+	color: #a3e5ff;
+}
+
+.ah01-dropdown-content a{
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.ah01-show{
+	display: block;
+}
+
+#addad {
+	font-size: 22px;
+	font-weight: 1000;
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+	color: #00a0df !important;
+	text-decoration: none;
+}
+
+/*.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+.ah01-show_in_row{
+
+}
+
+*/

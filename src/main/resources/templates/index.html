@@ -1,147 +1,135 @@
-<!doctype html>
+﻿<!doctype html>
 
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
-
     <title>Album example for Bootstrap</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/offcanvas/">
-    <link href="/share/css/bootstrap.css" rel="stylesheet">
-    <link href="/share/css/offcanvas.css" rel="stylesheet">
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
-    <link href="/share/css/album.css" rel="stylesheet">
+    <!--meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
+
+	<link href="/share/css/Amir-Style-Class.css" rel="stylesheet">
 </head>
 
-<body style="padding-top:0px;">
-<nav class="navbar navbar-expand navbar-inverse bg-inverse navbar-nav navbar-toggler">
-    <div class="navbar-brand">
-        <h3>this site is for test</h3>
-    </div>
-    <div style="display:flex;flex-flow:row;flex-wrap: wrap;Justify-content: space-between;">
-        <a href="/../addMessage" class="navbar-brand">Add your Message Here</a>
+<body>
+	<header class="ah01-row_wrap_space_between ah01-navbar" style="">
+	<div id="leftdiv" class="ah01-show_in_row">
+      <a id="addad" href="index.html">Add your ad</a>
 
-        <div class="navbar-collapse" style="display:flex;flex-flow:row;flex-wrap: wrap;">
-            <form class="form-inline mr-sm-2" action="?" id="searchbar" method="get">
-                <input class="form-control mr-sm-2" placeholder="Search" type="text" id="search" name="search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <!--form action="?" method="Get" class="form-inline my-2 my-lg-0">
-                <select class="mdb-select colorful-select dropdown-primary md-form btn-outline-success" name="lan" id="lan" onchange="this.form.submit()">
-                    <option value="" selected disabled hidden>lan</option>
-                    <option value="en">En</option>
-                    <option value="fa">Fa</option>
-                </select>
-            </form-->
-            <div class="dropdown">
-                <button class="btn btn-outline-success mr-sm-2"
-                        style="max-width:100px;display:inline-block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
-                        type="button" id="languagedropdownMenu" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                    Lan
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagedropdownMenu">
-                    <a class="dropdown-item" href="?lan=en">English</a>
-                    <a class="dropdown-item" href="?lan=fa">Farsi</a>
-                </div>
-            </div>
-            <div sec:authorize="isAuthenticated()" class="dropdown  mr-sm-2">
-                <button class="btn btn-outline-success"
-                        style="max-width:100px;display:inline-block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;"
-                        type="button" id="profiledropdownMenu" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
-                    <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profiledropdownMenu">
-                    <a class="dropdown-item" href="/logout">Log out</a>
-                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" class="dropdown-item"
-                       href="/dashboard">Dashboard</a>
-                    <!--button class="dropdown-item" type="button">Action</button>
-                    <button class="dropdown-item" type="button">Another action</button>
-                    <button class="dropdown-item" type="button">Something else here</button-->
-                </div>
-            </div>
-            <form sec:authorize="isAnonymous()" class="mr-sm-2" action="/login" method="get">
-                <button class="btn btn-outline-success" type="submit">login</button>
-            </form>
-        </div>
-    </div>
-</nav>
+      <div class="search-row" id="top_menu">
+		<form action="?" id="searchbar" method="get">
+		<div style="position:relative;">
+		  <input id="searchbox" style="margin-left:10px;width: 300px;" placeholder="Search" type="text" name="search"></input>
+		  <input type="submit" value="" class="ah01-put_right_center" style="position: absolute;right: 5px;height: 20px;width: 20px;background-image:url('share/amirImg/search--v4.png');background-size: cover;"></input>
+		</div>
+		</form>
+      </div>
+	</div>
+	<div class="ah01-show_in_row" style="align-items:center">
+		<select name="languages" id="cars" style="text-align:center;margin-right:25px;width:35px;border-radius: 11px;-webkit-appearance: none;
+    -moz-appearance: none; text-indent: 1px;text-overflow: '';">
+		<option value="english">en</option>
+		<option selected value="farsi">فا</option>
+		</select>
+		<a style="margin-right: 12px;font-size: 22px;font-weight: 1000;color: #00a0df!important;text-decoration: none;" href="login.html">Login</a>
+		<div class="ah01-dropdown">
+			<span onclick="myFunction()" class="ah01-dropspn">SARA</span>
+			<div id="dropAH" class="ah01-dropdown-content">
+				<a href="#home">LogOUT</a>
+				<a href="#about">Profile</a>
+				<a href="#contact">Messages</a>
+			</div>
+		</div>
+		<img onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" src="/share/img/avatar1_small.jpg"/>
+	</div>
+	</header>
+<main role="main" style="margin-top: 30px;">
+	<div style="padding:10px;display:flex;Justify-content:center;flex-wrap:wrap;background-color: lavender;">
+		<div th:each="advertise : ${advertises}" style="margin:10px;padding:10px;border-radius: 10px;border: 2px solid rgba(0,0,0,.15);width:155px;background-color: #b0b0b0;">
+		<div style="margin:0 auto;">
+			<img style="height: 180px;width: 100%;border: 2px solid rgba(0,0,0,.15);border-radius: 50%;background-color: #c6cfd7" src="/share/amirImg/search--v4.png" alt="Card image cap">
+			<div class="card-body">
+				<a class="h5" th:href="${advertise.telegramlink}">title </a>
 
-<main role="main">
+				<p class="card-text"
+				   style="height:150px;overflow-y:hidden;">
+					[[${advertise.text}]]</p>
 
-    <div class="album py-5 bg-light">
-        <div class="container" style="margin:auto;width:90%;">
-
-            <div class="row" style="Display:flex;Justify-content:center;Flex-wrap:wrap;">
-                <div th:each="advertise : ${advertises}" class="col-md-2"
-                     style="width:200px;min-width:200px;max-width:200px;">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top rounded-circle img-thumbnail"
-                             style="height:180px;min-height:180px;max-height:180px;"
-                             th:src="'/t/' + ${advertise.smallimagename}"
-                             alt="Card image cap">
-
-                        <div class="card-body">
-                            <a class="h5" th:href="${advertise.telegramlink}">title </a>
-
-                            <p class="card-text"
-                               style="height:150px;min-height:150px;max-height:150px;overflow-y:hidden;">
-                                [[${advertise.text}]]</p>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
-                                          th:action="'/edit/id='+@{${advertise.id}}" id="edit" method="get">
-                                        <input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
-                                               name="pLink"> </input>
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </form>
-                                    <form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
-                                          th:action="'/delete/id='+@{${advertise.id}}" id="delete" method="get">
-                                        <input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
-                                               name="pLink"> </input>
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Delete
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="jumbotron text-center row" style="justify-content: center;">
-        <div class=".col-md-4 bg-faded btn-lg" style="margin: 15px;">
+				<div class="ah01-row_wrap_space_between">
+					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" href="index.html">View</a>
+					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" th:if="${userId == advertise.ownerid}" th:href="@{http://www.thymeleaf/documentation.html}">
+					Edit</a>
+					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}" href="delete.html">
+					Delete</a>
+				</div>
+				<div class="ah01-show_in_row">
+					<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+					<form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
+						  th:action="'/edit/id='+@{${advertise.id}}" id="edit" method="get">
+						<input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
+							   name="pLink"> </input>
+						<button type="submit" class="btn btn-sm btn-outline-secondary">Edit</button>
+					</form>
+					<form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
+						  th:action="'/delete/id='+@{${advertise.id}}" id="delete" method="get">
+						<input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
+							   name="pLink"> </input>
+						<button type="submit" class="btn btn-sm btn-outline-secondary">Delete
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	
+	<div class="ah01-show_in_row_center" style="padding:20px;">
+	<div>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31"> n </a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">1</a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">2</a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">3</a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">4</a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31"> h </a>
+	</div>
+	</div>
+	
+    <div class="ah01-show_in_row" style="padding:20px;justify-content: center; font-family: sans-serif;font-size: 90%">
+        <div class=".col-md-4 bg-faded btn-lg" style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;padding:20px;background-color: cadetblue;margin:5px;">
             <h3 class="jumbotron-heading">Contact Us</h3>
             <a class="lead text-muted" href="https://t.me/Amir_Hosein31">Telegram</a>
         </div>
-        <div class=".col-md-4 bg-faded btn-lg" style="margin: 15px;">
+        <div class=".col-md-4 bg-faded btn-lg" style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;padding:20px;background-color: cadetblue;margin:5px;">
             <h3 class="jumbotron-heading">we are working on:</h3>
             <a class="lead text-muted"></a>
             <a class="lead text-muted"></a>
         </div>
     </div>
-
 </main>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="/share/js/popper.js"></script>
-<script src="/share/js/bootstrap.js"></script>
-<script src="/share/js/holder.js"></script>
+<script>
+/* When the user clicks on the button, 
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("dropAH").classList.toggle("ah01-show");
+}
+
+// Close the dropdown if the user clicks outside of it
+document.onclick = function(event) {
+  if (!event.target.matches('.ah01-dropspn')) {
+    var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('ah01-show')) {
+        openDropdown.classList.remove('ah01-show');
+      }
+    }
+  }
+}
+</script>
+
 </body>
 </html>

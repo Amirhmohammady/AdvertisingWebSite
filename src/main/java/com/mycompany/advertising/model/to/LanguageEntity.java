@@ -1,35 +1,41 @@
 package com.mycompany.advertising.model.to;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 
 /**
  * Created by Amir on 8/19/2020.
  */
 @Entity
-@Table(name = "languages")
+//@Table(name = "languages2")
 public class LanguageEntity {
 
+    //(strategy = GenerationType.AUTO)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = "ID", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Column
+    //@Column
     private String locale;
-
-    @Column()//name = "messagekey")
-    private String key;
-
-    @Column()//name = "messagecontent")
+    //@Column(name = "messagekey")
+    private String kkey;
+    //@Column(name = "messagecontent")
     private String content;
 
-    public Integer getId() {
+    public LanguageEntity(String locale, String key, String content) {
+        this.locale = locale;
+        this.kkey = key;
+        this.content = content;
+    }
+
+    public LanguageEntity() {
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,12 +47,12 @@ public class LanguageEntity {
         this.locale = locale;
     }
 
-    public String getKey() {
-        return key;
+    public String getKkey() {
+        return kkey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setKkey(String kkey) {
+        this.kkey = kkey;
     }
 
     public String getContent() {
@@ -56,7 +62,4 @@ public class LanguageEntity {
     public void setContent(String content) {
         this.content = content;
     }
-
-    //Getter & Setter
-
 }
