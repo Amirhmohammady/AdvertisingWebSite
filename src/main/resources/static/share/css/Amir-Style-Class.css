@@ -10,15 +10,26 @@ body{
 }
 
 .ah01-navbar #searchbox{
-	border: 2px solid rgba(0,0,0,.15);
+	border: 0px;
 	height:30px;
+	width: 300px;
 	border-radius: 6px;
 	list-style-type: none;
+	margin-left:10px;
 }
 
 .ah01-navbar #leftdiv{
 	align-items: center;
 	height:100%;
+}
+
+.ah01-navbar #searchbutton{
+	position: absolute;
+	right: 5px;
+	height: 20px;
+	width: 20px;
+	background-image:url('../amirImg/search--v4.png');
+	background-size: cover;
 }
 
 .ah01-hide_dropdown_menu{
@@ -40,6 +51,7 @@ body{
 	flex-flow:row;
 	flex-wrap: wrap;
 	justify-content: center;
+	align-items:center;
 }
 
 .ah01-show_divs_in_row{

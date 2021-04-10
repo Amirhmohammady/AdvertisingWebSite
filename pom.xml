@@ -38,8 +38,8 @@
         </plugins>
     </build>
 
-    <!--packaging>war</packaging-->
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
+    <!--packaging>jar</packaging-->
 
     <dependencies>
         <!-- ConfigurationProperties Remove Warning-->

@@ -1,6 +1,6 @@
 ﻿<!doctype html>
 
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html th:with="amirsitename='/advertising-web-1.0.4-SNAPSHOT'" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Album example for Bootstrap</title>
@@ -10,31 +10,30 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
 
-	<link href="/share/css/Amir-Style-Class.css" rel="stylesheet">
+	<link th:href="${amirsitename}+'/share/css/Amir-Style-Class.css'" rel="stylesheet">
 </head>
 
 <body>
-	<header class="ah01-row_wrap_space_between ah01-navbar" style="">
+	<header class="ah01-row_wrap_space_between ah01-navbar">
 	<div id="leftdiv" class="ah01-show_in_row">
       <a id="addad" href="index.html">Add your ad</a>
-
       <div class="search-row" id="top_menu">
 		<form action="?" id="searchbar" method="get">
 		<div style="position:relative;">
-		  <input id="searchbox" style="margin-left:10px;width: 300px;" placeholder="Search" type="text" name="search"></input>
-		  <input type="submit" value="" class="ah01-put_right_center" style="position: absolute;right: 5px;height: 20px;width: 20px;background-image:url('/share/amirImg/search--v4.png');background-size: cover;"></input>
+		  <input id="searchbox" placeholder="Search" type="text" name="search"></input>
+		  <input id="searchbutton" type="submit" value="" class="ah01-put_right_center" ></input>
 		</div>
 		</form>
       </div>
 	</div>
-	<div class="ah01-show_in_row" style="align-items:center">
+	<div class="ah01-show_in_row_center">
 		<select name="languages" id="cars" style="text-align:center;margin-right:25px;width:35px;border-radius: 11px;-webkit-appearance: none;
     -moz-appearance: none; text-indent: 1px;text-overflow: '';">
 		<option value="english">en</option>
 		<option selected value="farsi">فا</option>
 		</select>
-		<a th:if="#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')" style="margin-right: 12px;font-size: 22px;font-weight: 1000;color: #00a0df!important;text-decoration: none;" href="login.html">Login</a>
-		<div th:unless="#authorization.expression('hasRole(''ROLE_ANONYMOUS'')')" class="ah01-dropdown">
+		<a th:unless="${#request.userPrincipal}" style="margin-right: 12px;font-size: 22px;font-weight: 1000;color: #00a0df!important;text-decoration: none;" href="/login.html">Login</a>
+		<div th:if="${#request.userPrincipal}" class="ah01-dropdown">
 			<span onclick="myFunction()" class="ah01-dropspn">SARA</span>
 			<div id="dropAH" class="ah01-dropdown-content">
 				<a href="#home">LogOUT</a>
@@ -42,14 +41,14 @@
 				<a href="#contact">Messages</a>
 			</div>
 		</div>
-		<img onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" src="/share/img/avatar1_small.jpg"/>
+		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" th:src="${amirsitename}+'/share/img/avatar1_small.jpg'"/>
 	</div>
 	</header>
 <main role="main" style="margin-top: 30px;">
 	<div style="padding:10px;display:flex;Justify-content:center;flex-wrap:wrap;background-color: lavender;">
 		<div th:each="advertise : ${advertises}" style="margin:10px;padding:10px;border-radius: 10px;border: 2px solid rgba(0,0,0,.15);width:155px;background-color: #b0b0b0;">
 		<div style="margin:0 auto;">
-			<img style="height: 180px;width: 100%;border: 2px solid rgba(0,0,0,.15);border-radius: 50%;background-color: #c6cfd7" src="/share/amirImg/search--v4.png" alt="Card image cap">
+			<img style="height: 180px;width: 100%;border: 2px solid rgba(0,0,0,.15);border-radius: 50%;background-color: #c6cfd7" th:src="${amirsitename}+'/share/amirImg/search--v4.png'" alt="Card image cap">
 			<div class="card-body">
 				<a class="h5" th:href="${advertise.telegramlink}">title </a>
 
@@ -58,27 +57,11 @@
 					[[${advertise.text}]]</p>
 
 				<div class="ah01-row_wrap_space_between">
-					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" href="index.html">View</a>
+					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" href="/index.html">View</a>
 					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" th:if="${userId == advertise.ownerid}" th:href="@{http://www.thymeleaf/documentation.html}">
 					Edit</a>
 					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}" href="delete.html">
 					Delete</a>
-				</div>
-				<div class="ah01-show_in_row">
-					<button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-					<form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
-						  th:action="'/edit/id='+@{${advertise.id}}" id="edit" method="get">
-						<input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
-							   name="pLink"> </input>
-						<button type="submit" class="btn btn-sm btn-outline-secondary">Edit</button>
-					</form>
-					<form th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}"
-						  th:action="'/delete/id='+@{${advertise.id}}" id="delete" method="get">
-						<input type="hidden" th:value="@{${#httpServletRequest.requestURI}}"
-							   name="pLink"> </input>
-						<button type="submit" class="btn btn-sm btn-outline-secondary">Delete
-						</button>
-					</form>
 				</div>
 			</div>
 		</div>
@@ -87,12 +70,12 @@
 	
 	<div class="ah01-show_in_row_center" style="padding:20px;">
 	<div>
-		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">«</a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31"><<</a>
 		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">1</a>
 		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">2</a>
 		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">3</a>
 		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">4</a>
-		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">»</a>
+		<a style="padding:10px;" href="https://t.me/Amir_Hosein31">>></a>
 	</div>
 	</div>
 	
