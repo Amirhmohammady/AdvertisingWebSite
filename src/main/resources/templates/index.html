@@ -1,6 +1,6 @@
 ﻿<!doctype html>
 
-<html th:with="amirsitename='/advertising-web-1.0.4-SNAPSHOT'" lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Album example for Bootstrap</title>
@@ -10,13 +10,13 @@
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
 
-	<link th:href="${amirsitename}+'/share/css/Amir-Style-Class.css'" rel="stylesheet">
+	<link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
 </head>
 
 <body>
 	<header class="ah01-row_wrap_space_between ah01-navbar">
 	<div id="leftdiv" class="ah01-show_in_row">
-      <a id="addad" href="index.html">Add your ad</a>
+      <a id="addad" th:href="@{/addMessage}">Add your ad</a>
       <div class="search-row" id="top_menu">
 		<form action="?" id="searchbar" method="get">
 		<div style="position:relative;">
@@ -32,7 +32,7 @@
 		<option value="english">en</option>
 		<option selected value="farsi">فا</option>
 		</select>
-		<a th:unless="${#request.userPrincipal}" style="margin-right: 12px;font-size: 22px;font-weight: 1000;color: #00a0df!important;text-decoration: none;" href="/login.html">Login</a>
+		<a th:unless="${#request.userPrincipal}" style="margin-right: 12px;font-size: 22px;font-weight: 1000;color: #00a0df!important;text-decoration: none;" th:href="@{/login.html}">Login</a>
 		<div th:if="${#request.userPrincipal}" class="ah01-dropdown">
 			<span onclick="myFunction()" class="ah01-dropspn">SARA</span>
 			<div id="dropAH" class="ah01-dropdown-content">
@@ -41,14 +41,14 @@
 				<a href="#contact">Messages</a>
 			</div>
 		</div>
-		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" th:src="${amirsitename}+'/share/img/avatar1_small.jpg'"/>
+		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}"/>
 	</div>
 	</header>
 <main role="main" style="margin-top: 30px;">
 	<div style="padding:10px;display:flex;Justify-content:center;flex-wrap:wrap;background-color: lavender;">
 		<div th:each="advertise : ${advertises}" style="margin:10px;padding:10px;border-radius: 10px;border: 2px solid rgba(0,0,0,.15);width:155px;background-color: #b0b0b0;">
 		<div style="margin:0 auto;">
-			<img style="height: 180px;width: 100%;border: 2px solid rgba(0,0,0,.15);border-radius: 50%;background-color: #c6cfd7" th:src="${amirsitename}+'/share/amirImg/search--v4.png'" alt="Card image cap">
+			<img style="height: 180px;width: 100%;border: 2px solid rgba(0,0,0,.15);border-radius: 50%;background-color: #c6cfd7" th:src="@{/share/amirImg/search--v4.png}" alt="Card image cap">
 			<div class="card-body">
 				<a class="h5" th:href="${advertise.telegramlink}">title </a>
 
@@ -57,10 +57,10 @@
 					[[${advertise.text}]]</p>
 
 				<div class="ah01-row_wrap_space_between">
-					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" href="/index.html">View</a>
-					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" th:if="${userId == advertise.ownerid}" th:href="@{http://www.thymeleaf/documentation.html}">
+					<a class="ah01_button_style01" th:href="@{/index.html}">View</a>
+					<a class="ah01_button_style01" th:if="${userId == advertise.ownerid}" th:href="@{http://www.thymeleaf/documentation.html}">
 					Edit</a>
-					<a style="border:2px solid rgba(0,0,0,.15);border-radius: 5px;padding: 3px;background-color: #c1b0b0;" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}" href="delete.html">
+					<a class="ah01_button_style01" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}" href="delete.html">
 					Delete</a>
 				</div>
 			</div>

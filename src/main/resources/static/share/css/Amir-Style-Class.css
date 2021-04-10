@@ -228,19 +228,25 @@ body{
 	text-decoration: none;
 }
 
+.ah01_button_style01{
+	border:2px solid rgba(0,0,0,.15);
+	border-radius: 5px;
+	padding: 3px;
+	background-color: #c1b0b0;
+}
+
+.ah01-margin_all_childs > * {
+    margin: 7px 0px 7px 0px;
+}
+
+.ah01-border_style01{
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 0.5rem;
+	width: 500px;
+	padding: 10px
+}
+
 /*.ah01-show_in_row{
-
-}
-
-.ah01-show_in_row{
-
-}
-
-.ah01-show_in_row{
-
-}
-
-.ah01-show_in_row{
 
 }
 
