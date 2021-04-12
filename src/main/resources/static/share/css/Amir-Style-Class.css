@@ -1,14 +1,12 @@
 body{
 	margin-top: 0px;
 }
-
 .ah01-navbar{
 	width:99%;
 	padding:10px;
 	background:#444;
 	margin-left: -4px;
 }
-
 .ah01-navbar #searchbox{
 	border: 0px;
 	height:30px;
@@ -17,12 +15,10 @@ body{
 	list-style-type: none;
 	margin-left:10px;
 }
-
 .ah01-navbar #leftdiv{
 	align-items: center;
 	height:100%;
 }
-
 .ah01-navbar #searchbutton{
 	position: absolute;
 	right: 5px;
@@ -30,6 +26,25 @@ body{
 	width: 20px;
 	background-image:url('../amirImg/search--v4.png');
 	background-size: cover;
+	border: 0px solid;
+	border-radius: 50%;
+}
+.ah01-navbar #languages{
+	text-align:center;
+	margin-right:25px;
+	width:35px;
+	border-radius: 11px;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+	text-overflow: '';
+	border: 0px solid;
+}
+.ah01-navbar #loginNavbar{
+	margin-right: 12px;
+	font-size: 22px;
+	font-weight: 1000;
+	color: #00a0df!important;
+	text-decoration: none;
 }
 
 .ah01-hide_dropdown_menu{
@@ -87,7 +102,7 @@ body{
 	flex-wrap: wrap;
 	flex-direction: column;
 }
-
+/*parent of all puts class should be relative*/
 .ah01-put_left{
 	position: absolute;
 	left: 0%;
@@ -229,14 +244,19 @@ body{
 }
 
 .ah01_button_style01{
-	border:2px solid rgba(0,0,0,.15);
+    text-decoration: none;
+    border: 1px solid rgba(0,0,0,.15);
+    background-color: #e1eae9;
 	border-radius: 5px;
 	padding: 3px;
-	background-color: #c1b0b0;
 }
 
 .ah01-margin_all_childs > * {
     margin: 7px 0px 7px 0px;
+}
+
+.ah01-padding10_all_childs > * {
+    padding:10px;
 }
 
 .ah01-border_style01{
@@ -246,19 +266,41 @@ body{
 	padding: 10px
 }
 
+.ah01-blue_box{
+	border:2px solid rgba(0,0,0);
+	border-radius: 5px;
+	padding:20px;
+	background-color: #c2cece;
+	margin:5px;
+	font-family: sans-serif;
+	font-size: 90%
+}
+
+.ah01-adver_body{
+	padding:10px;
+	background-color: ghostwhite;
+}
+.ah01-adver_body #adver_text{
+	height:150px;
+	overflow-y:hidden;
+}
+.ah01-adver_body #adverCard{
+	margin:10px;
+	padding:10px;
+	border-radius: 10px;
+	border: 2px solid rgba(0,0,0,.15);
+	width:155px;
+	background-color: #e8f3ff;
+}
+.ah01-adver_body #cardImg{
+	height: 180px;
+	width: 100%;
+	border: 2px solid rgba(0,0,0,.15);
+	border-radius: 50%;
+	background-color: #c6cfd7;
+}
+
 /*.ah01-show_in_row{
-
-}
-
-.ah01-show_in_row{
-
-}
-
-.ah01-show_in_row{
-
-}
-
-.ah01-show_in_row{
 
 }
 
