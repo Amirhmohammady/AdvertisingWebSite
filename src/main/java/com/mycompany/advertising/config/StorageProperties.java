@@ -1,14 +1,17 @@
 package com.mycompany.advertising.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.web.context.ServletContextAware;
+
+import javax.servlet.ServletContext;
 
 @ConfigurationProperties("storage")
-public class StorageProperties {
+public class StorageProperties implements ServletContextAware{
 
     /**
      * Folder location for storing files
      */
-    private String location = "upload-dir";
+    private String location;
 
     public String getLocation() {
         return location;
@@ -18,4 +21,8 @@ public class StorageProperties {
         this.location = location;
     }
 
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        location = servletContext.getRealPath("/WEB-INF/upload-dir");
+    }
 }
