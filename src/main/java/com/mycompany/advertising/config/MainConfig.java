@@ -23,11 +23,12 @@ import java.util.Locale;
 public class MainConfig implements WebMvcConfigurer {
     @Autowired
     StorageProperties storageproperties;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/t/**")
-                .addResourceLocations("file:/D:/nnnn/", "file:/" + storageproperties.getLocation())
-                        .setCachePeriod(31556926);
+                .addResourceLocations("file:/" + storageproperties.getFixlocation(), "file:/" + storageproperties.getWebinflocation())
+                .setCachePeriod(31556926);
     }
 
     @Bean
