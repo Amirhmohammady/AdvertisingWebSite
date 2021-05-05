@@ -1,6 +1,7 @@
 package com.mycompany.advertising.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,13 @@ import java.util.Locale;
 
 @Configuration
 public class MainConfig implements WebMvcConfigurer {
+    @Autowired
+    StorageProperties storageproperties;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/t/**")
-                .addResourceLocations("file:/D:/nnnn/", "file:upload-dir/")
-                .setCachePeriod(31556926);
+                .addResourceLocations("file:/D:/nnnn/", "file:/" + storageproperties.getLocation())
+                        .setCachePeriod(31556926);
     }
 
     @Bean
