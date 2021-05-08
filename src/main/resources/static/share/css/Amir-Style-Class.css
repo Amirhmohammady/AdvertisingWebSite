@@ -35,14 +35,14 @@ body{
 	width:35px;
 	border-radius: 11px;
 	-webkit-appearance: none;
-    -moz-appearance: none;
+	-moz-appearance: none;
 	text-overflow: '';
 	border: 0px solid;
 }
 .ah01-navbar #loginNavbar{
 	margin-right: 12px;
 	font-size: 22px;
-	font-weight: 1000;
+	font-weight: 900;
 	color: #00a0df!important;
 	text-decoration: none;
 }
@@ -69,7 +69,7 @@ body{
 	align-items:center;
 }
 
-.ah01-show_divs_in_row{
+.ah01-show_childs_in_row{
 
 }
 
@@ -96,8 +96,21 @@ body{
 	flex-direction: column;
 }
 
+
 .ah01-column-wrap  {
-   	display: flex;
+	display: flex;
+	align-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+.ah01-show_childs_columns_center{
+	display: flex;
+	align-content: center;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+.ah01-show_childs_columns_center *{
+	display: flex;
 	align-content: center;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -216,8 +229,8 @@ body{
 .ah01-dropspn{
 	margin-right: 12px;
 	font-size: 12px;
-	font-weight: 1000;
-	color: #00a0df; 
+	font-weight: 900;
+	color: #00a0df;
 }
 
 .ah01-dropspn:hover, .ah01-dropspn:focus{
@@ -237,26 +250,34 @@ body{
 
 #addad {
 	font-size: 22px;
-	font-weight: 1000;
+	font-weight: 900;
 	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 	color: #00a0df !important;
 	text-decoration: none;
 }
 
 .ah01_button_style01{
-    text-decoration: none;
-    border: 1px solid rgba(0,0,0,.15);
-    background-color: #e1eae9;
+	text-decoration: none;
+	border: 1px solid rgba(0,0,0,.15);
+	background-color: #e1eae9;
 	border-radius: 5px;
 	padding: 3px;
 }
 
-.ah01-margin_all_childs > * {
-    margin: 7px 0px 7px 0px;
+.ah01-margin7_all_childs * {
+	margin: 7px 7px 7px 7px;
 }
 
-.ah01-padding10_all_childs > * {
-    padding:10px;
+.ah01-margin7_inner_childs > * {
+	margin: 7px 7px 7px 7px;
+}
+
+.ah01-padding10_all_childs  * {
+	padding:10px;
+}
+
+.ah01-padding10_inner_childs > * {
+	padding:10px;
 }
 
 .ah01-border_style01{
@@ -267,7 +288,7 @@ body{
 }
 
 .ah01-blue_box{
-	border:2px solid rgba(0,0,0);
+	border:2px solid rgba(0,0,0,0);
 	border-radius: 5px;
 	padding:20px;
 	background-color: #c2cece;

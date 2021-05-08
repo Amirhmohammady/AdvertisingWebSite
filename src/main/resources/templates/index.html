@@ -2,10 +2,10 @@
 
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <title>Album example for Bootstrap</title>
+	<meta charset="utf-8">
+	<title>Album example for Bootstrap</title>
 
-    <!--meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!--meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
@@ -14,35 +14,35 @@
 </head>
 
 <body>
-	<header class="ah01-row_wrap_space_between ah01-navbar">
+<header class="ah01-row_wrap_space_between ah01-navbar">
 	<div id="leftdiv" class="ah01-show_in_row">
-      <a id="addad" th:href="@{/addMessage}">Add your ad</a>
-      <div class="search-row" id="top_menu">
-		<form action="?" id="searchbar" method="get">
-		<div style="position:relative;">
-		  <input id="searchbox" placeholder="Search" type="text" name="search"></input>
-		  <input id="searchbutton" type="submit" value="" class="ah01-put_right_center" ></input>
+		<a id="addad" th:href="@{/addMessage}">Add your ad</a>
+		<div class="search-row" id="top_menu">
+			<form action="?" id="searchbar" method="get">
+				<div style="position:relative;">
+					<input id="searchbox" placeholder="Search" type="text" name="search"></input>
+					<input id="searchbutton" type="submit" value="" class="ah01-put_right_center" ></input>
+				</div>
+			</form>
 		</div>
-		</form>
-      </div>
 	</div>
 	<div class="ah01-show_in_row_center">
 		<select name="languages" id="languages">
-		<option value="english">en</option>
-		<option selected value="farsi">فا</option>
+			<option value="english">en</option>
+			<option selected value="farsi">فا</option>
 		</select>
-		<a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login.html}">Login</a>
+		<a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login}">Login</a>
 		<div th:if="${#request.userPrincipal}" class="ah01-dropdown">
 			<span onclick="myFunction()" class="ah01-dropspn">SARA</span>
 			<div id="dropAH" class="ah01-dropdown-content">
-				<a href="#home">LogOUT</a>
+				<a th:href="@{/logout}">LogOUT</a>
 				<a href="#about">Profile</a>
 				<a href="#contact">Messages</a>
 			</div>
 		</div>
 		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}"/>
 	</div>
-	</header>
+</header>
 <main role="main" style="margin-top: 30px;">
 	<div class="ah01-show_in_row_center ah01-adver_body">
 		<div th:each="advertise : ${advertises}" id="adverCard">
@@ -54,58 +54,58 @@
 				<div class="ah01-row_wrap_space_between">
 					<a class="ah01_button_style01" th:href="@{/index.html}">View</a>
 					<a class="ah01_button_style01" th:if="${userId == advertise.ownerid}" th:href="@{http://www.thymeleaf/documentation.html}">
-					Edit</a>
+						Edit</a>
 					<a class="ah01_button_style01" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') OR userId == advertise.ownerid}" href="delete.html">
-					Delete</a>
+						Delete</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="ah01-show_in_row_center" style="padding:20px;">
-	<div class="ah01-padding10_all_childs">
-		<a href="https://t.me/Amir_Hosein31"><<</a>
-		<a href="https://t.me/Amir_Hosein31">1</a>
-		<a href="https://t.me/Amir_Hosein31">2</a>
-		<a href="https://t.me/Amir_Hosein31">3</a>
-		<a href="https://t.me/Amir_Hosein31">4</a>
-		<a href="https://t.me/Amir_Hosein31">>></a>
+		<div class="ah01-padding10_inner_childs">
+			<a href="https://t.me/Amir_Hosein31"><<</a>
+			<a href="https://t.me/Amir_Hosein31">1</a>
+			<a href="https://t.me/Amir_Hosein31">2</a>
+			<a href="https://t.me/Amir_Hosein31">3</a>
+			<a href="https://t.me/Amir_Hosein31">4</a>
+			<a href="https://t.me/Amir_Hosein31">>></a>
+		</div>
 	</div>
+
+	<div class="ah01-show_in_row_center" style="padding:20px;">
+		<div class="ah01-blue_box">
+			<h3>Contact Us</h3>
+			<a href="https://t.me/Amir_Hosein31">Telegram</a>
+		</div>
+		<div class="ah01-blue_box">
+			<h3>we are working on:</h3>
+			<a></a>
+			<a></a>
+		</div>
 	</div>
-	
-    <div class="ah01-show_in_row_center" style="padding:20px;">
-        <div class="ah01-blue_box">
-            <h3>Contact Us</h3>
-            <a href="https://t.me/Amir_Hosein31">Telegram</a>
-        </div>
-        <div class="ah01-blue_box">
-            <h3>we are working on:</h3>
-            <a></a>
-            <a></a>
-        </div>
-    </div>
 </main>
 
 <script>
-/* When the user clicks on the button, 
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("dropAH").classList.toggle("ah01-show");
-}
+	/* When the user clicks on the button,
+	 toggle between hiding and showing the dropdown content */
+	function myFunction() {
+		document.getElementById("dropAH").classList.toggle("ah01-show");
+	}
 
-// Close the dropdown if the user clicks outside of it
-document.onclick = function(event) {
-  if (!event.target.matches('.ah01-dropspn')) {
-    var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('ah01-show')) {
-        openDropdown.classList.remove('ah01-show');
-      }
-    }
-  }
-}
+	// Close the dropdown if the user clicks outside of it
+	document.onclick = function(event) {
+		if (!event.target.matches('.ah01-dropspn')) {
+			var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('ah01-show')) {
+					openDropdown.classList.remove('ah01-show');
+				}
+			}
+		}
+	}
 </script>
 
 </body>

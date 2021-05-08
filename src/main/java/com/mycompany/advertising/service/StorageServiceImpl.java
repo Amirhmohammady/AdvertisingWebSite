@@ -53,6 +53,7 @@ public class StorageServiceImpl implements StorageService {
                 Files.copy(inputStream, this.rootLocation.resolve(filename),
                         StandardCopyOption.REPLACE_EXISTING);
             }
+            result.add(filename);
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + filename, e);
         }
@@ -62,11 +63,10 @@ public class StorageServiceImpl implements StorageService {
         try {
             ImageResizer.resize(rootLocation.toString() + "\\" + filename,
                     rootLocation.toString() + "\\" + smallfilename, 200, 200);
+            result.add(smallfilename);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        result.add(filename);
-        result.add(smallfilename);
         return result;
     }
 

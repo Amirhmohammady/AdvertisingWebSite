@@ -42,7 +42,7 @@ public class MessageController {
 
     @GetMapping("/addMessage")
     public String addMessage() {
-        return "add_product";
+        return "add_advertise";
     }
 
     @PostMapping("/addMessage")
@@ -62,12 +62,13 @@ public class MessageController {
             messageTo.setText(description);
             messageTo.setOwnerid(userTo.getId());
             messageService.addMessage(messageTo);
+            model.addAttribute("succsessmessage","Successfully added your advertise");
         } else {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("add_product no param");
+            System.out.println("add_advertise no param");
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         }
-        return "add_product";
+        return "add_advertise";
     }
 
     @GetMapping("/delete/id={id}")
