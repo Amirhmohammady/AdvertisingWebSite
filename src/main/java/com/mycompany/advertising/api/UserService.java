@@ -10,5 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public interface UserService {
     void svaeUser(UserTo userTo) throws UserIsAvailable;
+    boolean isEmailExist(String email);
     //public UserTo getCurrentUser();
 }

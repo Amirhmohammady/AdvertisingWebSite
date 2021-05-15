@@ -8,6 +8,7 @@ import com.mycompany.advertising.model.to.MessageTo;
 import com.mycompany.advertising.model.to.UserTo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -30,10 +31,11 @@ public class MainController {
     private final static Logger logger = Logger.getLogger(MainController.class);
 
     @Autowired
-    private UserService userService;
-
+    ApplicationEventPublisher eventPublisher;
     @Autowired
     MessageService messageService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/login")
     public String login() {
@@ -48,15 +50,19 @@ public class MainController {
     @PostMapping("/signup")
     public String signUp(Model model, @RequestParam(required = false, name = "username") String username,
                          @RequestParam(required = false, name = "password") String password,
-                         @RequestParam(required = false, name = "confirm_password") String confirm_password) {
+                         @RequestParam(required = false, name = "confirm_password") String confirm_password,
+                         @RequestParam(required = true, name = "email") String email) {
         UserTo user = new UserTo();
         user.setUsername(username);
         user.setPassword(password);
+        user.setEmail(email);
         user.grantAuthority(Role.ROLE_USER);
+        logger.info("signup controller called with " + user.toString());
         try {
             userService.svaeUser(user);
+            logger.info(user.toString() + "is saved successfully");
         } catch (UserIsAvailable uia) {
-
+            logger.info("can not save " + user.toString()+" the user name is exist");
         }
         return "signup";
     }

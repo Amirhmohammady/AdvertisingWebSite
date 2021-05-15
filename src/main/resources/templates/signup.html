@@ -1,46 +1,48 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="docs/4.0/assets/img/favicons/favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Sign up page</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
 
-    <!-- Bootstrap core CSS -->
-    <link href="share/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+</head>
 
-    <!-- Custom styles for this template -->
-    <link href="share/css/signin.css" rel="stylesheet">
-  </head>
+<body>
+<div class="ah01-show_childs_columns_center ah01-margin15_all_childs">
+    <form th:action="@{/signup}" method="post">
+        <h1>Welcome to BinaryBazar_AHM</h1>
+        <input class="ah01-border_style01" placeholder="Email" type="email" name="email"/>
+        <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
+        <input class="ah01-border_style01" placeholder="Password" id="password" type="password" name="password"/>
+        <input class="ah01-border_style01" placeholder="confirm_password" id="confirm_password" type="password"
+               name="confirm_password"/>
 
-	<body class="text-center">
-		<form class="form-signin" th:action="@{/signup}" method="post">
-			<img class="mb-4" src="share/Images/photo_2019-09-21_00-01-42.jpg" alt="" width="172" height="172">
-			<h1 class="h3 mb-3 font-weight-normal">Sign up page</h1>
-			<div><label><br/><input class="form-control" placeholder="User Name" type="text" name="username"/> </label></div>
-			<div><label><br/><input class="form-control" placeholder="Password" id="password" type="password" name="password"/> </label></div>
-			<div><label><br/><input class="form-control" placeholder="confirm_password" id="confirm_password" type="password" name="confirm_password"/> </label></div>
-			<div><button class="btn btn-lg btn-primary btn-block" type="submit" value="Sign Up">Sign up</button></div>
-		</form>
-	</body>
-	<script>
-		var password = document.getElementById("password")
-		  , confirm_password = document.getElementById("confirm_password");
+        <div>
+            <button class="ah01-border_style01" style="width: 100px;" type="submit" value="Sign Up">Sign up</button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    var password = document.getElementById("password")
+            , confirm_password = document.getElementById("confirm_password");
 
-		function validatePassword(){
-		  if(password.value != confirm_password.value) {
-			confirm_password.setCustomValidity("Passwords Don't Match");
-		  } else {
-			confirm_password.setCustomValidity('');
-		  }
-		}
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords Don't Match");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
 
-		password.onchange = validatePassword;
-		confirm_password.onkeyup = validatePassword;
-	</script>
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>
 </html>

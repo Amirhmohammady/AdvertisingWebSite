@@ -32,17 +32,20 @@ public class UserTo implements UserDetails {
 
     private boolean credentialsNonExpired;
 
+    @Column(name = "enabled")
     private boolean enabled;
+
+    private String email;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
 
     public UserTo() {
-        this.accountNonExpired = true;
-        this.accountNonLocked = true;
-        this.credentialsNonExpired = true;
-        this.enabled = true;
+        //this.accountNonExpired = true;
+        //this.accountNonLocked = true;
+        //this.credentialsNonExpired = true;
+        this.enabled = false;
     }
 
     public Long getId() {
@@ -60,6 +63,22 @@ public class UserTo implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
     }
 
     @Override
@@ -101,5 +120,20 @@ public class UserTo implements UserDetails {
         List<GrantedAuthority> authorities = new ArrayList<>();
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.toString())));
         return authorities;
+    }
+
+    @Override
+    public String toString() {
+        return "UserTo{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

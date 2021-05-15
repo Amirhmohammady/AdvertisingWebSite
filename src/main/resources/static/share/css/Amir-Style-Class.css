@@ -264,12 +264,16 @@ body{
 	padding: 3px;
 }
 
-.ah01-margin7_all_childs * {
-	margin: 7px 7px 7px 7px;
+.ah01-margin5_all_childs * {
+	margin: 5px 5px 5px 5px;
 }
 
-.ah01-margin7_inner_childs > * {
-	margin: 7px 7px 7px 7px;
+.ah01-margin15_all_childs * {
+	margin: 15px 15px 15px 15px;
+}
+
+.ah01-margin5_inner_childs > * {
+	margin: 5px 5px 5px 5px;
 }
 
 .ah01-padding10_all_childs  * {
@@ -281,6 +285,13 @@ body{
 }
 
 .ah01-border_style01{
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 0.5rem;
+	width: 500px;
+	padding: 10px
+}
+
+.ah01-border_style01_inner_child > *{
 	border: 1px solid rgba(0,0,0,.15);
 	border-radius: 0.5rem;
 	width: 500px;
