@@ -42,10 +42,10 @@ public class UserTo implements UserDetails {
     private List<Role> roles;
 
     public UserTo() {
-        //this.accountNonExpired = true;
-        //this.accountNonLocked = true;
-        //this.credentialsNonExpired = true;
-        this.enabled = false;
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
     }
 
     public Long getId() {

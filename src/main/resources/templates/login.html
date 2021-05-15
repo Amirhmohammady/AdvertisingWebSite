@@ -1,35 +1,40 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="icon" href="docs/4.0/assets/img/favicons/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="docs/4.0/assets/img/favicons/favicon.ico">
 
-	<title>Signin Template for Bootstrap</title>
+    <title>Signin Template for Bootstrap</title>
 
-	<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
 
-	<link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
 </head>
 
 <body>
-<div class="ah01-show_childs_columns_center ah01-margin5_all_childs">
-	<form th:action="@{/login}" method="post">
-		<h1>Please sign in</h1>
-		<div><label><br/><input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/> </label></div>
-		<div><label><br/><input class="ah01-border_style01" placeholder="Password"type="password" name="password"/> </label></div>
-		<div>
-			<label style="flex-flow: row;">
-				<input type="checkbox" name="remember" value="true"> Remember me
-			</label>
-		</div>
-		<div><button class="ah01-border_style01" style="width: 132px;" type="submit" value="Sign In">Sign in</button></div>
-	</form>
-	<div>
-		<a class="ah01-border_style01" style="text-decoration: none;width: 110px;" href="signup">Sign up</a>
-	</div>
+<div class="ah01-show_childs_columns_center">
+    <form class="ah01-margin15_inner_childs" th:action="@{/login}" method="post">
+        <h1>Please sign in</h1>
+        <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
+        <input class="ah01-border_style01" placeholder="Password"type="password" name="password"/>
+        <div>
+            <label style="flex-flow: row;">
+                <input type="checkbox" name="remember" value="true"> Remember me
+            </label>
+        </div>
+        <div><button class="ah01-border_style01" style="width: 132px;" type="submit" value="Sign In">Sign in</button></div>
+    </form>
+    <div class="ah01-margin5_inner_childs">
+        <div>
+            <a class="ah01-border_style01" style="text-decoration: none;width: 110px;" href="signup">Sign up</a>
+        </div>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+    </div>
 </div>
 </body>
 </html>

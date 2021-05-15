@@ -276,6 +276,10 @@ body{
 	margin: 5px 5px 5px 5px;
 }
 
+.ah01-margin15_inner_childs > * {
+	margin: 15px 15px 15px 15px;
+}
+
 .ah01-padding10_all_childs  * {
 	padding:10px;
 }

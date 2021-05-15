@@ -3,7 +3,7 @@ package com.mycompany.advertising.controller;
 import com.mycompany.advertising.api.MessageService;
 import com.mycompany.advertising.api.UserService;
 import com.mycompany.advertising.entity.Role;
-import com.mycompany.advertising.entity.UserIsAvailable;
+import com.mycompany.advertising.entity.UserEmailIsAvailableException;
 import com.mycompany.advertising.model.to.MessageTo;
 import com.mycompany.advertising.model.to.UserTo;
 import org.apache.log4j.Logger;
@@ -61,8 +61,8 @@ public class MainController {
         try {
             userService.svaeUser(user);
             logger.info(user.toString() + "is saved successfully");
-        } catch (UserIsAvailable uia) {
-            logger.info("can not save " + user.toString()+" the user name is exist");
+        } catch (UserEmailIsAvailableException uia) {
+            logger.info("can not save " + user.toString() + " the user name is exist");
         }
         return "signup";
     }
