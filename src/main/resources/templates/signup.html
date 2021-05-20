@@ -18,7 +18,9 @@
 <div class="ah01-show_childs_columns_center ah01-margin15_all_childs">
     <form th:action="@{/signup}" method="post">
         <h1>Welcome to BinaryBazar_AHM</h1>
-        <input class="ah01-border_style01" placeholder="Email" type="email" name="email"/>
+        <input class="ah01-border_style01" placeholder="Email" id="email" type="email" name="email"/>
+
+        <p id="emailexist"></p>
         <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
         <input class="ah01-border_style01" placeholder="Password" id="password" type="password" name="password"/>
         <input class="ah01-border_style01" placeholder="confirm_password" id="confirm_password" type="password"
@@ -32,8 +34,8 @@
 </body>
 <script>
     var password = document.getElementById("password")
-            , confirm_password = document.getElementById("confirm_password");
-
+            , confirm_password = document.getElementById("confirm_password")
+            , email = document.getElementById("email");
     function validatePassword() {
         if (password.value != confirm_password.value) {
             confirm_password.setCustomValidity("Passwords Don't Match");
@@ -41,8 +43,28 @@
             confirm_password.setCustomValidity('');
         }
     }
-
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
+
+    email.onkeyup = function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let obj01 = JSON.parse(this.responseText);
+                if (obj01.isEmailExist == true) {
+                    email.setCustomValidity("Emial is exist");
+                    document.getElementById("emailexist").innerHTML = "Emial is exist";
+                    document.getElementById("emailexist").style.color = "red";
+                }
+                else {
+                    email.setCustomValidity('');
+                    document.getElementById("emailexist").innerHTML = "Emial is ready";
+                    document.getElementById("emailexist").style.color = "green";
+                }
+            }
+        };
+        xhttp.open("GET", "[[@{/ajax/checkemail/}]]" + email.value, true);
+        xhttp.send();
+    }
 </script>
 </html>

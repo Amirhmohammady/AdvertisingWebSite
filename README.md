@@ -13,6 +13,8 @@ ok	5- make ajaxcontroller public
 11- user creating enabeled false until confirm email
 12- sending email after creating user
 13- page head lines
+14- always login
+15- remember me in login page
 
 
 
