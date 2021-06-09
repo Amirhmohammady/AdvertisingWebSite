@@ -7,12 +7,12 @@ import org.springframework.web.context.ServletContextAware;
 import javax.servlet.ServletContext;
 
 @ConfigurationProperties("storage")
-public class StorageProperties implements ServletContextAware{
+public class StorageProperties implements ServletContextAware {
 
     /**
      * Folder location for storing files
      */
-    private String webinflocation;
+    private String WEB_INF_location;
 
     @Value("${amir.resource.folder}")
     private String fixlocation;
@@ -22,15 +22,19 @@ public class StorageProperties implements ServletContextAware{
     }
 
     public String getWebinflocation() {
-        return webinflocation;
+        return WEB_INF_location;
     }
 
     public void setWebinflocation(String location) {
-        this.webinflocation = location;
+        this.WEB_INF_location = location;
+    }
+
+    public String getCertfolder() {
+        return fixlocation + "certification_folder/";
     }
 
     @Override
     public void setServletContext(ServletContext servletContext) {
-        webinflocation = servletContext.getRealPath("/WEB-INF/upload-dir/");
+        WEB_INF_location = servletContext.getRealPath("/WEB-INF/upload-dir/");
     }
 }

@@ -27,7 +27,11 @@ public class MainConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/t/**")
-                .addResourceLocations("file:/" + storageproperties.getFixlocation(), "file:/" + storageproperties.getWebinflocation())
+                .addResourceLocations("file:/" + storageproperties.getFixlocation(),
+                        "file:/" + storageproperties.getWebinflocation())
+                .setCachePeriod(31556926);
+        registry.addResourceHandler("/.well-known/pki-validation/**")
+                .addResourceLocations("file:/" + storageproperties.getCertfolder())
                 .setCachePeriod(31556926);
     }
 
