@@ -1,8 +1,8 @@
 package com.mycompany.advertising.service;
 
-import com.mycompany.advertising.api.MessageService;
-import com.mycompany.advertising.model.dao.MessageRepository;
-import com.mycompany.advertising.model.to.MessageTo;
+import com.mycompany.advertising.api.AvertiseService;
+import com.mycompany.advertising.model.dao.AvertiseRepository;
+import com.mycompany.advertising.model.to.AvertiseTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,44 +16,44 @@ import java.util.Optional;
  * Created by Amir on 10/28/2019.
  */
 @Service
-public class MessageServiceImpl implements MessageService {
+public class AvertiseServiceImpl implements AvertiseService {
     @Autowired
-    MessageRepository messageRepository;
+    AvertiseRepository avertiseRepository;
 
     @Override
-    public Page<MessageTo> getPageMessages(int page) {
+    public Page<AvertiseTo> getPageAvertises(int page) {
         Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
-        return messageRepository.findAll(pageable);//.getContent();
+        return avertiseRepository.findAll(pageable);//.getContent();
     }
 
     @Override
-    public Page<MessageTo> getPageMessages(int page, String search) {
+    public Page<AvertiseTo> getPageAvertises(int page, String search) {
         Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
         //messageRepository.findAllByTextOrTelegramlink(search, search, pageable).getTotalPages();
-        return messageRepository.findAllByTextOrTelegramlink(search, search, pageable);//.getContent();
+        return avertiseRepository.findAllByTextOrTelegramlink(search, search, pageable);//.getContent();
     }
 
     @Override
-    public Long addMessage(MessageTo messageTo) {
-        messageRepository.save(messageTo);
+    public Long addAvertise(AvertiseTo messageTo) {
+        avertiseRepository.save(messageTo);
         return messageTo.getId();
     }
 
     @Override
-    public List<MessageTo> getAllMessages() {
-        return messageRepository.findAll();
+    public List<AvertiseTo> getAllAvertises() {
+        return avertiseRepository.findAll();
     }
 
     @Override
-    public Optional<MessageTo> getMessageById(Long id){
-        return messageRepository.findById(id);
+    public Optional<AvertiseTo> getAvertiseById(Long id){
+        return avertiseRepository.findById(id);
     }
     /*public List<MessageTo> getMessagesById(Long id) {
         return messageRepository.findAllById(id);
     }*/
 
     @Override
-    public void deleteMessageById(Long id) {
-        messageRepository.deleteById(id);
+    public void deleteAvertiseById(Long id) {
+        avertiseRepository.deleteById(id);
     }
 }

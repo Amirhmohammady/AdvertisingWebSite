@@ -1,5 +1,7 @@
 package com.mycompany.advertising.components;
 
+import org.apache.log4j.Logger;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,10 +13,12 @@ import java.io.IOException;
  */
 
 public class ImageResizer {
+    private final static Logger logger = Logger.getLogger(ImageResizer.class);
 
     public static void resize(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
             throws IOException {
         // reads input image
+        logger.debug(inputImagePath + ',' + outputImagePath);
         File inputFile = new File(inputImagePath);
         BufferedImage inputImage = ImageIO.read(inputFile);
         // creates output image

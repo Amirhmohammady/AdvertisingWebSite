@@ -1,6 +1,6 @@
 package com.mycompany.advertising.model.to;
 
-import com.mycompany.advertising.entity.MessageStatus;
+import com.mycompany.advertising.entity.AvertiseStatus;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Amir on 10/28/2019.
  */
 @Entity
-public class MessageTo {
+public class AvertiseTo {
     @Id
     @GeneratedValue
     @Column(name = "ID", nullable = false)
@@ -22,7 +22,7 @@ public class MessageTo {
     private String imagename;
     private String smallimagename;
     @Enumerated(EnumType.STRING)
-    private MessageStatus status;
+    private AvertiseStatus status;
     private String info;
 
     public String getInfo() {
@@ -33,11 +33,11 @@ public class MessageTo {
         this.info = info;
     }
 
-    public MessageStatus getStatus() {
+    public AvertiseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(MessageStatus status) {
+    public void setStatus(AvertiseStatus status) {
         this.status = status;
     }
 

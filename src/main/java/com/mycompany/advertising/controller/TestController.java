@@ -1,11 +1,11 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.api.AuthenticationFacade;
-import com.mycompany.advertising.api.MessageService;
+import com.mycompany.advertising.api.AvertiseService;
 import com.mycompany.advertising.api.UserService;
 import com.mycompany.advertising.api.language.MultiLanguageTipMessage;
 import com.mycompany.advertising.entity.Role;
-import com.mycompany.advertising.model.to.MessageTo;
+import com.mycompany.advertising.model.to.AvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -89,14 +89,14 @@ public class TestController {
         user.setPassword("1234");
         user.grantAuthority(Role.ROLE_ADMIN);
         try {
-            userService.svaeUser(user);
+            userService.saveRegisteredUser(user);
         } catch (Exception e) {
         }
         return "test1";
     }
 
     @Autowired
-    MessageService messageService;
+    AvertiseService messageService;
 
     @GetMapping("/test5")//check first page for changing language
     public String test5(Model model) {
@@ -110,7 +110,7 @@ public class TestController {
                             @RequestParam(required = false, name = "lan") String language,
                             HttpServletRequest request, HttpServletResponse response) {
 
-        List<MessageTo> messageTos;
+        List<AvertiseTo> messageTos;
         System.out.println(search02 + "444444444444444444444444444444");
         System.out.println(search + "444444444444444444444444444444");
         boolean hasparam = false;
@@ -130,9 +130,9 @@ public class TestController {
         if (hasparam) return "redirect:/test5/search=" + search + "/page=" + pagenumber;
         if (pagenumber < 1) pagenumber = 1;
         if (search == null | search.equals("")) {
-            messageTos = messageService.getPageMessages(pagenumber).getContent();
+            messageTos = messageService.getPageAvertises(pagenumber).getContent();
         } else {
-            messageTos = messageService.getPageMessages(pagenumber, search).getContent();
+            messageTos = messageService.getPageAvertises(pagenumber, search).getContent();
         }
         model.addAttribute("advertises", messageTos);
         UserTo userTo = authenticationFacade.getUserToDetails();

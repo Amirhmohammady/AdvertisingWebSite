@@ -1,20 +1,24 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.api.UserService;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by Amir on 8/21/2020.
  */
 @Controller
 public class UserController {
+    private final static Logger logger = Logger.getLogger(UserController.class);
+
+    @Autowired
+    UserService userService;
+
     @GetMapping("/DashboardUser")
     @Secured("ROLE_USER")
     public String userDashboard() {
@@ -51,4 +55,5 @@ public class UserController {
     public String banedUserList() {
         return "user_list";
     }
+
 }

@@ -22,9 +22,15 @@ public class UserTo implements UserDetails {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String username, password, phonenumber;
 
-    private String password;
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
 
     private boolean accountNonExpired;
 
@@ -45,7 +51,7 @@ public class UserTo implements UserDetails {
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
-        this.enabled = true;
+        this.enabled = false;
     }
 
     public Long getId() {

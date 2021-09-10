@@ -6,6 +6,7 @@ import com.mycompany.advertising.components.ImageResizer;
 import com.mycompany.advertising.config.StorageProperties;
 import com.mycompany.advertising.web.imagestorage.StorageException;
 import com.mycompany.advertising.web.imagestorage.StorageFileNotFoundException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -27,6 +28,7 @@ import java.util.stream.Stream;
 
 @Service
 public class StorageServiceImpl implements StorageService {
+    private final static Logger logger = Logger.getLogger(ImageResizer.class);
 
     private final Path rootLocation;
 
@@ -50,8 +52,10 @@ public class StorageServiceImpl implements StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
+                logger.debug("try to store image file" + filename);
                 Files.copy(inputStream, this.rootLocation.resolve(filename),
                         StandardCopyOption.REPLACE_EXISTING);
+                logger.info("Successfully stored " + filename);
             }
             result.add(filename);
         } catch (IOException e) {
