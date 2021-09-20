@@ -1,9 +1,8 @@
-package com.mycompany.advertising.api;
+package com.mycompany.advertising.service.api;
 
-import com.mycompany.advertising.entity.TokenNotFoundtException;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.UserTo;
-import com.mycompany.advertising.model.to.VerificationToken;
+import com.mycompany.advertising.model.to.VerificationTokenTo;
 
 /**
  * Created by Amir on 6/7/2020.
@@ -16,6 +15,6 @@ public interface UserService {
     //public UserTo getCurrentUser();
     void registerNewUserAccount(UserTo userto) throws UserAlreadyExistException;
     void saveRegisteredUser(UserTo user);
-    void createVerificationToken(UserTo user, String token);
-    VerificationToken getVerificationToken(String VerificationToken);
+    void saveVerificationToken(UserTo user, String token);
+    VerificationTokenTo getVerificationToken(String VerificationToken);
 }

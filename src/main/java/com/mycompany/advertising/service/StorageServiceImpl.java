@@ -1,6 +1,6 @@
 package com.mycompany.advertising.service;
 
-import com.mycompany.advertising.api.StorageService;
+import com.mycompany.advertising.service.api.StorageService;
 import com.mycompany.advertising.components.FileManager;
 import com.mycompany.advertising.components.ImageResizer;
 import com.mycompany.advertising.config.StorageProperties;

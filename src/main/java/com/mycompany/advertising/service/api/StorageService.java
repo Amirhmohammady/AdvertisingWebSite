@@ -1,4 +1,4 @@
-package com.mycompany.advertising.api;
+package com.mycompany.advertising.service.api;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

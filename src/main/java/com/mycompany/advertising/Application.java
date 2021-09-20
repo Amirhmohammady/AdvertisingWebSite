@@ -1,6 +1,6 @@
 package com.mycompany.advertising;
 
-import com.mycompany.advertising.api.StorageService;
+import com.mycompany.advertising.service.api.StorageService;
 import com.mycompany.advertising.config.StorageProperties;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

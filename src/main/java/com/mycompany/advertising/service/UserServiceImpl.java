@@ -1,11 +1,10 @@
 package com.mycompany.advertising.service;
 
-import com.mycompany.advertising.api.UserService;
-import com.mycompany.advertising.entity.TokenNotFoundtException;
 import com.mycompany.advertising.model.dao.UserRepository;
 import com.mycompany.advertising.model.dao.VerificationTokenRepository;
 import com.mycompany.advertising.model.to.UserTo;
-import com.mycompany.advertising.model.to.VerificationToken;
+import com.mycompany.advertising.model.to.VerificationTokenTo;
+import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -31,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
+    //todoAmir
     @Override
     public void registerNewUserAccount(UserTo userTo) throws UsernameNotFoundException {
         if (isEmailExist(userTo.getEmail())) {
@@ -50,13 +50,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createVerificationToken(UserTo user, String token) {
-
+    public void saveVerificationToken(UserTo user, String token) {
+        VerificationTokenTo mytoken = new VerificationTokenTo(token, user, new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)));
+        verificationTokenRepository.save(mytoken);
     }
 
     @Override
-    public VerificationToken getVerificationToken(String VerificationToken) {
-        return null;
+    public VerificationTokenTo getVerificationToken(String verificationToken) {
+        return verificationTokenRepository.findByToken(verificationToken);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserTo getUserByToken(String verificationToken) {
-        return null;
+        return verificationTokenRepository.findByToken(verificationToken).getUser();
     }
     /*@Override
     public UserTo getCurrentUser() {

@@ -1,6 +1,6 @@
 package com.mycompany.advertising.controller;
 
-import com.mycompany.advertising.api.UserService;
+import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;

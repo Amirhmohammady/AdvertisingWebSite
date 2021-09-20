@@ -1,9 +1,9 @@
 package com.mycompany.advertising.controller;
 
-import com.mycompany.advertising.api.AuthenticationFacade;
-import com.mycompany.advertising.api.AvertiseService;
-import com.mycompany.advertising.api.UserService;
-import com.mycompany.advertising.api.language.MultiLanguageTipMessage;
+import com.mycompany.advertising.service.api.AuthenticationFacade;
+import com.mycompany.advertising.service.api.AvertiseService;
+import com.mycompany.advertising.service.api.UserService;
+import com.mycompany.advertising.service.api.language.MultiLanguageTipMessage;
 import com.mycompany.advertising.entity.Role;
 import com.mycompany.advertising.model.to.AvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;

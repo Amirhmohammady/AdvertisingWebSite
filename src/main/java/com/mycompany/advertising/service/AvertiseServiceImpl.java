@@ -1,6 +1,6 @@
 package com.mycompany.advertising.service;
 
-import com.mycompany.advertising.api.AvertiseService;
+import com.mycompany.advertising.service.api.AvertiseService;
 import com.mycompany.advertising.model.dao.AvertiseRepository;
 import com.mycompany.advertising.model.to.AvertiseTo;
 import org.springframework.beans.factory.annotation.Autowired;

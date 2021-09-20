@@ -1,6 +1,6 @@
 package com.mycompany.advertising.service.language;
 
-import com.mycompany.advertising.api.language.MultiLanguageTipMessage;
+import com.mycompany.advertising.service.api.language.MultiLanguageTipMessage;
 import com.mycompany.advertising.model.dao.LanguageRepository;
 import com.mycompany.advertising.model.to.LanguageEntity;
 import org.springframework.beans.factory.annotation.Autowired;

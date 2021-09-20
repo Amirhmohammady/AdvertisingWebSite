@@ -1,4 +1,4 @@
-package com.mycompany.advertising.api.language;
+package com.mycompany.advertising.service.api.language;
 
 /**
  * Created by Amir on 8/19/2020.

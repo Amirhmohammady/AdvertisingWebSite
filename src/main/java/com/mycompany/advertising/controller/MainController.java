@@ -1,12 +1,13 @@
 package com.mycompany.advertising.controller;
 
-import com.mycompany.advertising.api.AvertiseService;
-import com.mycompany.advertising.api.UserService;
+import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
 import com.mycompany.advertising.entity.Role;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.AvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
-import com.mycompany.advertising.model.to.VerificationToken;
+import com.mycompany.advertising.model.to.VerificationTokenTo;
+import com.mycompany.advertising.service.api.AvertiseService;
+import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,7 +42,6 @@ public class MainController {
     private AvertiseService messageService;
     @Autowired
     private UserService userService;
-
     @Autowired
     private MessageSource messages;
 
@@ -57,17 +57,20 @@ public class MainController {
 
     @PostMapping("/signup")
     public String signUp(Model model, @RequestParam(required = false, name = "username") String username,
-                         @RequestParam(required = false, name = "password") String password,
-                         @RequestParam(required = false, name = "confirm_password") String confirm_password,
+                         @RequestParam(required = true, name = "password") String password,
+                         @RequestParam(required = true, name = "confirm_password") String confirm_password,
+                         @RequestParam(required = true, name = "phonenumber") String phonenumber,
                          @RequestParam(required = true, name = "email") String email) {
         UserTo user = new UserTo();
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
+        user.setPhonenumber(phonenumber);
         user.grantAuthority(Role.ROLE_USER);
         logger.info("signup controller called with " + user.toString());
         try {
             userService.registerNewUserAccount(user);
+            eventPublisher.publishEvent(new OnSigningUpCompleteEvent(user));
             logger.info(user.toString() + "is registered successfully");
         } catch (UserAlreadyExistException uia) {
             logger.info("can not save " + user.toString() + " the user name is exist");
@@ -127,7 +130,7 @@ public class MainController {
 
         Locale locale = request.getLocale();
 
-        VerificationToken verificationToken = userService.getVerificationToken(token);
+        VerificationTokenTo verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             logger.debug("token " + token + " is invalid");
             String message = messages.getMessage("auth.message.invalidToken", null, locale);

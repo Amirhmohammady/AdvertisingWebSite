@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by Amir on 5/12/2021.
  */
 @Entity
-public class VerificationToken {
+public class VerificationTokenTo {
     private static final int EXPIRATION = 60 * 24;
 
     @Id
@@ -32,7 +32,7 @@ public class VerificationToken {
         return new Date(cal.getTime().getTime());
     }
 
-    public VerificationToken(String token, UserTo user, Date expiryDate) {
+    public VerificationTokenTo(String token, UserTo user, Date expiryDate) {
         this.token = token;
         this.user = user;
         this.expiryDate = expiryDate;

@@ -1,4 +1,4 @@
-package com.mycompany.advertising.api;
+package com.mycompany.advertising.service.api;
 
 import com.mycompany.advertising.model.to.AvertiseTo;
 import org.springframework.data.domain.Page;
