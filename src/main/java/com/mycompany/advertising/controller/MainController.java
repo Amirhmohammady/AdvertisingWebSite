@@ -60,7 +60,7 @@ public class MainController {
                          @RequestParam(required = true, name = "password") String password,
                          @RequestParam(required = true, name = "confirm_password") String confirm_password,
                          @RequestParam(required = true, name = "phonenumber") String phonenumber,
-                         @RequestParam(required = true, name = "email") String email) {
+                         @RequestParam(required = false, name = "email") String email) {
         UserTo user = new UserTo();
         user.setUsername(username);
         user.setPassword(password);

@@ -1,6 +1,6 @@
 package com.mycompany.advertising.model.to;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -10,6 +10,10 @@ import java.util.Date;
 public class SmsTo {
     private String phoneno, vrificationcode;
     private Date expiredate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID", nullable = false)
+    private Long id;
 
     public String getPhoneno() {
         return phoneno;
@@ -33,5 +37,13 @@ public class SmsTo {
 
     public void setExpiredate(Date expiredate) {
         this.expiredate = expiredate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
