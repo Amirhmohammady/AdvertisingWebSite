@@ -31,4 +31,12 @@ public class AjaxController {
         logger.debug("request for " + email + " existance and returned " + entity.toString());
         return new ResponseEntity<Object>(entity.toString(), HttpStatus.OK);
     }
+
+    @GetMapping("/checkphonenumber/{phonenumber}")
+    public ResponseEntity<Object> phoneNoStatus(@PathVariable String phonenumber) throws JSONException {
+        JSONObject entity = new JSONObject();
+        entity.put("isPhoneNoExist", userService.isPhoneNoExist(phonenumber));
+        logger.debug("request for " + phonenumber + " existance and returned " + entity.toString());
+        return new ResponseEntity<Object>(entity.toString(), HttpStatus.OK);
+    }
 }

@@ -18,7 +18,12 @@
 <div class="ah01-show_childs_columns_center ah01-margin15_all_childs">
     <form th:action="@{/signup}" method="post">
         <h1>Welcome to BinaryBazar_AHM</h1>
-        <input class="ah01-border_style01" placeholder="Email" id="email" type="email" name="email"/>
+        <input class="ah01-border_style01" placeholder="Phone Number" id="phonenumber"
+               type="text" name="phonenumber"/>
+
+        <p id="phonenumberexist"></p>
+        <input class="ah01-border_style01" placeholder="Email" id="email" type="email"
+               name="email"/>
 
         <p id="emailexist"></p>
         <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
@@ -35,7 +40,8 @@
 <script>
     var password = document.getElementById("password")
             , confirm_password = document.getElementById("confirm_password")
-            , email = document.getElementById("email");
+            , email = document.getElementById("email")
+            , phonenumber = document.getElementById("phonenumber");
     function validatePassword() {
         if (password.value != confirm_password.value) {
             confirm_password.setCustomValidity("Passwords Don't Match");
@@ -43,9 +49,30 @@
             confirm_password.setCustomValidity('');
         }
     }
+	
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
-
+	
+    phonenumber.onkeyup = function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let obj01 = JSON.parse(this.responseText);
+                if (obj01.isPhoneNoExist == true) {
+                    phonenumber.setCustomValidity("Phone number is exist");
+                    document.getElementById("phonenumberexist").innerHTML = "Phone number is exist";
+                    document.getElementById("phonenumberexist").style.color = "red";
+                }
+                else {
+                    phonenumber.setCustomValidity('');
+                    document.getElementById("phonenumberexist").innerHTML = "Phone number is ready";
+                    document.getElementById("phonenumberexist").style.color = "green";
+                }
+            }
+        };
+        xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumber.value, true);
+        xhttp.send();
+    }
     email.onkeyup = function () {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {

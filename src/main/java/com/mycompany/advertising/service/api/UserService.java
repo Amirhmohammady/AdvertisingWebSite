@@ -11,6 +11,7 @@ public interface UserService {
     //void svaeUser(UserTo userTo) throws UserAlreadyExistException;
 
     boolean isEmailExist(String email);
+    boolean isPhoneNoExist(String phoneno);
     UserTo getUserByToken(String verificationToken);
     //public UserTo getCurrentUser();
     void registerNewUserAccount(UserTo userto) throws UserAlreadyExistException;

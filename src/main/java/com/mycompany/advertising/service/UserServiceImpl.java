@@ -70,6 +70,16 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+    @Override
+    public boolean isPhoneNoExist(String phoneno) {
+        if (userRepository.existsByPhonenumber(phoneno)) {
+            logger.trace("Phone number " + phoneno + " is exist");
+            return true;
+        } else {
+            logger.trace("Phone number " + phoneno + " is not exist");
+            return false;
+        }
+    }
 
     @Override
     public UserTo getUserByToken(String verificationToken) {
