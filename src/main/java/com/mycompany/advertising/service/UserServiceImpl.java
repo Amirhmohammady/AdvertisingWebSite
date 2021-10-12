@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 
 /**
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailExist(String email) {
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmailAndEnabled(email, true)) {
             logger.trace("Email " + email + " is exist");
             return true;
         } else {
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean isPhoneNoExist(String phoneno) {
-        if (userRepository.existsByPhonenumber(phoneno)) {
+        if (userRepository.existsByPhonenumberAndEnabled(phoneno, true)) {
             logger.trace("Phone number " + phoneno + " is exist");
             return true;
         } else {
@@ -84,6 +85,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserTo getUserByToken(String verificationToken) {
         return verificationTokenRepository.findByToken(verificationToken).getUser();
+    }
+
+    @Override
+    public UserTo getUserByPhoneNo(String phoneno) {
+        Optional<UserTo> user = userRepository.findByPhonenumber(phoneno);
+        if (user.isPresent()){
+            return user.get();
+        }else{
+            return null;
+        }
     }
     /*@Override
     public UserTo getCurrentUser() {

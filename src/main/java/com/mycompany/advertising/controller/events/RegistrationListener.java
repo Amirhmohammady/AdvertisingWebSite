@@ -3,6 +3,7 @@ package com.mycompany.advertising.controller.events;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.SmsService;
 import com.mycompany.advertising.service.api.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -16,6 +17,7 @@ import java.util.Random;
  */
 @Component
 public class RegistrationListener implements ApplicationListener<OnSigningUpCompleteEvent> {
+    final static Logger logger = Logger.getLogger(RegistrationListener.class);
 
     @Autowired
     SmsService smsService;
@@ -26,6 +28,7 @@ public class RegistrationListener implements ApplicationListener<OnSigningUpComp
 
     @Override
     public void onApplicationEvent(OnSigningUpCompleteEvent event) {
+        logger.trace("SigningUpCompleteEvent happened");
         this.confirmRegistration(event);
     }
 

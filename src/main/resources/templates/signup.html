@@ -21,7 +21,7 @@
         <input class="ah01-border_style01" placeholder="Phone Number" id="phonenumber"
                type="text" name="phonenumber"/>
 
-        <p id="phonenumberexist"></p>
+        <p id="phonenumberstatus"></p>
         <input class="ah01-border_style01" placeholder="Email" type="email" name="email"/>
         <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
         <input class="ah01-border_style01" placeholder="Password" id="password" type="password" name="password"/>
@@ -37,7 +37,7 @@
 <script>
     var password = document.getElementById("password")
             , confirm_password = document.getElementById("confirm_password")
-            , phonenumber = document.getElementById("phonenumber");
+            , phonenumbertextbox = document.getElementById("phonenumber");
     function validatePassword() {
         if (password.value != confirm_password.value) {
             confirm_password.setCustomValidity("Passwords Don't Match");
@@ -45,28 +45,43 @@
             confirm_password.setCustomValidity('');
         }
     }
-	
+
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
-	
-    phonenumber.onkeyup = function () {
+
+    phonenumbertextbox.onkeyup = function () {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 let obj01 = JSON.parse(this.responseText);
-                if (obj01.isPhoneNoExist == true) {
-                    phonenumber.setCustomValidity("Phone number is exist");
-                    document.getElementById("phonenumberexist").innerHTML = "Phone number is exist";
-                    document.getElementById("phonenumberexist").style.color = "red";
-                }
-                else {
-                    phonenumber.setCustomValidity('');
-                    document.getElementById("phonenumberexist").innerHTML = "Phone number is ready";
-                    document.getElementById("phonenumberexist").style.color = "green";
+                switch (obj01.phoneNoStatus) {
+                    case "exist":
+                        phonenumbertextbox.setCustomValidity("Phone number is exist");
+                        document.getElementById("phonenumberstatus").innerHTML = "Phone number is exist";
+                        document.getElementById("phonenumberstatus").style.color = "red";
+                        break;
+                    case "existButNotConfirmed":
+                        phonenumbertextbox.setCustomValidity("is not activate.");
+                        document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href="/sib">Click to Active</a>';
+                        document.getElementById("phonenumberstatus").style.color = "orange";
+                        break;
+                    case "ready":
+                        phonenumbertextbox.setCustomValidity('');
+                        document.getElementById("phonenumberstatus").innerHTML = "Phone number is ready";
+                        document.getElementById("phonenumberstatus").style.color = "green";
+                        break;
+                    case "phoneFormatNotCorrect":
+                        phonenumbertextbox.setCustomValidity("format is not correct");
+                        document.getElementById("phonenumberstatus").innerHTML = "format should some thing like: 09353995511 or 9353995511";
+                        document.getElementById("phonenumberstatus").style.color = "orange";
+                        break;
+                    default:
+                        phonenumbertextbox.setCustomValidity('');
+                        document.getElementById("phonenumberstatus").innerHTML = "";
                 }
             }
         };
-        xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumber.value, true);
+        xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumbertextbox.value, true);
         xhttp.send();
     }
 </script>

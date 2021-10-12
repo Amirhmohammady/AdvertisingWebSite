@@ -1,5 +1,7 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.controller.validator.api.PhoneNoVadidator;
+import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AjaxController {
     private static final Logger logger = Logger.getLogger(AjaxController.class);
     @Autowired
+    PhoneNoVadidator phonenovadidator;
+    @Autowired
     private UserService userService;
 
     //@ResponseBody use it for @controller classes
@@ -34,9 +38,19 @@ public class AjaxController {
 
     @GetMapping("/checkphonenumber/{phonenumber}")
     public ResponseEntity<Object> phoneNoStatus(@PathVariable String phonenumber) throws JSONException {
+        if (phonenumber != null && phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
         JSONObject entity = new JSONObject();
-        entity.put("isPhoneNoExist", userService.isPhoneNoExist(phonenumber));
-        logger.debug("request for " + phonenumber + " existance and returned " + entity.toString());
+        if (!phonenovadidator.isPhoneNoValid(phonenumber)) {
+            entity.put("phoneNoStatus", "phoneFormatNotCorrect");
+        } else {
+            UserTo user = userService.getUserByPhoneNo(phonenumber);
+            if (user == null) entity.put("phoneNoStatus", "ready");
+            else {
+                if (user.getEnabled()) entity.put("phoneNoStatus", "exist");
+                else entity.put("phoneNoStatus", "existButNotConfirmed");
+            }
+        }
+        logger.debug("request for " + phonenumber + " status and returned " + entity.toString());
         return new ResponseEntity<Object>(entity.toString(), HttpStatus.OK);
     }
 }

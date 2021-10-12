@@ -22,27 +22,18 @@ public class UserTo implements UserDetails {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username, password, phonenumber;
-
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
+    private String username;
+    @Column(nullable = false, unique = true)
+    private String phonenumber;
+    private String password;
 
     private boolean accountNonExpired;
-
     private boolean accountNonLocked;
-
     private boolean credentialsNonExpired;
 
     @Column(name = "enabled")
     private boolean enabled;
-
     private String email;
-
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Role> roles;
@@ -52,6 +43,14 @@ public class UserTo implements UserDetails {
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;
         this.enabled = false;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
     }
 
     public Long getId() {
@@ -77,10 +76,6 @@ public class UserTo implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public boolean getEnabled() {
@@ -116,13 +111,17 @@ public class UserTo implements UserDetails {
         return true;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public void grantAuthority(Role authority) {
-        if ( roles == null ) roles = new ArrayList<>();
+        if (roles == null) roles = new ArrayList<>();
         roles.add(authority);
     }
 
     @Override
-    public List<GrantedAuthority> getAuthorities(){
+    public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.toString())));
         return authorities;
