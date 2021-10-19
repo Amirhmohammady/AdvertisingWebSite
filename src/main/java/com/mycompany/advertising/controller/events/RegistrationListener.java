@@ -3,6 +3,7 @@ package com.mycompany.advertising.controller.events;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.SmsService;
 import com.mycompany.advertising.service.api.UserService;
+import com.mycompany.advertising.service.util.FarazSmsResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -35,8 +36,13 @@ public class RegistrationListener implements ApplicationListener<OnSigningUpComp
     private void confirmRegistration(OnSigningUpCompleteEvent event) {
         UserTo user = event.getUser();
         String token = new DecimalFormat("000000").format(new Random().nextInt(999999));
-        userservice.saveVerificationToken(user, token);
-        int smsstatus = smsService.sendSms("your vrification code is: " + token, user.getPhonenumber());
+        FarazSmsResponse smsresponse = smsService.sendSms("your vrification code is: " + token, user.getPhonenumber());
+        if (smsresponse.getSatuse().equals("0")) {
+            logger.info("tocken sent to " + user.getPhonenumber());
+            userservice.saveVerificationToken(user, token);
+        } else {
+            logger.warn("tocken can not sent to " + user.getPhonenumber() + " " + smsresponse.getMessage());
+        }
         /*String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
         String confirmationUrl
