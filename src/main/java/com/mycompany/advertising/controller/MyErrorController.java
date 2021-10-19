@@ -1,5 +1,6 @@
 package com.mycompany.advertising.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -15,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class MyErrorController implements ErrorController {
+    private static final Logger logger = Logger.getLogger(MyErrorController.class);
     @Value("${amir.error.folder}")
     String errorfolder;
 
     @RequestMapping("/error")
     public String handleError(Model model, HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-
         if (status != null) {
+            Object uri = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
+            Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+            logger.warn("request for: " + uri.toString() + "\tgot Error: " + exception.toString());
             Integer statusCode = Integer.valueOf(status.toString());
             model.addAttribute("error_code", statusCode.toString());
             if (statusCode == HttpStatus.NOT_FOUND.value()) {

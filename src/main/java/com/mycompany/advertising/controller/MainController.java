@@ -15,6 +15,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +58,8 @@ public class MainController {
     }
 
     @PostMapping("/signup")
-    public String signUp(Model model, @RequestParam(required = false, name = "username") String username,
+    @Validated
+    public String signUp(Model model, @Size(min = 6, max = 20) @RequestParam(required = false, name = "username") String username,
                          @RequestParam(required = true, name = "password") String password,
                          @RequestParam(required = true, name = "confirm_password") String confirm_password,
                          @RequestParam(required = true, name = "phonenumber") String phonenumber,
