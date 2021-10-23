@@ -24,6 +24,8 @@ import java.security.NoSuchAlgorithmException;
  */
 @Service
 public class SSLRESTClientImpl<T> implements SSLRESTClient<T> {
+    //private static final Logger logger = Logger.getLogger(SSLRESTClientImpl.class);
+
     @Override
     public T callWebService(String url, Class<T> type) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
         TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;

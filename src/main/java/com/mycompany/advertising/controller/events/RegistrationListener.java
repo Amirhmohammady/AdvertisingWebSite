@@ -37,7 +37,7 @@ public class RegistrationListener implements ApplicationListener<OnSigningUpComp
         UserTo user = event.getUser();
         String token = new DecimalFormat("000000").format(new Random().nextInt(999999));
         FarazSmsResponse smsresponse = smsService.sendSms("your vrification code is: " + token, user.getPhonenumber());
-        if (smsresponse.getSatuse().equals("0")) {
+        if (smsresponse.getStatus().equals("0")) {
             logger.info("tocken sent to " + user.getPhonenumber());
             userservice.saveVerificationToken(user, token);
         } else {

@@ -4,7 +4,7 @@ package com.mycompany.advertising.service.util;
  * Created by Amir on 9/20/2021.
  */
 public class FarazSmsResponse {
-    private String satuse;
+    private String status;
     private String message;
 
     public String getMessage() {
@@ -15,11 +15,11 @@ public class FarazSmsResponse {
         this.message = message;
     }
 
-    public String getSatuse() {
-        return satuse;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSatuse(String satuse) {
-        this.satuse = satuse;
+    public void setStatus(String satuse) {
+        this.status = satuse;
     }
 }
