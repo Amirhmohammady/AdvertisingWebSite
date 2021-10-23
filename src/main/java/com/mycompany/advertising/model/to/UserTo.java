@@ -67,6 +67,10 @@ public class UserTo implements UserDetails {
     }
 
     public void setUsername(String username) {
+        /*if(username.)throw new RuntimeException("AAAAAAAAAAAAAA");
+        if(username.equals("username"))throw new RuntimeException("AAAAAAAAAAAAAA");
+        if(username.equals("username"))throw new RuntimeException("AAAAAAAAAAAAAA");*/
+        if(username.equals("username"))throw new RuntimeException("AAAAAAAAAAAAAA");
         this.username = username;
     }
 

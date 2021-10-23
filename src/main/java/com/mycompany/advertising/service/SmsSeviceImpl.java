@@ -45,7 +45,7 @@ public class SmsSeviceImpl implements SmsService {
         FarazSmsResponse farazsmsresponse = new FarazSmsResponse();
         try {
             response = sslrestclient.callWebService(url, String.class);
-            Matcher matcher = Pattern.compile("\\[\"(\\d+)\",\"([\\w|\\s]+)\"\\]").matcher(response);
+            Matcher matcher = Pattern.compile("^\\[\"(\\d+)\",\"([\\w|\\s]+)\"\\]$").matcher(response);
             if (matcher.matches() && matcher.groupCount() == 2) {
                 farazsmsresponse.setStatus(matcher.group(1));
                 farazsmsresponse.setMessage(matcher.group(2));

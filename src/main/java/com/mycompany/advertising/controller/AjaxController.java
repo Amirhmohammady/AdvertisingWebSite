@@ -32,7 +32,7 @@ public class AjaxController {
     public ResponseEntity<Object> emailStatus(@PathVariable String email) throws JSONException {
         JSONObject entity = new JSONObject();
         entity.put("isEmailExist", userService.isEmailExist(email));
-        logger.debug("request for " + email + " existance and returned " + entity.toString());
+        logger.trace("request for " + email + " existance and returned " + entity.toString());
         return new ResponseEntity<Object>(entity.toString(), HttpStatus.OK);
     }
 
@@ -50,7 +50,7 @@ public class AjaxController {
                 else entity.put("phoneNoStatus", "existButNotConfirmed");
             }
         }
-        logger.debug("request for " + phonenumber + " status and returned " + entity.toString());
+        logger.trace("request for " + phonenumber + " status and returned " + entity.toString());
         return new ResponseEntity<Object>(entity.toString(), HttpStatus.OK);
     }
 }

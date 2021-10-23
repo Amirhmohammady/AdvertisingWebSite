@@ -38,10 +38,10 @@ public class RegistrationListener implements ApplicationListener<OnSigningUpComp
         String token = new DecimalFormat("000000").format(new Random().nextInt(999999));
         FarazSmsResponse smsresponse = smsService.sendSms("your vrification code is: " + token, user.getPhonenumber());
         if (smsresponse.getStatus().equals("0")) {
-            logger.info("tocken sent to " + user.getPhonenumber());
+            logger.info("tocken " + token + " sent to " + user.getPhonenumber());
             userservice.saveVerificationToken(user, token);
         } else {
-            logger.warn("tocken can not sent to " + user.getPhonenumber() + " " + smsresponse.getMessage());
+            logger.debug("tocken " + token + " could not send to " + user.getPhonenumber() + " " + smsresponse.getMessage());
         }
         /*String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";

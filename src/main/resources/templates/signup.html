@@ -23,7 +23,7 @@
 
         <p id="phonenumberstatus"></p>
         <input class="ah01-border_style01" placeholder="Email" type="email" name="email"/>
-        <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
+        <input class="ah01-border_style01" placeholder="User Name" id="username" type="text" name="username"/>
         <input class="ah01-border_style01" placeholder="Password" id="password" type="password" name="password"/>
         <input class="ah01-border_style01" placeholder="confirm_password" id="confirm_password" type="password"
                name="confirm_password"/>
@@ -31,58 +31,100 @@
         <div>
             <button class="ah01-border_style01" style="width: 100px;" type="submit" value="Sign Up">Sign up</button>
         </div>
+        <p id="statusbar"></p>
     </form>
 </div>
 </body>
 <script>
     var password = document.getElementById("password")
             , confirm_password = document.getElementById("confirm_password")
-            , phonenumbertextbox = document.getElementById("phonenumber");
-    function validatePassword() {
-        if (password.value != confirm_password.value) {
-            confirm_password.setCustomValidity("Passwords Don't Match");
+            , phonenumbertextbox = document.getElementById("phonenumber")
+            , usernametextbox = document.getElementById("username");
+    password.onkeyup = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+    phonenumbertextbox.onchange = validatePhonenumber;
+    usernametextbox.onkeyup = validateUsername;
+
+    function validatePhonenumber() {
+        if (phonenumbertextbox.value.match(/\S/)) {//is not blank
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let obj01 = JSON.parse(this.responseText);
+                    switch (obj01.phoneNoStatus) {
+                        case "exist":
+                            phonenumbertextbox.setCustomValidity("Phone number is exist");
+                            document.getElementById("phonenumberstatus").innerHTML = "Phone number is exist";
+                            document.getElementById("phonenumberstatus").style.color = "red";
+                            break;
+                        case "existButNotConfirmed":
+                            phonenumbertextbox.setCustomValidity("is not activate.");
+                            document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href="/sib">Click to Active</a>';
+                            document.getElementById("phonenumberstatus").style.color = "orange";
+                            break;
+                        case "ready":
+                            phonenumbertextbox.setCustomValidity('');
+                            document.getElementById("phonenumberstatus").innerHTML = "Phone number is ready";
+                            document.getElementById("phonenumberstatus").style.color = "green";
+                            break;
+                        case "phoneFormatNotCorrect":
+                            phonenumbertextbox.setCustomValidity("format is not correct");
+                            document.getElementById("phonenumberstatus").innerHTML = "format should some thing like: 09353995511 or 9353995511";
+                            document.getElementById("phonenumberstatus").style.color = "orange";
+                            break;
+                        default:
+                            phonenumbertextbox.setCustomValidity('');
+                            document.getElementById("phonenumberstatus").innerHTML = "";
+                    }
+                }
+            };
+            xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumbertextbox.value, true);
+            xhttp.send();
         } else {
-            confirm_password.setCustomValidity('');
+            phonenumbertextbox.setCustomValidity("Phone number is required");
+            document.getElementById("phonenumberstatus").innerHTML = "Phone number is required";
+            document.getElementById("phonenumberstatus").style.color = "red";
         }
     }
 
-    password.onchange = validatePassword;
-    confirm_password.onkeyup = validatePassword;
+    function validateUsername() {
+        if (usernametextbox.value == "") {
+            usernametextbox.setCustomValidity('user name is required');
+            document.getElementById("statusbar").innerHTML = "user name is required";
+        }
+        else if (usernametextbox.value.match(/^[a-zA-Z][\w]{5,}$/)) {
+            usernametextbox.setCustomValidity('');
+            document.getElementById("statusbar").innerHTML = "";
+        }
+        else {
+            usernametextbox.setCustomValidity('User name should start with a..Z and contain a..Z,0..9');
+            document.getElementById("statusbar").innerHTML = "User name should start with a..Z and contain a..Z,0..9 and at least 6 chars";
+        }
+    }
 
-    phonenumbertextbox.onkeyup = function () {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let obj01 = JSON.parse(this.responseText);
-                switch (obj01.phoneNoStatus) {
-                    case "exist":
-                        phonenumbertextbox.setCustomValidity("Phone number is exist");
-                        document.getElementById("phonenumberstatus").innerHTML = "Phone number is exist";
-                        document.getElementById("phonenumberstatus").style.color = "red";
-                        break;
-                    case "existButNotConfirmed":
-                        phonenumbertextbox.setCustomValidity("is not activate.");
-                        document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href="/sib">Click to Active</a>';
-                        document.getElementById("phonenumberstatus").style.color = "orange";
-                        break;
-                    case "ready":
-                        phonenumbertextbox.setCustomValidity('');
-                        document.getElementById("phonenumberstatus").innerHTML = "Phone number is ready";
-                        document.getElementById("phonenumberstatus").style.color = "green";
-                        break;
-                    case "phoneFormatNotCorrect":
-                        phonenumbertextbox.setCustomValidity("format is not correct");
-                        document.getElementById("phonenumberstatus").innerHTML = "format should some thing like: 09353995511 or 9353995511";
-                        document.getElementById("phonenumberstatus").style.color = "orange";
-                        break;
-                    default:
-                        phonenumbertextbox.setCustomValidity('');
-                        document.getElementById("phonenumberstatus").innerHTML = "";
-                }
+    function validatePassword() {
+        if (password.value.length < 6) {
+            password.setCustomValidity("password atleast 6 chars");
+            confirm_password.setCustomValidity('');
+            document.getElementById("statusbar").innerHTML = "password atleast 6 chars";
+        }
+        else {
+            password.setCustomValidity('');
+            if (password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords Don't Match");
+                document.getElementById("statusbar").innerHTML = "confirm password Don't Match";
+            } else {
+                confirm_password.setCustomValidity('');
+                document.getElementById("statusbar").innerHTML = "";
             }
-        };
-        xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumbertextbox.value, true);
-        xhttp.send();
+        }
+    }
+
+    window.onload = function () {
+        document.getElementById("statusbar").style.color = "red";
+        validatePassword();
+        validateUsername();
+        validatePhonenumber();
     }
 </script>
 </html>
