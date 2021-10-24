@@ -1,5 +1,6 @@
 package com.mycompany.advertising.model.to;
 
+import com.mycompany.advertising.components.utils.AViewableException;
 import com.mycompany.advertising.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Amir on 10/29/2019.
@@ -50,6 +53,8 @@ public class UserTo implements UserDetails {
     }
 
     public void setPhonenumber(String phonenumber) {
+        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
+        if (!matcher.matches()) throw new AViewableException("phone number format should some thing like: 09xxxxxxxxx");
         this.phonenumber = phonenumber;
     }
 
@@ -67,11 +72,10 @@ public class UserTo implements UserDetails {
     }
 
     public void setUsername(String username) {
-        /*if(username.)throw new RuntimeException("AAAAAAAAAAAAAA");
-        if(username.equals("username"))throw new RuntimeException("AAAAAAAAAAAAAA");
-        if(username.equals("username"))throw new RuntimeException("AAAAAAAAAAAAAA");*/
-        if(username.equals("username"))throw new RuntimeException("AAAAAAAAAAAAAA");
-        this.username = username;
+        Matcher matcher = Pattern.compile("^[a-zA-Z][\\w]{5,}$").matcher(username);
+        if (!matcher.matches())
+            throw new AViewableException("User name should start with a..Z and contain a..Z,0..9 and at least 6 chars");
+        else this.username = username;
     }
 
     public String getEmail() {
@@ -92,6 +96,7 @@ public class UserTo implements UserDetails {
     }
 
     public void setPassword(String password) {
+        if (password.length() < 6) throw new AViewableException("password should be at least 6 chars");
         this.password = password;
     }
 

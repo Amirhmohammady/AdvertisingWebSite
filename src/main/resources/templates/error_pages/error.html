@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
 </head>
 <body>
 <h1>Error [[${error_code}]]</h1>
-<h1>OOps Some thing wrong</h1>
+<h1 th:if="${variable != null && variable.name != null}" th:text="${variable.name}">OOps Some thing wrong</h1>
+<h1>[[${error_msg}]]</h1>
 </body>
 </html>

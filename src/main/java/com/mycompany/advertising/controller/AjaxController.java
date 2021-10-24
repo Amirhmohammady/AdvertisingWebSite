@@ -1,5 +1,6 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.components.utils.AViewableException;
 import com.mycompany.advertising.controller.validator.api.PhoneNoVadidator;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.UserService;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -40,7 +44,8 @@ public class AjaxController {
     public ResponseEntity<Object> phoneNoStatus(@PathVariable String phonenumber) throws JSONException {
         if (phonenumber != null && phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
         JSONObject entity = new JSONObject();
-        if (!phonenovadidator.isPhoneNoValid(phonenumber)) {
+        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
+        if (!matcher.matches()) {
             entity.put("phoneNoStatus", "phoneFormatNotCorrect");
         } else {
             UserTo user = userService.getUserByPhoneNo(phonenumber);

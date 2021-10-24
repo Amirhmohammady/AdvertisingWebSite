@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Size;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -59,7 +58,7 @@ public class MainController {
 
     @PostMapping("/signup")
     @Validated
-    public String signUp(Model model, @Size(min = 6, max = 20) @RequestParam(required = false, name = "username") String username,
+    public String signUp(Model model, @RequestParam(required = true, name = "username") String username,
                          @RequestParam(required = true, name = "password") String password,
                          @RequestParam(required = true, name = "confirm_password") String confirm_password,
                          @RequestParam(required = true, name = "phonenumber") String phonenumber,
