@@ -1,7 +1,5 @@
 package com.mycompany.advertising.controller;
 
-import com.mycompany.advertising.components.utils.AViewableException;
-import com.mycompany.advertising.controller.validator.api.PhoneNoVadidator;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
@@ -26,8 +24,6 @@ import java.util.regex.Pattern;
 @RequestMapping("/ajax")
 public class AjaxController {
     private static final Logger logger = Logger.getLogger(AjaxController.class);
-    @Autowired
-    PhoneNoVadidator phonenovadidator;
     @Autowired
     private UserService userService;
 

@@ -7,6 +7,7 @@ import com.mycompany.advertising.model.to.VerificationTokenTo;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
+    @Value("${token.expire.minutes}")
+    private int expiretockentime;
 
     //todoAmir
     @Override
@@ -52,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveVerificationToken(UserTo user, String token) {
-        VerificationTokenTo mytoken = new VerificationTokenTo(token, user, new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)));
+        VerificationTokenTo mytoken = new VerificationTokenTo(token, user, new Date(System.currentTimeMillis() + (1000 * 60 * expiretockentime)));
         verificationTokenRepository.save(mytoken);
     }
 
