@@ -62,6 +62,11 @@
                             document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href="/sib">Click to Active</a>';
                             document.getElementById("phonenumberstatus").style.color = "orange";
                             break;
+                        case "smsDidntSend":
+                            phonenumbertextbox.setCustomValidity("is not activate.");
+                            document.getElementById("phonenumberstatus").innerHTML = '<a onclick="sendSms()" href="#">Click to resend verification token</a>';
+                            document.getElementById("phonenumberstatus").style.color = "orange";
+                            break;
                         case "ready":
                             phonenumbertextbox.setCustomValidity('');
                             document.getElementById("phonenumberstatus").innerHTML = "Phone number is ready";
@@ -86,7 +91,14 @@
             document.getElementById("phonenumberstatus").style.color = "red";
         }
     }
-
+    function sendSms() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            document.getElementById("phonenumberstatus").innerHTML = this.responseText;
+        };
+        xhttp.open("GET", "[[@{/restapi/sendsms/}]]" + phonenumbertextbox.value, true);
+        xhttp.send();
+    }
     function validateUsername() {
         if (usernametextbox.value == "") {
             usernametextbox.setCustomValidity('user name is required');

@@ -126,11 +126,10 @@ public class MainController {
         return "index";
     }*/
 
-    @GetMapping("/regitrationConfirm")
-    public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
+    @GetMapping("/regitrationConfirm/phonenumber={phonenumber}")
+    public String confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
 
-        Locale locale = request.getLocale();
+        /*Locale locale = request.getLocale();
 
         VerificationTokenTo verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
@@ -151,7 +150,7 @@ public class MainController {
 
         logger.debug("User " + user.getUsername() + " Email:" + user.getEmail() + " is verified.");
         user.setEnabled(true);
-        userService.saveRegisteredUser(user);
+        userService.saveRegisteredUser(user);*/
         return "redirect:/login.html";
     }
 }

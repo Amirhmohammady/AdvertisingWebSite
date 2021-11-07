@@ -13,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +52,7 @@ public class SmsSeviceImpl implements SmsService {
                 farazsmsresponse.setStatus(matcher.group(1));
                 farazsmsresponse.setMessage(matcher.group(2));
             } else {
-                throw new Exception("The regex xonnot find pattern in faraz sms response: " + response);
+                throw new Exception("The regex can not find pattern in faraz sms response: " + response);
             }
             if (farazsmsresponse.getStatus().equals("0")) logger.info("vrification code sent to " + phonenumber);
             else logger.warn("vrification code faild to send " + phonenumber + "\tthe error is: " + response);

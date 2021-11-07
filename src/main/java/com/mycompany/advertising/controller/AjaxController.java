@@ -39,8 +39,8 @@ public class AjaxController {
     @GetMapping("/checkphonenumber/{phonenumber}")
     public ResponseEntity<Object> phoneNoStatus(@PathVariable String phonenumber) throws JSONException {
         if (phonenumber != null && phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
-        JSONObject entity = new JSONObject();
         Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
+        JSONObject entity = new JSONObject();
         if (!matcher.matches()) {
             entity.put("phoneNoStatus", "phoneFormatNotCorrect");
         } else {
@@ -48,7 +48,11 @@ public class AjaxController {
             if (user == null) entity.put("phoneNoStatus", "ready");
             else {
                 if (user.getEnabled()) entity.put("phoneNoStatus", "exist");
-                else entity.put("phoneNoStatus", "existButNotConfirmed");
+                else if (userService.getVerficationTokenByPhoneNumber(phonenumber) != null){
+                    entity.put("phoneNoStatus", "existButNotConfirmed");
+                }else{
+                    entity.put("phoneNoStatus", "smsDidntSend");
+                }
             }
         }
         logger.trace("request for " + phonenumber + " status and returned " + entity.toString());

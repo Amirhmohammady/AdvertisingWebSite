@@ -41,6 +41,8 @@ public class RegistrationListener implements ApplicationListener<OnSigningUpComp
             logger.info("tocken " + token + " sent to " + user.getPhonenumber());
             userservice.saveVerificationToken(user, token);
         } else {
+            //Amir todo
+            userservice.saveVerificationToken(user, token);
             logger.debug("tocken " + token + " could not send to " + user.getPhonenumber() + " " + smsresponse.getMessage());
         }
         /*String recipientAddress = user.getEmail();

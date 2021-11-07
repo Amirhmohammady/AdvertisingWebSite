@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
@@ -59,10 +60,10 @@ public class UserServiceImpl implements UserService {
         verificationTokenRepository.save(mytoken);
     }
 
-    @Override
+    /*@Override
     public VerificationTokenTo getVerificationToken(String verificationToken) {
         return verificationTokenRepository.findByToken(verificationToken);
-    }
+    }*/
 
     @Override
     public boolean isEmailExist(String email) {
@@ -98,6 +99,17 @@ public class UserServiceImpl implements UserService {
         }else{
             return null;
         }
+    }
+    @Override
+    @Transactional
+    public void deleteAllExiredToken(Date date){
+        verificationTokenRepository.deleteAllExpiredTokenSince(date);
+    }
+
+    @Override
+    @Transactional
+    public String getVerficationTokenByPhoneNumber(String phonenumber){
+        return verificationTokenRepository.findTokenByNPhoneNumber(phonenumber);
     }
     /*@Override
     public UserTo getCurrentUser() {
