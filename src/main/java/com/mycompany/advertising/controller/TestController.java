@@ -89,7 +89,7 @@ public class TestController {
         user.setPassword("1234");
         user.grantAuthority(Role.ROLE_ADMIN);
         try {
-            userService.saveRegisteredUser(user);
+            userService.createUser(user);
         } catch (Exception e) {
         }
         return "test1";

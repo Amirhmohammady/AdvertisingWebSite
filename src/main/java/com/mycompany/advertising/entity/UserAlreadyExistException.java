@@ -3,7 +3,7 @@ package com.mycompany.advertising.entity;
 /**
  * Created by Amir on 6/7/2020.
  */
-public class UserAlreadyExistException extends RuntimeException {
+public class UserAlreadyExistException extends Exception {
 
     private static final long serialVersionUID = 5861310537366287163L;
 

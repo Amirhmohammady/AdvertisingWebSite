@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Amir on 9/10/2021.
@@ -24,4 +25,13 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     @Query(value="SELECT token FROM verification_token_to WHERE verification_token_to.user_id = (SELECT id FROM user_to WHERE phonenumber = ?1 LIMIT 1) LIMIT 1", nativeQuery = true)
     String findTokenByNPhoneNumber(String phonenumber);
+
+    long deleteByUser(UserTo user);
+
+//    List<VerificationTokenTo> findByExpiryDateGreaterThan(Date date);
+//    List<VerificationTokenTo> findByExpiryDateGreaterThanEqual(Date date);
+//    List<VerificationTokenTo> findByExpiryDateLessThanEqual(Date date);
+    List<VerificationTokenTo> findByExpiryDateLessThan(Date date);
+
+    //void deleteAll(List<VerificationTokenTo> verificationTokenTos);
 }

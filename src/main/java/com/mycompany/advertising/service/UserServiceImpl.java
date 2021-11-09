@@ -1,5 +1,7 @@
 package com.mycompany.advertising.service;
 
+import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
+import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.dao.UserRepository;
 import com.mycompany.advertising.model.dao.VerificationTokenRepository;
 import com.mycompany.advertising.model.to.UserTo;
@@ -9,13 +11,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 /**
@@ -37,10 +42,10 @@ public class UserServiceImpl implements UserService {
 
     //todoAmir
     @Override
-    public void registerNewUserAccount(UserTo userTo) throws UsernameNotFoundException {
-        if (isEmailExist(userTo.getEmail())) {
-            logger.debug(userTo.toString() + "email is exist");
-            throw new UsernameNotFoundException(userTo.getUsername());
+    public void createUser(UserTo userTo) throws UserAlreadyExistException {
+        if (userRepository.existsByPhonenumber(userTo.getPhonenumber())) {
+            logger.debug(userTo.toString() + "Phone Number is exist");
+            throw new UserAlreadyExistException(userTo.getPhonenumber());
         } else {
             userTo.setPassword(passwordEncoder.encode(userTo.getPassword()));
             userTo.setEnabled(false);
@@ -50,8 +55,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveRegisteredUser(UserTo user) {
-        userRepository.save(user);
+    @Transactional
+    public void activateUser(UserTo user) {
+        long deletedrows = verificationTokenRepository.deleteByUser(user);
+        if (deletedrows > 0) {
+            user.setEnabled(true);
+            userRepository.save(user);
+            logger.info("user: " + user.toString() + "activated");
+        } else logger.info("user: " + user.toString() + "coluldn,t activate");
+    }
+
+    @Override
+    @Transactional
+    public void activateUser(String phonenumber) {
+        Optional<UserTo> user = userRepository.findByPhonenumber(phonenumber);
+        if (user.isPresent()) {
+            activateUser(user.get());
+        } else logger.info("can not activate user phone number " + phonenumber + "is not exist");
     }
 
     @Override
@@ -75,13 +95,15 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
     @Override
-    public boolean isPhoneNoExist(String phoneno) {
-        if (userRepository.existsByPhonenumberAndEnabled(phoneno, true)) {
-            logger.trace("Phone number " + phoneno + " is exist");
+    public boolean isPhoneNoExist(String phonenumber) {
+        if (phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
+        if (userRepository.existsByPhonenumber(phonenumber)) {
+            logger.trace("Phone number " + phonenumber + " is exist");
             return true;
         } else {
-            logger.trace("Phone number " + phoneno + " is not exist");
+            logger.trace("Phone number " + phonenumber + " is not exist");
             return false;
         }
     }
@@ -94,22 +116,40 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserTo getUserByPhoneNo(String phoneno) {
         Optional<UserTo> user = userRepository.findByPhonenumber(phoneno);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             return user.get();
-        }else{
+        } else {
             return null;
         }
-    }
-    @Override
-    @Transactional
-    public void deleteAllExiredToken(Date date){
-        verificationTokenRepository.deleteAllExpiredTokenSince(date);
     }
 
     @Override
     @Transactional
-    public String getVerficationTokenByPhoneNumber(String phonenumber){
+    public void deleteAllExiredToken(Date date) {
+        List<VerificationTokenTo> verificationTokenTos = verificationTokenRepository.findByExpiryDateLessThan(date);
+        if (verificationTokenTos.size() > 0) {
+            List<UserTo> userTos = verificationTokenTos.stream().map((vto) -> {
+                return (vto.getUser().getEnabled()) ? null : vto.getUser();
+            }).filter(e -> e != null).collect(Collectors.toList());
+            verificationTokenRepository.deleteAll(verificationTokenTos);
+            userRepository.deleteAll(userTos);
+        }
+        //verificationTokenRepository.deleteAllExpiredTokenSince(date);
+    }
+
+    @Override
+    @Transactional
+    public String getVerficationTokenByPhoneNumber(String phonenumber) {
         return verificationTokenRepository.findTokenByNPhoneNumber(phonenumber);
+    }
+
+    @Override
+    public String getCorrectFormatPhoneNo(String phonenumber) throws PhoneNumberFormatException {
+        if (phonenumber == null) throw new PhoneNumberFormatException("phone number can not be empty");
+        if (phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
+        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
+        if (!matcher.matches()) throw new PhoneNumberFormatException("phone format not correct");
+        return phonenumber;
     }
     /*@Override
     public UserTo getCurrentUser() {

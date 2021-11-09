@@ -1,5 +1,6 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.SmsService;
 import com.mycompany.advertising.service.api.UserService;
@@ -50,6 +51,18 @@ public class RestApi {
                 logger.debug("tocken " + token + " could not send to " + user.getPhonenumber() + " " + smsresponse.getMessage());
                 return "can not send sms call admin";
             }
+        }
+    }
+
+    @GetMapping("/registerUser/{phonenumber}/{confirmcode}")
+    public String registerUser(@PathVariable String phonenumber, @PathVariable String confirmcode) {
+        logger.debug("request for activating phone number " + phonenumber);
+        try {
+            phonenumber = userservice.getCorrectFormatPhoneNo(phonenumber);
+            userservice.activateUser(phonenumber);
+            return "user by phone number " + phonenumber + " activated successfully";
+        } catch (PhoneNumberFormatException e) {
+            return e.getMessage();
         }
     }
 }

@@ -21,7 +21,6 @@ public class ScheduledTasks {
     @Autowired
     private UserService userservice;
 
-    //@Scheduled(fixedDelay = 60*60*1000)
     @Scheduled(cron = "0 * * * * ?")
     public void doEveryMinute() {
         //deleteUserTocken
@@ -29,6 +28,7 @@ public class ScheduledTasks {
         logger.info("all expired token deleted");
     }
 
+    //@Scheduled(fixedDelay = 60*60*1000)
     @Scheduled(cron = "0 0 * * * ?")
     public void doEveryHoure() {
         //deleteUserTocken

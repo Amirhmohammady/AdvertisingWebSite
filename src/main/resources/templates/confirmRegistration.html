@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+</head>
+<body>
+<div class="ah01-show_childs_columns_center ah01-margin15_all_childs">
+	<h1>Enter Your Confirm Code</h1>
+	<input class="ah01-border_style01" placeholder="Confirm Code" id="confirmcode"
+		   type="text" name="confirmcode"/>
+	<div>
+		<button onclick="checkConfirmCode()" class="ah01-border_style01" style="width: 100px;" type="submit" value="Sign Up">Sign up</button>
+	</div>
+	<p id="statusbar"></p>
+</div>
+</body>
+<script>
+	function checkConfirmCode(){
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function () {
+		};
+	xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumbertextbox.value, true);
+	xhttp.send();
+	}
+</script>
+</html>

@@ -41,11 +41,13 @@ public class AvertiseController {
     }
 
     @GetMapping("/addAvertise")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public String addAvertise() {
         return "add_advertise";
     }
 
     @PostMapping("/addAvertise")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     //@ResponseBody
     public String addAvertise(Model model, @RequestParam(required = false, name = "pic") MultipartFile file,
                              @RequestParam(required = false, name = "description") String description,

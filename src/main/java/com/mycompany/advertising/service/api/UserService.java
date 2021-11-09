@@ -1,5 +1,6 @@
 package com.mycompany.advertising.service.api;
 
+import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.UserTo;
 
@@ -20,9 +21,13 @@ public interface UserService {
     UserTo getUserByPhoneNo(String phoneno);
 
     //public UserTo getCurrentUser();
-    void registerNewUserAccount(UserTo userto) throws UserAlreadyExistException;
+    void createUser(UserTo userto) throws UserAlreadyExistException;
 
-    void saveRegisteredUser(UserTo user);
+    //@Transactional put in implementation
+    void activateUser(UserTo user);
+
+    //@Transactional put in implementation
+    void activateUser(String phonenumber);
 
     void saveVerificationToken(UserTo user, String token);
 
@@ -32,4 +37,6 @@ public interface UserService {
 
     //@Transactional put in implementation
     String getVerficationTokenByPhoneNumber(String phonenumber);
+
+    String getCorrectFormatPhoneNo(String phonenumber) throws PhoneNumberFormatException;
 }

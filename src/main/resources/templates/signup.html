@@ -59,7 +59,7 @@
                             break;
                         case "existButNotConfirmed":
                             phonenumbertextbox.setCustomValidity("is not activate.");
-                            document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href="/sib">Click to Active</a>';
+                            document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href=[[@{/regitrationConfirm/phonenumber=}]]' + phonenumbertextbox.value + '>Click to Active</a>';
                             document.getElementById("phonenumberstatus").style.color = "orange";
                             break;
                         case "smsDidntSend":

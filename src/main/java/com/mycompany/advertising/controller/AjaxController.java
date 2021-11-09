@@ -1,5 +1,6 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
@@ -12,10 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 /**
  * Created by Amir on 5/8/2021.
@@ -38,22 +35,21 @@ public class AjaxController {
 
     @GetMapping("/checkphonenumber/{phonenumber}")
     public ResponseEntity<Object> phoneNoStatus(@PathVariable String phonenumber) throws JSONException {
-        if (phonenumber != null && phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
-        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
         JSONObject entity = new JSONObject();
-        if (!matcher.matches()) {
-            entity.put("phoneNoStatus", "phoneFormatNotCorrect");
-        } else {
+        try {
+            phonenumber = userService.getCorrectFormatPhoneNo(phonenumber);
             UserTo user = userService.getUserByPhoneNo(phonenumber);
             if (user == null) entity.put("phoneNoStatus", "ready");
             else {
                 if (user.getEnabled()) entity.put("phoneNoStatus", "exist");
-                else if (userService.getVerficationTokenByPhoneNumber(phonenumber) != null){
+                else if (userService.getVerficationTokenByPhoneNumber(phonenumber) != null) {
                     entity.put("phoneNoStatus", "existButNotConfirmed");
-                }else{
+                } else {
                     entity.put("phoneNoStatus", "smsDidntSend");
                 }
             }
+        } catch (PhoneNumberFormatException e) {
+            entity.put("phoneNoStatus", "phoneFormatNotCorrect");
         }
         logger.trace("request for " + phonenumber + " status and returned " + entity.toString());
         return new ResponseEntity<Object>(entity.toString(), HttpStatus.OK);

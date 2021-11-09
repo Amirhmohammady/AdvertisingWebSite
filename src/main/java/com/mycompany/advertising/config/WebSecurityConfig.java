@@ -33,12 +33,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/", "/ajax/**", "/restapi/**", "/index/**", "/share/**", "/t/**", "/test**/**", "/signup/**", "/.well-known/pki-validation/**")//, "/test/**"
+//                .permitAll()
+//                .anyRequest().authenticated()
+//                .antMatchers("/addMessage/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/").and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll().and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         http
                 .authorizeRequests()
-                .antMatchers("/", "/ajax/**", "/restapi/**", "/index/**", "/share/**", "/t/**", "/test**/**", "/signup/**", "/.well-known/pki-validation/**")//, "/test/**"
+                .anyRequest()
                 .permitAll()
-                .anyRequest().authenticated()
-                .antMatchers("/addMessage/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/").and()
                 .formLogin()
                 .loginPage("/login")
