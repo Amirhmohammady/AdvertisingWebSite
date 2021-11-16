@@ -52,27 +52,27 @@
                 if (this.readyState == 4 && this.status == 200) {
                     let obj01 = JSON.parse(this.responseText);
                     switch (obj01.phoneNoStatus) {
-                        case "exist":
+                        case "EXIST_AND_ACTIVATED":
                             phonenumbertextbox.setCustomValidity("Phone number is exist");
                             document.getElementById("phonenumberstatus").innerHTML = "Phone number is exist";
                             document.getElementById("phonenumberstatus").style.color = "red";
                             break;
-                        case "existButNotConfirmed":
+                        case "EXIST_BUT_NOT_ACTIVATED":
                             phonenumbertextbox.setCustomValidity("is not activate.");
                             document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href=[[@{/regitrationConfirm/phonenumber=}]]' + phonenumbertextbox.value + '>Click to Active</a>';
                             document.getElementById("phonenumberstatus").style.color = "orange";
                             break;
-                        case "smsDidntSend":
-                            phonenumbertextbox.setCustomValidity("is not activate.");
+                        case "EXIST_BUT_TOKEN_DID_NOT_SEND":
+                            phonenumbertextbox.setCustomValidity("sms token didn't send.");
                             document.getElementById("phonenumberstatus").innerHTML = '<a onclick="sendSms()" href="#">Click to resend verification token</a>';
                             document.getElementById("phonenumberstatus").style.color = "orange";
                             break;
-                        case "ready":
+                        case "NOT_EXIST":
                             phonenumbertextbox.setCustomValidity('');
                             document.getElementById("phonenumberstatus").innerHTML = "Phone number is ready";
                             document.getElementById("phonenumberstatus").style.color = "green";
                             break;
-                        case "phoneFormatNotCorrect":
+                        case "PHONE_FORMAT_NOT_CORRECT":
                             phonenumbertextbox.setCustomValidity("format is not correct");
                             document.getElementById("phonenumberstatus").innerHTML = "format should some thing like: 09353995511 or 9353995511";
                             document.getElementById("phonenumberstatus").style.color = "orange";
@@ -137,6 +137,6 @@
         validatePassword();
         validateUsername();
         validatePhonenumber();
-    }
+    };
 </script>
 </html>

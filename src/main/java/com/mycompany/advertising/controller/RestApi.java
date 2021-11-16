@@ -2,6 +2,7 @@ package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.model.to.VerificationTokenTo;
 import com.mycompany.advertising.service.api.SmsService;
 import com.mycompany.advertising.service.api.UserService;
 import com.mycompany.advertising.service.util.FarazSmsResponse;
@@ -56,11 +57,14 @@ public class RestApi {
 
     @GetMapping("/registerUser/{phonenumber}/{confirmcode}")
     public String registerUser(@PathVariable String phonenumber, @PathVariable String confirmcode) {
-        logger.debug("request for activating phone number " + phonenumber);
+        logger.debug("request for activating phone number " + phonenumber + " by token " + confirmcode);
         try {
             phonenumber = userservice.getCorrectFormatPhoneNo(phonenumber);
-            userservice.activateUser(phonenumber);
-            return "user by phone number " + phonenumber + " activated successfully";
+            String token = userservice.getVerficationTokenByPhoneNumber(phonenumber);
+            if (token != null && token.equals(confirmcode)){
+                userservice.activateUser(phonenumber);
+                return phonenumber + " activated successfully";
+            }else return"can not active user";
         } catch (PhoneNumberFormatException e) {
             return e.getMessage();
         }

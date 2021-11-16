@@ -43,7 +43,30 @@ public class MainController {
     private MessageSource messages;
 
     @GetMapping("/login")
-    public String login() {
+    public String loginGet() {
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginPost(HttpServletRequest request) {//Model model, HttpServletRequest request
+        //System.out.println("+++++++++++++++++++++++++" + request.getAttribute("phonenumber"));
+        //Object username = request.getAttribute("SPRING_SECURITY_LAST_USERNAME_KEY");
+        return "login";
+    }
+
+    @GetMapping("/login_error")
+    public String login_error() {
+        return "login";
+    }
+
+    @PostMapping("/login_error")
+    public String loginError(Model model, HttpServletRequest request) {
+        String lastphonenumber = (String) request.getParameter("phonenumber");
+        if (lastphonenumber != null) {
+            if (lastphonenumber.charAt(0) != '0') lastphonenumber = '0' + lastphonenumber;
+            model.addAttribute("lastPhoneNumber", lastphonenumber);
+            model.addAttribute("phoneNoStatus", userService.getUserStatuseByPhoneNumber(lastphonenumber));
+        }
         return "login";
     }
 
@@ -63,6 +86,7 @@ public class MainController {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
+        if (phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
         user.setPhonenumber(phonenumber);
         user.grantAuthority(Role.ROLE_USER);
         logger.info("signup controller called with " + user.toString());

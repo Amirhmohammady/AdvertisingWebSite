@@ -3,6 +3,7 @@ package com.mycompany.advertising.service.api;
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.util.UserStatuseByPhoneNumber;
 
 import java.util.Date;
 
@@ -39,4 +40,6 @@ public interface UserService {
     String getVerficationTokenByPhoneNumber(String phonenumber);
 
     String getCorrectFormatPhoneNo(String phonenumber) throws PhoneNumberFormatException;
+
+    UserStatuseByPhoneNumber getUserStatuseByPhoneNumber(String phonenumber);
 }

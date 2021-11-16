@@ -21,12 +21,12 @@ public class ScheduledTasks {
     @Autowired
     private UserService userservice;
 
-    @Scheduled(cron = "0 * * * * ?")
+/*    @Scheduled(cron = "0 * * * * ?")
     public void doEveryMinute() {
         //deleteUserTocken
         userservice.deleteAllExiredToken(new Date(System.currentTimeMillis()));
         logger.info("all expired token deleted");
-    }
+    }*/
 
     //@Scheduled(fixedDelay = 60*60*1000)
     @Scheduled(cron = "0 0 * * * ?")

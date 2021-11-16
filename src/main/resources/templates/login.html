@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,23 +18,52 @@
 <div class="ah01-show_childs_columns_center">
     <form class="ah01-margin15_inner_childs" th:action="@{/login}" method="post">
         <h1>Please sign in</h1>
-        <input class="ah01-border_style01" placeholder="User Name" type="text" name="username"/>
-        <input class="ah01-border_style01" placeholder="Password"type="password" name="password"/>
+        <input class="ah01-border_style01" placeholder="Phone Number" type="text" name="phonenumber"/>
+        <input class="ah01-border_style01" placeholder="Password" type="password" name="password"/>
+
         <div>
             <label style="flex-flow: row;">
                 <input type="checkbox" name="remember" value="true"> Remember me
             </label>
         </div>
-        <div><button class="ah01-border_style01" style="width: 132px;" type="submit" value="Sign In">Sign in</button></div>
+        <div>
+            <button class="ah01-border_style01" style="width: 132px;" type="submit" value="Sign In">Sign in</button>
+        </div>
     </form>
     <div class="ah01-margin5_inner_childs">
         <div>
             <a class="ah01-border_style01" style="text-decoration: none;width: 110px;" href="signup">Sign up</a>
         </div>
-        <div th:if="${param.error}">
-            Invalid username and password.
+        <div th:if="${phoneNoStatus != null}">
+            <!--[[${session.LAST_PHONENUMBER}]]-->
+			<!--[[${lastPhoneNumber}]]-->
+			<!--[[${phoneNoStatus}]]-->
+            <p th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED'}">
+                phone number is not activated.
+                <a th:href="@{/regitrationConfirm/phonenumber=} + ${lastPhoneNumber}">Click to Active</a>
+            </p>
+			<div th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
+				<p>
+					<a onclick="sendSms()" href="#">Click to resend verification token to [[${lastPhoneNumber}]]</a>
+				</p>
+				<p  id="statusbar">
+				</p>
+			</div>
+            <p th:unless="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED' OR #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
+                UserName or Password is wrong
+            </p>
         </div>
     </div>
 </div>
 </body>
+<script th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
+    function sendSms() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            document.getElementById("statusbar").innerHTML = this.responseText;
+        };
+        xhttp.open("GET", "[[@{/restapi/sendsms/}]]" + [[${lastPhoneNumber}]], true);
+        xhttp.send();
+    }
+</script>
 </html>

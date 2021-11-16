@@ -7,6 +7,7 @@ import com.mycompany.advertising.model.dao.VerificationTokenRepository;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
 import com.mycompany.advertising.service.api.UserService;
+import com.mycompany.advertising.service.util.UserStatuseByPhoneNumber;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -150,6 +151,25 @@ public class UserServiceImpl implements UserService {
         Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
         if (!matcher.matches()) throw new PhoneNumberFormatException("phone format not correct");
         return phonenumber;
+    }
+
+    @Override
+    public UserStatuseByPhoneNumber getUserStatuseByPhoneNumber(String phonenumber) {
+        try {
+            phonenumber = getCorrectFormatPhoneNo(phonenumber);
+            UserTo user = getUserByPhoneNo(phonenumber);
+            if (user == null) return UserStatuseByPhoneNumber.NOT_EXIST;
+            else {
+                if (user.getEnabled()) return UserStatuseByPhoneNumber.EXIST_AND_ACTIVATED;
+                else if (getVerficationTokenByPhoneNumber(phonenumber) != null) {
+                    return UserStatuseByPhoneNumber.EXIST_BUT_NOT_ACTIVATED;
+                } else {
+                    return UserStatuseByPhoneNumber.EXIST_BUT_TOKEN_DID_NOT_SEND;
+                }
+            }
+        } catch (PhoneNumberFormatException e) {
+            return UserStatuseByPhoneNumber.PHONE_FORMAT_NOT_CORRECT;
+        }
     }
     /*@Override
     public UserTo getCurrentUser() {

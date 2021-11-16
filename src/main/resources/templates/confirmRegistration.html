@@ -18,8 +18,10 @@
 	function checkConfirmCode(){
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function () {
+			let str01 = this.responseText;
+			document.getElementById("statusbar").innerHTML = str01;
 		};
-	xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumbertextbox.value, true);
+	xhttp.open("GET", "[[@{/restapi/registerUser/}]][[${phonenumber}]]/" + document.getElementById("confirmcode").value, true);
 	xhttp.send();
 	}
 </script>

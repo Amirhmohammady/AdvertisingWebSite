@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
  * Created by Amir on 5/31/2020.
@@ -21,8 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
+    AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -30,6 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
+   /* @Override
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user1").password(passwordEncoder.encode("user1Pass")).roles("USER")
+                .and()
+                .withUser("user2").password(passwordEncoder.encode("user2Pass")).roles("USER")
+                .and()
+                .withUser("admin").password(passwordEncoder.encode("adminPass")).roles("ADMIN");
+    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,17 +60,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         http
                 .authorizeRequests()
-                .anyRequest()
-                .permitAll()
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/").and()
+                .anyRequest().permitAll().and()
+                .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/").and()
                 .formLogin()
-                .loginPage("/login")
-                .permitAll()
+//maybe fo controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
+                .failureUrl("/login_error").failureHandler(authenticationFailureHandler).loginPage("/login")
+                .permitAll().usernameParameter("phonenumber")
                 .and()
-                .logout()
-                .permitAll().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        //for enabling multipart sending
+        //for enabling multipart sending and handling logout
         http.csrf().disable();
     }
 

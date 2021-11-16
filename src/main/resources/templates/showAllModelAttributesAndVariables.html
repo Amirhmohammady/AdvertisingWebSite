@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+</head>
+<body>
+	[[${session.get('SPRING_SECURITY_LAST_EXCEPTION')}]]
+	[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+	<table>
+		<tr th:each="var : ${#vars.getVariableNames()}">
+			<td th:text="${var}"></td>
+			<td th:text="${#vars.getVariable(var)}"></td>
+		</tr>
+		<!-- 
+			Adding these manually because they are considered special.
+			see https://github.com/thymeleaf/thymeleaf/blob/thymeleaf-3.0.3.RELEASE/src/main/java/org/thymeleaf/context/WebEngineContext.java#L199
+		-->
+		<tr>
+			<td>param</td>
+			<td th:text="${#vars.getVariable('param')}"></td>
+		</tr>
+		<tr>
+			<td>session</td>
+			<td th:text="${#vars.getVariable('session')}"></td>
+		</tr>
+		<tr>
+			<td>application</td>
+			<td th:text="${#vars.getVariable('application')}"></td>
+		</tr>
+	</table>
+
+	<table>
+		<th:block th:each="map : ${session}">
+		   <tr th:each="e : ${map}">
+			  <td th:text="${e.key}"></td>
+			  <td th:text="${e.value}"></td>
+		   </tr>
+		</th:block>
+	</table>	
+</body>
+</html>

@@ -27,7 +27,7 @@ public class MyErrorController implements ErrorController {
         if (status != null) {
             Object uri = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
             Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-            logger.warn("request for: " + uri.toString() + "\tgot Error: " + exception.toString());
+            logger.error("request for: " + uri.toString() + "\tgot Error: " + exception.toString());
             model.addAttribute("error_code", status.toString());
             //Object exceptiontype = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION_TYPE);
             Integer statusCode = Integer.valueOf(status.toString());
