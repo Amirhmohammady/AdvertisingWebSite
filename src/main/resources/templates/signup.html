@@ -59,7 +59,7 @@
                             break;
                         case "EXIST_BUT_NOT_ACTIVATED":
                             phonenumbertextbox.setCustomValidity("is not activate.");
-                            document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href=[[@{/regitrationConfirm/phonenumber=}]]' + phonenumbertextbox.value + '>Click to Active</a>';
+                            document.getElementById("phonenumberstatus").innerHTML = 'phone number is not activated. <a href="[[@{/regitrationConfirm/phonenumber=}]]' + phonenumbertextbox.value + '">Click to Active</a>';
                             document.getElementById("phonenumberstatus").style.color = "orange";
                             break;
                         case "EXIST_BUT_TOKEN_DID_NOT_SEND":

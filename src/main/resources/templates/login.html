@@ -15,10 +15,26 @@
 </head>
 
 <body>
+<!--[[${session.LAST_PHONENUMBER}]]-->
+<!--[[${lastPhoneNumber}]]-->
+<!--[[${phoneNoStatus}]]
+th:if="${phoneNoStatus != null}"-->
 <div class="ah01-show_childs_columns_center">
     <form class="ah01-margin15_inner_childs" th:action="@{/login}" method="post">
         <h1>Please sign in</h1>
-        <input class="ah01-border_style01" placeholder="Phone Number" type="text" name="phonenumber"/>
+        <input class="ah01-border_style01" id="phonenumber" placeholder="Phone Number" type="text" name="phonenumber"/>
+        <p id="statusbar">
+            <span th:if="${phoneNoStatus != null and #strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED'}">
+                phone number is not activated.
+                <a th:href="@{/regitrationConfirm/phonenumber=} + ${lastPhoneNumber}">Click to Active</a>
+            </span>
+			<span th:if="${phoneNoStatus != null and #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
+				<a onclick="sendSmsToLastPhone()" href="#">Click to resend verification token to [[${lastPhoneNumber}]]</a>
+			</span>
+            <span th:unless="${phoneNoStatus == null OR (#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED' OR #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND')}">
+                UserName or Password is wrong
+            </span>
+        </p>
         <input class="ah01-border_style01" placeholder="Password" type="password" name="password"/>
 
         <div>
@@ -34,35 +50,59 @@
         <div>
             <a class="ah01-border_style01" style="text-decoration: none;width: 110px;" href="signup">Sign up</a>
         </div>
-        <div th:if="${phoneNoStatus != null}">
-            <!--[[${session.LAST_PHONENUMBER}]]-->
-			<!--[[${lastPhoneNumber}]]-->
-			<!--[[${phoneNoStatus}]]-->
-            <p th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED'}">
-                phone number is not activated.
-                <a th:href="@{/regitrationConfirm/phonenumber=} + ${lastPhoneNumber}">Click to Active</a>
-            </p>
-			<div th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
-				<p>
-					<a onclick="sendSms()" href="#">Click to resend verification token to [[${lastPhoneNumber}]]</a>
-				</p>
-				<p  id="statusbar">
-				</p>
-			</div>
-            <p th:unless="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED' OR #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
-                UserName or Password is wrong
-            </p>
-        </div>
     </div>
 </div>
 </body>
-<script th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
+<script>
+    var phonenumbertextbox = document.getElementById("phonenumber")
+            ,statusbar = document.getElementById("statusbar");
+    phonenumbertextbox.onchange = validatePhonenumber;
+
+    function validatePhonenumber() {
+        if (phonenumbertextbox.value.match(/\S/)) {//is not blank
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let obj01 = JSON.parse(this.responseText);
+                    switch (obj01.phoneNoStatus) {
+                        case "EXIST_BUT_NOT_ACTIVATED":
+                            statusbar.innerHTML = 'phone number is not activated. <a href="[[@{/regitrationConfirm/phonenumber=}]]' + phonenumbertextbox.value + '">Click to Active</a>';
+                            statusbar.style.color = "orange";
+                            break;
+                        case "EXIST_BUT_TOKEN_DID_NOT_SEND":
+                            statusbar.innerHTML = '<a onclick="sendSms()" href="#">Click to resend verification token</a>';
+                            statusbar.style.color = "orange";
+                            break;
+                        default:
+                            phonenumbertextbox.setCustomValidity('');
+                            statusbar.innerHTML = "";
+                    }
+                }
+            };
+            xhttp.open("GET", "[[@{/ajax/checkphonenumber/}]]" + phonenumbertextbox.value, true);
+            xhttp.send();
+        } else {
+            phonenumbertextbox.setCustomValidity("Phone number is required");
+            statusbar.innerHTML = "Phone number is required";
+            statusbar.style.color = "red";
+        }
+    }
     function sendSms() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            document.getElementById("phonenumberstatus").innerHTML = this.responseText;
+        };
+        xhttp.open("GET", "[[@{/restapi/sendsms/}]]" + phonenumbertextbox.value, true);
+        xhttp.send();
+    }
+</script>
+<script th:if="${#strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
+    function sendSmsToLastPhone() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             document.getElementById("statusbar").innerHTML = this.responseText;
         };
-        xhttp.open("GET", "[[@{/restapi/sendsms/}]]" + [[${lastPhoneNumber}]], true);
+        xhttp.open("GET", "[[@{/restapi/sendsms/}]]" + "[[${lastPhoneNumber}]]", true);
         xhttp.send();
     }
 </script>
