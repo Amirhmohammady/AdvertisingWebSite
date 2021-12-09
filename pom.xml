@@ -27,7 +27,7 @@
 
     <build>
         <plugins>
-            <!-- webapp-runner.jar for running the app -->
+            <!-- webapp-runner.jar for running the app heroku/webapp-runner -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

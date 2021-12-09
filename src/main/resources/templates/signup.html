@@ -104,13 +104,13 @@
             usernametextbox.setCustomValidity('user name is required');
             document.getElementById("statusbar").innerHTML = "user name is required";
         }
-        else if (usernametextbox.value.match(/^[a-zA-Z][\w]{5,}$/)) {
+        else if (usernametextbox.value.match(/^[a-zA-Z][\w]{3,19}$/)) {
             usernametextbox.setCustomValidity('');
             document.getElementById("statusbar").innerHTML = "";
         }
         else {
             usernametextbox.setCustomValidity('User name should start with a..Z and contain a..Z,0..9');
-            document.getElementById("statusbar").innerHTML = "User name should start with a..Z and contain a..Z,0..9 and at least 6 chars";
+            document.getElementById("statusbar").innerHTML = "User name should start with a..Z and contain a..Z,0..9 and contain 4 .. 20 chars";
         }
     }
 

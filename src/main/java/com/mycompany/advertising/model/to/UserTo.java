@@ -72,9 +72,9 @@ public class UserTo implements UserDetails {
     }
 
     public void setUsername(String username) {
-        Matcher matcher = Pattern.compile("^[a-zA-Z][\\w]{5,}$").matcher(username);
+        Matcher matcher = Pattern.compile("^[a-zA-Z][\\w]{3,19}$").matcher(username);
         if (!matcher.matches())
-            throw new AViewableException("User name should start with a..Z and contain a..Z,0..9 and at least 6 chars");
+            throw new AViewableException("User name should start with a..Z and contain a..Z,0..9 and contain 4 .. 20 chars");
         else this.username = username;
     }
 

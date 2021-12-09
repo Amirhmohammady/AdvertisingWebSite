@@ -1,6 +1,7 @@
 package com.mycompany.advertising.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -13,6 +14,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * Created by Amir on 5/31/2020.
@@ -21,8 +27,15 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    //@Qualifier("persistentTokenRepository")
+    private PersistentTokenRepository persistentTokenRepository;
+
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
+//    @Autowired
+//    AuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -62,12 +75,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().permitAll().and()
                 .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/").and()
-                .formLogin()
+                .formLogin()//.successHandler(authenticationSuccessHandler)
 //maybe fo controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
                 .failureUrl("/login_error").failureHandler(authenticationFailureHandler).loginPage("/login")
                 .permitAll().usernameParameter("phonenumber")
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .and().rememberMe().key("uniqueAndSecret").userDetailsService(userDetailsService)
+                .tokenValiditySeconds(60*60*12).tokenRepository(persistentTokenRepository);
         //for enabling multipart sending and handling logout
         http.csrf().disable();
     }
@@ -80,6 +95,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
+    /*@Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+        db.setDataSource(dataSource);
+        return db;
+    }*/
     /*@Bean
     @Override
     public UserDetailsService userDetailsService() {

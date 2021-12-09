@@ -59,11 +59,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void activateUser(UserTo user) {
         long deletedrows = verificationTokenRepository.deleteByUser(user);
-        if (deletedrows > 0) {
-            user.setEnabled(true);
-            userRepository.save(user);
-            logger.info("user: " + user.toString() + "activated");
-        } else logger.info("user: " + user.toString() + "coluldn,t activate");
+        //amir todo uncomment after adding user update
+        //if (deletedrows > 0) {
+        user.setEnabled(true);
+        userRepository.save(user);
+        logger.info("user: " + user.toString() + "activated");
+        //} else logger.info("user: " + user.toString() + "coluldn,t activate");
     }
 
     @Override

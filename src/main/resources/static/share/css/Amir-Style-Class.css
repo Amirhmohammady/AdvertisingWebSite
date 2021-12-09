@@ -291,7 +291,8 @@ body{
 .ah01-border_style01{
 	border: 1px solid rgba(0,0,0,.15);
 	border-radius: 0.5rem;
-	width: 500px;
+	width: 90%;
+	max-width: 500px;
 	padding: 10px
 }
 

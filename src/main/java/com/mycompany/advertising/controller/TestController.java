@@ -156,7 +156,7 @@ public class TestController {
 
     @GetMapping("/testaddmessage/lan={language}/msg={message}")
     public String testaddmessage(@PathVariable String language, @PathVariable String message) {
-        multiLanguageTipMessage.addMessage(language, message);
+        multiLanguageTipMessage.addAvertise(language, message);
         return "redirect:/test4";
     }
 }

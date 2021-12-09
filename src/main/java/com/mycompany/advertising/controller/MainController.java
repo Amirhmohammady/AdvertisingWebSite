@@ -54,10 +54,10 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/login_error")
+    /*@GetMapping("/login_error")
     public String login_error() {
         return "login";
-    }
+    }*/
 
     @PostMapping("/login_error")
     public String loginError(Model model, HttpServletRequest request) {
@@ -79,7 +79,6 @@ public class MainController {
     @Validated
     public String signUp(Model model, @RequestParam(required = true, name = "username") String username,
                          @RequestParam(required = true, name = "password") String password,
-                         @RequestParam(required = true, name = "confirm_password") String confirm_password,
                          @RequestParam(required = true, name = "phonenumber") String phonenumber,
                          @RequestParam(required = false, name = "email") String email) {
         UserTo user = new UserTo();
@@ -94,6 +93,7 @@ public class MainController {
             userService.createUser(user);
             eventPublisher.publishEvent(new OnSigningUpCompleteEvent(user));
             logger.info(user.toString() + "is registered successfully");
+            return "redirect:/regitrationConfirm/phonenumber=" + phonenumber;
         } catch (UserAlreadyExistException uia) {
             logger.info("can not save " + user.toString() + " the user name is exist");
         }

@@ -15,10 +15,10 @@ public class StorageProperties implements ServletContextAware {
     private String WEB_INF_location;
 
     @Value("${amir.resource.folder}")
-    private String fixlocation;
+    private String recourcefolder;
 
-    public String getFixlocation() {
-        return fixlocation;
+    public String getRecourcefolder() {
+        return recourcefolder;
     }
 
     public String getWebinflocation() {
@@ -30,7 +30,7 @@ public class StorageProperties implements ServletContextAware {
     }
 
     public String getCertfolder() {
-        return fixlocation + "certification_folder/";
+        return recourcefolder + "certification_folder/";
     }
 
     @Override

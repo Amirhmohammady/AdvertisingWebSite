@@ -16,7 +16,7 @@
 <body>
 <header class="ah01-row_wrap_space_between ah01-navbar">
 	<div id="leftdiv" class="ah01-show_in_row">
-		<a id="addad" th:href="@{/addMessage}">Add your ad</a>
+		<a id="addad" th:href="@{/addAvertise}">Add your ad</a>
 		<div class="search-row" id="top_menu">
 			<form action="?" id="searchbar" method="get">
 				<div style="position:relative;">
@@ -36,7 +36,7 @@
 			<span onclick="myFunction()" class="ah01-dropspn">SARA</span>
 			<div id="dropAH" class="ah01-dropdown-content">
 				<a th:href="@{/logout}">LogOUT</a>
-				<a href="#about">Profile</a>
+				<a th:href="@{/User/Dashboard}">Profile</a>
 				<a href="#contact">Messages</a>
 			</div>
 		</div>
