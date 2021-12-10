@@ -40,21 +40,25 @@ public class PersistentTokenServiceImpl implements PersistentTokenRepository {
         PersistentLoginsTo logins = persistentLoginsRepository.findTopBySeries(series);
         logins.setToken(tokenValue);
         logins.setLastUsed(lastUsed);
-        persistentLoginsRepository.save(logins);
+        //persistentLoginsRepository.save(logins);
+        logger.debug("token for series " + series + " updated");
     }
 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
         PersistentLoginsTo logins = persistentLoginsRepository.findTopBySeries(seriesId);
         if (logins != null) {
+            logger.debug("search for seriesId " + seriesId + " and get " + logins.getUsername());
             return new PersistentRememberMeToken(logins.getUsername(),
                     logins.getSeries(), logins.getToken(), logins.getLastUsed());
         }
+        logger.debug("search for seriesId " + seriesId + " and returned null");
         return null;
     }
 
     @Override
     public void removeUserTokens(String username) {
+        logger.debug("tokens for user " + username + " deleted");
         persistentLoginsRepository.deleteByUsername(username);
     }
 }

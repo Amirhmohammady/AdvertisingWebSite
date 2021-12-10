@@ -1,7 +1,6 @@
 package com.mycompany.advertising.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,11 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-
-import javax.sql.DataSource;
 
 /**
  * Created by Amir on 5/31/2020.
@@ -29,12 +24,11 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
     //@Qualifier("persistentTokenRepository")
     private PersistentTokenRepository persistentTokenRepository;
-
-    @Autowired
-    AuthenticationFailureHandler authenticationFailureHandler;
-//    @Autowired
+    //    @Autowired
 //    AuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
@@ -81,8 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll().usernameParameter("phonenumber")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .and().rememberMe().key("uniqueAndSecret").userDetailsService(userDetailsService)
-                .tokenValiditySeconds(60*60*12).tokenRepository(persistentTokenRepository);
+                .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
+                .tokenValiditySeconds(60 * 60 * 12).tokenRepository(persistentTokenRepository);
         //for enabling multipart sending and handling logout
         http.csrf().disable();
     }
