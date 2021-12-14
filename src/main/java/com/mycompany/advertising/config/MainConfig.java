@@ -2,6 +2,7 @@ package com.mycompany.advertising.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,8 @@ import java.util.Locale;
 public class MainConfig implements WebMvcConfigurer {
     @Autowired
     StorageProperties storageproperties;
+    @Value("${max.inactive.interval.seconds}")
+    private int maxinactiveinterval;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -98,7 +101,7 @@ public class MainConfig implements WebMvcConfigurer {
         ServletListenerRegistrationBean<MySessionListener> listenerRegBean =
                 new ServletListenerRegistrationBean<>();
 
-        listenerRegBean.setListener(new MySessionListener(10));
+        listenerRegBean.setListener(new MySessionListener(maxinactiveinterval));
         return listenerRegBean;
     }
 }

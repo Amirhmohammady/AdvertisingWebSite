@@ -2,9 +2,7 @@ package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.components.utils.AViewableException;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,15 +22,11 @@ public class MyErrorController implements ErrorController {
     private static final Logger logger = Logger.getLogger(MyErrorController.class);
     @Value("${amir.error.folder}")
     String errorfolder;
-    @Autowired
-    private ErrorAttributes errorAttributes;
 
     @RequestMapping("/error")
     public String handleError(Model model, HttpServletRequest request) {
-        //Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
- /*       ServletWebRequest servletWebRequest = new ServletWebRequest(request);
-        Map<String, Object> errors = errorAttributes.getErrorAttributes(servletWebRequest, true);
-        if (errors != null) {
+        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        if (status != null) {
             Object uri = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
             Object exception = request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
             logger.error("request for: " + uri.toString() + "\tgot Error: " + exception.toString());
@@ -48,7 +42,7 @@ public class MyErrorController implements ErrorController {
             } else if (statusCode == HttpStatus.FORBIDDEN.value()) {
                 return errorfolder + "error-403";
             }
-        }*/
+        }
         return errorfolder + "error";
     }
 

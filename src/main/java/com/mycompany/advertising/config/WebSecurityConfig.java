@@ -1,6 +1,7 @@
 package com.mycompany.advertising.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,6 +27,8 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Value("${max.inactive.interval.seconds.remember.me}")
+    private int rememberMeSessionTimeout;
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
     //@Autowired
@@ -79,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login_error").failureHandler(authenticationFailureHandler).loginPage("/login")
                 .permitAll()//.usernameParameter("phonenumber")
                 .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
-                .tokenValiditySeconds(60 * 60 * 12).tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(rememberMeSessionTimeout).tokenRepository(persistentTokenRepository())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
                 //for enabling multipart sending and handling logout
         http.csrf().disable();
