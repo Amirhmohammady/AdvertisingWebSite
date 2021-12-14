@@ -36,14 +36,14 @@ public class RegistrationListener implements ApplicationListener<OnSigningUpComp
     private void confirmRegistration(OnSigningUpCompleteEvent event) {
         UserTo user = event.getUser();
         String token = new DecimalFormat("000000").format(new Random().nextInt(999999));
-        FarazSmsResponse smsresponse = smsService.sendSms("your vrification code is: " + token, user.getPhonenumber());
+        FarazSmsResponse smsresponse = smsService.sendSms("your vrification code is: " + token, user.getUsername());
         if (smsresponse.getStatus().equals("0")) {
-            logger.info("tocken " + token + " sent to " + user.getPhonenumber());
+            logger.info("tocken " + token + " sent to " + user.getUsername());
             userservice.saveVerificationToken(user, token);
         } else {
             //Amir todo
             userservice.saveVerificationToken(user, token);
-            logger.debug("tocken " + token + " could not send to " + user.getPhonenumber() + " " + smsresponse.getMessage());
+            logger.debug("tocken " + token + " could not send to " + user.getUsername() + " " + smsresponse.getMessage());
         }
         /*String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";

@@ -2,6 +2,7 @@ package com.mycompany.advertising.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +35,8 @@ public class MainConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:/" + storageproperties.getRecourcefolder(), "file:/" + storageproperties.getWebinflocation())
                 .setCachePeriod(31556926);
         /*registry.addResourceHandler("/.well-known/pki-validation*//**")
-                .addResourceLocations("file:/" + storageproperties.getCertfolder())
-                .setCachePeriod(31556926);*/
+         .addResourceLocations("file:/" + storageproperties.getCertfolder())
+         .setCachePeriod(31556926);*/
     }
 
     @Bean
@@ -90,5 +91,14 @@ public class MainConfig implements WebMvcConfigurer {
 
         eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
         return eventMulticaster;
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean<MySessionListener> sessionListener() {
+        ServletListenerRegistrationBean<MySessionListener> listenerRegBean =
+                new ServletListenerRegistrationBean<>();
+
+        listenerRegBean.setListener(new MySessionListener(10));
+        return listenerRegBean;
     }
 }

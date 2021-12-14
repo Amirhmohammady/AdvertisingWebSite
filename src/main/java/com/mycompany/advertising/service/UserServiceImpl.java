@@ -44,9 +44,9 @@ public class UserServiceImpl implements UserService {
     //todoAmir
     @Override
     public void createUser(UserTo userTo) throws UserAlreadyExistException {
-        if (userRepository.existsByPhonenumber(userTo.getPhonenumber())) {
+        if (userRepository.existsByUsername(userTo.getUsername())) {
             logger.debug(userTo.toString() + "Phone Number is exist");
-            throw new UserAlreadyExistException(userTo.getPhonenumber());
+            throw new UserAlreadyExistException(userTo.getUsername());
         } else {
             userTo.setPassword(passwordEncoder.encode(userTo.getPassword()));
             userTo.setEnabled(false);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void activateUser(String phonenumber) {
-        Optional<UserTo> user = userRepository.findByPhonenumber(phonenumber);
+        Optional<UserTo> user = userRepository.findByUsername(phonenumber);
         if (user.isPresent()) {
             activateUser(user.get());
         } else logger.info("can not activate user phone number " + phonenumber + "is not exist");
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isPhoneNoExist(String phonenumber) {
         if (phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
-        if (userRepository.existsByPhonenumber(phonenumber)) {
+        if (userRepository.existsByUsername(phonenumber)) {
             logger.trace("Phone number " + phonenumber + " is exist");
             return true;
         } else {
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserTo getUserByPhoneNo(String phoneno) {
-        Optional<UserTo> user = userRepository.findByPhonenumber(phoneno);
+        Optional<UserTo> user = userRepository.findByUsername(phoneno);
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String getVerficationTokenByPhoneNumber(String phonenumber) {
-        return verificationTokenRepository.findTokenByNPhoneNumber(phonenumber);
+        return verificationTokenRepository.findTokenByPhoneNumber(phonenumber);
     }
 
     @Override

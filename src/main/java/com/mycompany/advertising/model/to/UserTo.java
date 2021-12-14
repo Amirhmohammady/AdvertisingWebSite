@@ -24,10 +24,10 @@ public class UserTo implements UserDetails {
     @Column(name = "ID", nullable = false)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
     @Column(nullable = false, unique = true)
-    private String phonenumber;
+    private String profilename;
     private String password;
 
     private boolean accountNonExpired;
@@ -48,14 +48,15 @@ public class UserTo implements UserDetails {
         this.enabled = false;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
+    public void setUsername(String username) {
+        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(username);
         if (!matcher.matches()) throw new AViewableException("phone number format should some thing like: 09xxxxxxxxx");
-        this.phonenumber = phonenumber;
+        this.username = username;
     }
 
     public Long getId() {
@@ -66,16 +67,15 @@ public class UserTo implements UserDetails {
         this.id = id;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
+    public String getProfilename() {
+        return profilename;
     }
 
-    public void setUsername(String username) {
-        Matcher matcher = Pattern.compile("^[a-zA-Z][\\w]{3,19}$").matcher(username);
+    public void setProfilename(String profilename) {
+        Matcher matcher = Pattern.compile("^[a-zA-Z][\\w]{3,19}$").matcher(profilename);
         if (!matcher.matches())
             throw new AViewableException("User name should start with a..Z and contain a..Z,0..9 and contain 4 .. 20 chars");
-        else this.username = username;
+        else this.profilename = profilename;
     }
 
     public String getEmail() {
@@ -141,7 +141,8 @@ public class UserTo implements UserDetails {
         return "UserTo{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                //", password='" + password + '\'' +
+                ", profilename='" + profilename + '\'' +
+                ", password='" + password + '\'' +
                 ", accountNonExpired=" + accountNonExpired +
                 ", accountNonLocked=" + accountNonLocked +
                 ", credentialsNonExpired=" + credentialsNonExpired +

@@ -13,19 +13,19 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserTo, Long> {
 
-    Optional<UserTo> findByUsername(String username);
+    Optional<UserTo> findByProfilename(String profilename);
 
     Optional<UserTo> findByEmail(String email);
 
-    Optional<UserTo> findByPhonenumber(String phonenumber);
+    Optional<UserTo> findByUsername(String username);
 
     boolean existsByEmailAndEnabled(String email, boolean enabled);
 
-    boolean existsByPhonenumberAndEnabled(String phonenumber, boolean enabled);
+    boolean existsByUsernameAndEnabled(String username, boolean enabled);
 
-    boolean existsByPhonenumber(String phonenumber);
+    boolean existsByUsername(String username);
 
-    long deleteByPhonenumber(String phonenumber);
+    long deleteByUsername(String username);
 
     //dont need
     //void deleteAll(List<UserTo> users);

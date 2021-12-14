@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } catch (PhoneNumberFormatException e) {
             throw new UsernameNotFoundException("Phone Number " + phonenumber + " not found");//String.format("Username[%s] not found"));
         }
-        Optional<UserTo> user = userRepository.findByPhonenumber(phonenumber);
+        Optional<UserTo> user = userRepository.findByUsername(phonenumber);
 
         if (user.isPresent()){
             return user.get();

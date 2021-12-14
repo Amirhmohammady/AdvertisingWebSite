@@ -13,7 +13,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * Created by Amir on 5/31/2020.
@@ -25,15 +28,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
-    @Autowired
+    //@Autowired
     //@Qualifier("persistentTokenRepository")
-    private PersistentTokenRepository persistentTokenRepository;
-    //    @Autowired
-//    AuthenticationSuccessHandler authenticationSuccessHandler;
+    //private PersistentTokenRepository persistentTokenRepository;
+    //@Autowired
+    //AuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DataSource dataSource;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -72,12 +77,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()//.successHandler(authenticationSuccessHandler)
 //maybe fo controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
                 .failureUrl("/login_error").failureHandler(authenticationFailureHandler).loginPage("/login")
-                .permitAll().usernameParameter("phonenumber")
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .permitAll()//.usernameParameter("phonenumber")
                 .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
-                .tokenValiditySeconds(60 * 60 * 12).tokenRepository(persistentTokenRepository);
-        //for enabling multipart sending and handling logout
+                .tokenValiditySeconds(60 * 60 * 12).tokenRepository(persistentTokenRepository())
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+                //for enabling multipart sending and handling logout
         http.csrf().disable();
     }
 
@@ -89,12 +93,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    /*@Bean
+    @Bean
     public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-        db.setDataSource(dataSource);
-        return db;
-    }*/
+        JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
+        tokenRepo.setDataSource(dataSource);
+        return tokenRepo;
+    }
     /*@Bean
     @Override
     public UserDetailsService userDetailsService() {

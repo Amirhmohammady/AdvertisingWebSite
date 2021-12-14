@@ -25,7 +25,7 @@ public class MySessionListener implements HttpSessionListener {
         UserTo userTo = getUserTo();
         if (userTo != null)
             logger.debug("session ID " + event.getSession().getId() + " created for max inactive interval = "
-                    + maxinactiveinterval + "for user phone number: " + userTo.getPhonenumber());
+                    + maxinactiveinterval + "for user phone number: " + userTo.getUsername());
         else
             logger.debug("session ID " + event.getSession().getId() + " created for max inactive interval = " + maxinactiveinterval);
     }

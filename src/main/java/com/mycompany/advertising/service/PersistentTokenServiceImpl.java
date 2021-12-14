@@ -4,21 +4,20 @@ package com.mycompany.advertising.service;
  * Created by Amir on 12/8/2021.
  */
 
-import com.mycompany.advertising.model.dao.PersistentLoginsRepository;
-import com.mycompany.advertising.model.to.PersistentLoginsTo;
+/*import com.mycompany.advertising.model.to.PersistentLogins;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;*/
 
 import java.util.Date;
 
 //@Repository("persistentTokenRepository")
-@Service
-@Transactional
-public class PersistentTokenServiceImpl implements PersistentTokenRepository {
+//@Service
+//@Transactional
+public class PersistentTokenServiceImpl{}/* implements PersistentTokenRepository {
     private final static Logger logger = Logger.getLogger(PersistentTokenServiceImpl.class);
 
     @Autowired
@@ -26,7 +25,7 @@ public class PersistentTokenServiceImpl implements PersistentTokenRepository {
 
     @Override
     public void createNewToken(PersistentRememberMeToken token) {
-        PersistentLoginsTo logins = new PersistentLoginsTo();
+        PersistentLogins logins = new PersistentLogins();
         logins.setUsername(token.getUsername());
         logins.setSeries(token.getSeries());
         logins.setToken(token.getTokenValue());
@@ -37,7 +36,7 @@ public class PersistentTokenServiceImpl implements PersistentTokenRepository {
 
     @Override
     public void updateToken(String series, String tokenValue, Date lastUsed) {
-        PersistentLoginsTo logins = persistentLoginsRepository.findTopBySeries(series);
+        PersistentLogins logins = persistentLoginsRepository.findTopBySeries(series);
         logins.setToken(tokenValue);
         logins.setLastUsed(lastUsed);
         //persistentLoginsRepository.save(logins);
@@ -46,7 +45,7 @@ public class PersistentTokenServiceImpl implements PersistentTokenRepository {
 
     @Override
     public PersistentRememberMeToken getTokenForSeries(String seriesId) {
-        PersistentLoginsTo logins = persistentLoginsRepository.findTopBySeries(seriesId);
+        PersistentLogins logins = persistentLoginsRepository.findTopBySeries(seriesId);
         if (logins != null) {
             logger.debug("search for seriesId " + seriesId + " and get " + logins.getUsername());
             return new PersistentRememberMeToken(logins.getUsername(),
@@ -61,7 +60,7 @@ public class PersistentTokenServiceImpl implements PersistentTokenRepository {
         logger.debug("tokens for user " + username + " deleted");
         persistentLoginsRepository.deleteByUsername(username);
     }
-}
+}*/
 /*    //@Autowired
     private SessionFactory hibernatesessionFactory;
 

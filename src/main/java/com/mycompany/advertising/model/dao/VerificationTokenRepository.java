@@ -23,8 +23,8 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     @Query("DELETE FROM VerificationTokenTo t where t.expiryDate <= ?1")
     void deleteAllExpiredTokenSince(Date now);
 
-    @Query(value="SELECT token FROM verification_token_to WHERE verification_token_to.user_id = (SELECT id FROM user_to WHERE phonenumber = ?1 LIMIT 1) LIMIT 1", nativeQuery = true)
-    String findTokenByNPhoneNumber(String phonenumber);
+    @Query(value="SELECT token FROM verification_token_to WHERE verification_token_to.user_id = (SELECT id FROM user_to WHERE username = ?1 LIMIT 1) LIMIT 1", nativeQuery = true)
+    String findTokenByPhoneNumber(String phonenumber);
 
     long deleteByUser(UserTo user);
 

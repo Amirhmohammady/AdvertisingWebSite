@@ -82,11 +82,11 @@ public class MainController {
                          @RequestParam(required = true, name = "phonenumber") String phonenumber,
                          @RequestParam(required = false, name = "email") String email) {
         UserTo user = new UserTo();
-        user.setUsername(username);
+        user.setProfilename(username);
         user.setPassword(password);
         user.setEmail(email);
         if (phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
-        user.setPhonenumber(phonenumber);
+        user.setUsername(phonenumber);
         user.grantAuthority(Role.ROLE_USER);
         logger.info("signup controller called with " + user.toString());
         try {

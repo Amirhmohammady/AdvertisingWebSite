@@ -23,10 +23,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--file.encoding>UTF-8</file.encoding-->
+        <!--it means my war file doesnt need web.xml-->
+        <!--<failOnMissingWebXml>false</failOnMissingWebXml>-->
     </properties>
 
     <build>
         <plugins>
+            <!--it means my war file doesnt need web.xml-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
             <!-- webapp-runner.jar for running the app heroku/webapp-runner -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -74,6 +84,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--for removing tomcat in war file-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--WAR File-->
         <!--dependency>
@@ -161,6 +178,14 @@
             <artifactId>httpclient</artifactId>
             <version>4.5.3</version>
         </dependency>
+        <!--import javax.servlet.ServletContext;-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.3</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 </project>
 

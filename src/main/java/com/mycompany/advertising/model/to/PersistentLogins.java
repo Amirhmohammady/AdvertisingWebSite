@@ -1,5 +1,6 @@
 package com.mycompany.advertising.model.to;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
@@ -8,11 +9,14 @@ import java.util.Date;
  * Created by Amir on 12/8/2021.
  */
 @Entity
-public class PersistentLoginsTo {
+public class PersistentLogins {
     @Id
     private String series;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String token;
+    @Column(nullable = false)
     private Date lastUsed;
 
     public String getSeries() {

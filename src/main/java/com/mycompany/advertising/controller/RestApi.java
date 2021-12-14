@@ -41,15 +41,15 @@ public class RestApi {
         else {
             UserTo user = userservice.getUserByPhoneNo(phonenumber);
             String token = new DecimalFormat("000000").format(new Random().nextInt(999999));
-            FarazSmsResponse smsresponse = smsservice.sendSms("your vrification code is: " + token, user.getPhonenumber());
+            FarazSmsResponse smsresponse = smsservice.sendSms("your vrification code is: " + token, user.getUsername());
             if (smsresponse.getStatus().equals("0")) {
-                logger.info("tocken " + token + " sent to " + user.getPhonenumber());
+                logger.info("tocken " + token + " sent to " + user.getUsername());
                 userservice.saveVerificationToken(user, token);
                 return "sms sent successfully";
             } else {
                 //Amir todo
                 userservice.saveVerificationToken(user, token);
-                logger.debug("tocken " + token + " could not send to " + user.getPhonenumber() + " " + smsresponse.getMessage());
+                logger.debug("tocken " + token + " could not send to " + user.getUsername() + " " + smsresponse.getMessage());
                 return "can not send sms call admin";
             }
         }
@@ -57,7 +57,7 @@ public class RestApi {
 
     @GetMapping("/registerUser/{phonenumber}/{confirmcode}")
     public String registerUser(@PathVariable String phonenumber, @PathVariable String confirmcode) {
-        logger.debug("request for activating phone number " + phonenumber + " by token " + confirmcode);
+        logger.info("request for activating phone number " + phonenumber + " by token " + confirmcode);
         try {
             phonenumber = userservice.getCorrectFormatPhoneNo(phonenumber);
             String token = userservice.getVerficationTokenByPhoneNumber(phonenumber);
