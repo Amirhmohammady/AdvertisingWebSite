@@ -12,7 +12,7 @@
   <title>Profile | Creative - Bootstrap 3 Responsive Admin Template</title>
 
   <!-- Bootstrap CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/share/css/bootstrap.min.css}" rel="stylesheet">
   <!-- bootstrap theme -->
   <link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
   <!--external css-->
@@ -410,7 +410,7 @@
                 <li>
                   <a data-toggle="tab" href="#profile">
                     <i class="icon-user"></i>
-                    Profile
+                    Privacy and Security
                   </a>
                 </li>
                 <li class="">
@@ -574,57 +574,57 @@
                       <h1> Profile Info</h1>
                       <form class="form-horizontal" role="form">
                         <div class="form-group">
-                          <label class="col-lg-2 control-label">First Name</label>
+                          <label class="col-lg-2 control-label">User Name</label>
                           <div class="col-lg-6">
-                            <input type="text" class="form-control" id="f-name" placeholder=" ">
+                            <input type="text" th:value="${userTo.profilename}" class="form-control" id="f-name">
                           </div>
                         </div>
                         <div class="form-group">
-                          <label class="col-lg-2 control-label">Last Name</label>
+                          <label class="col-lg-2 control-label">Full Name</label>
                           <div class="col-lg-6">
-                            <input type="text" class="form-control" id="l-name" placeholder=" ">
+                            <input type="text" th:value="${userTo.fullname}" class="form-control" id="l-name">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-lg-2 control-label">About Me</label>
                           <div class="col-lg-10">
-                            <textarea name="" id="" class="form-control" cols="30" rows="5"></textarea>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-lg-2 control-label">Country</label>
-                          <div class="col-lg-6">
-                            <input type="text" class="form-control" id="c-name" placeholder=" ">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-lg-2 control-label">Birthday</label>
-                          <div class="col-lg-6">
-                            <input type="text" class="form-control" id="b-day" placeholder=" ">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="col-lg-2 control-label">Occupation</label>
-                          <div class="col-lg-6">
-                            <input type="text" class="form-control" id="occupation" placeholder=" ">
+                            <textarea name="" id="" th:value="${userTo.aboutme}" class="form-control" cols="30" rows="5"></textarea>
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-lg-2 control-label">Email</label>
                           <div class="col-lg-6">
-                            <input type="text" class="form-control" id="email" placeholder=" ">
+                            <input type="text" th:value="${userTo.email}" class="form-control" id="email">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-lg-2 control-label">Mobile</label>
                           <div class="col-lg-6">
-                            <input type="text" class="form-control" id="mobile" placeholder=" ">
+                            <input type="text" th:value="${userTo.username}" class="form-control" id="mobile">
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="col-lg-2 control-label">Website URL</label>
                           <div class="col-lg-6">
-                            <input type="text" class="form-control" id="url" placeholder="http://www.demowebsite.com ">
+                            <input type="text" th:value="${userTo.websiteurl}" class="form-control" id="url">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">New Password</label>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" id="url">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">Confirm Password</label>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" id="url">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-lg-2 control-label">Password</label>
+                          <div class="col-lg-6">
+                            <input type="text" class="form-control" id="url">
                           </div>
                         </div>
 

@@ -15,6 +15,9 @@ public class SmsTo {
     @Column(name = "ID", nullable = false)
     private Long id;
 
+    public SmsTo() {
+    }
+
     public String getPhoneno() {
         return phoneno;
     }

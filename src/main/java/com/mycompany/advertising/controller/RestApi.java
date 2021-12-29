@@ -1,22 +1,25 @@
 package com.mycompany.advertising.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.advertising.components.utils.CreateTokenException;
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
+import com.mycompany.advertising.components.utils.SendSmsException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
 import com.mycompany.advertising.service.api.SmsService;
+import com.mycompany.advertising.service.api.TokenForChangePhoneNumberService;
 import com.mycompany.advertising.service.api.UserService;
+import com.mycompany.advertising.service.api.VerificationTokenService;
 import com.mycompany.advertising.service.util.FarazSmsResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.DecimalFormat;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Amir on 11/4/2021.
@@ -28,30 +31,18 @@ public class RestApi {
     @Autowired
     UserService userservice;
     @Autowired
-    SmsService smsservice;
+    VerificationTokenService verificationTokenService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/sendsms/{phonenumber}")
     public String sendSMS(@PathVariable String phonenumber) {
-        if (phonenumber != null && phonenumber.charAt(0) != '0') phonenumber = '0' + phonenumber;
-        Matcher matcher = Pattern.compile("^09[\\d]{9}$").matcher(phonenumber);
-        if (!matcher.matches())
-            return "phoneFormatNotCorrect";
-        else if (userservice.getVerficationTokenByPhoneNumber(phonenumber) != null)
-            return "token is exist and sms will not send";
-        else {
-            UserTo user = userservice.getUserByPhoneNo(phonenumber);
-            String token = new DecimalFormat("000000").format(new Random().nextInt(999999));
-            FarazSmsResponse smsresponse = smsservice.sendSms("your vrification code is: " + token, user.getUsername());
-            if (smsresponse.getStatus().equals("0")) {
-                logger.info("tocken " + token + " sent to " + user.getUsername());
-                userservice.saveVerificationToken(user, token);
-                return "sms sent successfully";
-            } else {
-                //Amir todo
-                userservice.saveVerificationToken(user, token);
-                logger.debug("tocken " + token + " could not send to " + user.getUsername() + " " + smsresponse.getMessage());
-                return "can not send sms call admin";
-            }
+        logger.info("request for sending sms to " + phonenumber);
+        try {
+            verificationTokenService.saveVerificationToken(phonenumber);
+            return "sms sent successfully";
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 
@@ -60,12 +51,53 @@ public class RestApi {
         logger.info("request for activating phone number " + phonenumber + " by token " + confirmcode);
         try {
             phonenumber = userservice.getCorrectFormatPhoneNo(phonenumber);
-            String token = userservice.getVerficationTokenByPhoneNumber(phonenumber);
-            if (token != null && token.equals(confirmcode)){
+            VerificationTokenTo token = verificationTokenService.findByUser_Username(phonenumber);
+            if (token != null && token.getToken().equals(confirmcode)) {
                 userservice.activateUser(phonenumber);
                 return phonenumber + " activated successfully";
-            }else return"can not active user";
+            } else return "can not active user";
         } catch (PhoneNumberFormatException e) {
+            return e.getMessage();
+        }
+    }
+
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @PostMapping(value = "/editUser")
+//, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
+    public String updateUser(@RequestBody Map<String, Object> body) {
+        UserTo userTo = new UserTo();
+        String confirmpass;
+        try {
+        /*try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> tmp1 = (Map<String, Object>) body.get("userTo");
+            logger.info(tmp1);
+            userTo = objectMapper.readValue(tmp1.toString(), UserTo.class);
+        } catch (IOException e) {
+            return "your json format is not correct";
+        }*/
+            String newpn = userservice.getCorrectFormatPhoneNo((String) body.get("username"));
+            userTo.setUsername(newpn);
+            userTo.setProfilename((String) body.get("profilename"));
+            userTo.setFullname((String) body.get("fullname"));
+            userTo.setPassword((String) body.get("password"));
+            userTo.setAboutme((String) body.get("aboutme"));
+            userTo.setWebsiteurl((String) body.get("websiteurl"));
+            userTo.setEmail((String) body.get("email"));
+            confirmpass = (String) body.get("confirmpass");
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        logger.info(confirmpass);
+        logger.info("try to edit user " + userTo);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!(principal instanceof UserTo)) return ("Error in editing user! can not find current user!");
+        UserTo cuser = (UserTo) principal;
+        if (!passwordEncoder.matches(confirmpass, cuser.getPassword())) return "password is not correct";
+        try {
+            userservice.editUser(cuser, userTo);
+            return "profile edited successfully";
+        } catch (Exception e) {
             return e.getMessage();
         }
     }

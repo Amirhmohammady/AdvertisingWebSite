@@ -104,4 +104,23 @@ public class MainConfig implements WebMvcConfigurer {
         listenerRegBean.setListener(new MySessionListener(maxinactiveinterval));
         return listenerRegBean;
     }
+    //set CacheMaxSize to 30MB default is 10MB
+/*    @Bean
+    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> tomcatFactory() {
+        WebServerFactoryCustomizer<TomcatServletWebServerFactory> server = new WebServerFactoryCustomizer<TomcatServletWebServerFactory>() {
+            @Override
+            public void customize(TomcatServletWebServerFactory tomcatServletWebServerFactory) {
+                tomcatServletWebServerFactory.addContextCustomizers((context) -> {
+                    StandardRoot standardRoot = new StandardRoot(context);
+                    standardRoot.setCacheMaxSize(30 * 1024);
+                });
+            }
+        };
+//        TomcatServletWebServerFactory tomcatFactory = new TomcatServletWebServerFactory();
+//        tomcatFactory.addContextCustomizers((context) -> {
+//            StandardRoot standardRoot = new StandardRoot(context);
+//            standardRoot.setCacheMaxSize(30 * 1024);
+//        });
+        return server;
+    }*/
 }

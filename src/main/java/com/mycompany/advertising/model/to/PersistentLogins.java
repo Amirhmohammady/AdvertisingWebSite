@@ -19,6 +19,9 @@ public class PersistentLogins {
     @Column(nullable = false)
     private Date lastUsed;
 
+    public PersistentLogins() {
+    }
+
     public String getSeries() {
         return series;
     }

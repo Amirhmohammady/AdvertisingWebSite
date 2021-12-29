@@ -1,9 +1,11 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,7 +66,11 @@ public class UserController {
 
     @GetMapping("/Dashboard")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String dashboard(HttpServletRequest request) {
+    public String dashboard(Model model, HttpServletRequest request) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserTo) {
+            model.addAttribute("userTo", principal);
+        } else model.addAttribute("userTo", new UserTo());
         if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
         if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
         return "index";

@@ -1,4 +1,4 @@
-package ccom.mycompany.advertising.config;
+package com.mycompany.advertising.config;
 
 /*import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Configuration;

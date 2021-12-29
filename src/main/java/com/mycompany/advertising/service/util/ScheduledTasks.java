@@ -52,16 +52,21 @@ public class ScheduledTasks {
 
     @EventListener
     public void addAdminUser(ApplicationReadyEvent event) {
-        logger.info("creating admin user at server startup.");
+        createAdminAtStartup();
+    }
+
+    private void createAdminAtStartup(){
         UserTo user;
         user = new UserTo();
         user.setPassword(adminPassword);
         user.setUsername(adminPhoneNumber);
         user.setProfilename(adminUserNmae);
         user.grantAuthority(Role.ROLE_ADMIN);
+        user.grantAuthority(Role.ROLE_USER);
         try {
             userservice.createUser(user);
             userservice.activateUser(adminPhoneNumber);
+            logger.info("Admin User created at server start up");
         } catch (Exception e) {
             logger.info("Error! can not creating admin user at server startup." + e.getMessage());
         }

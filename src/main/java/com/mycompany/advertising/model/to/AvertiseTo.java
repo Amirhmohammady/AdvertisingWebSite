@@ -25,6 +25,9 @@ public class AvertiseTo {
     private AvertiseStatus status;
     private String info;
 
+    public AvertiseTo() {
+    }
+
     public String getInfo() {
         return info;
     }
