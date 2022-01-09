@@ -46,7 +46,7 @@
 <main role="main" style="margin-top: 30px;">
 	<div class="ah01-show_in_row_center ah01-adver_body">
 		<div th:each="advertise : ${advertises}" id="adverCard">
-			<img id="cardImg" th:src="@{/t/}+${advertise.smallimagename}" alt="Card image cap">
+			<img id="cardImg" th:src="${advertise.smallimagename}" alt="Card image cap">
 			<div>
 				<a th:href="${advertise.telegramlink}">title </a>
 

@@ -137,7 +137,8 @@ public class UserTo implements UserDetails {
     }
 
     public void setPassword(String password) {
-        if (password.length() < 6) throw new AViewableException("password should be at least 6 chars");
+        if (password == null || password.length() < 6)
+            throw new AViewableException("password should be at least 6 chars");
         this.password = password;
     }
 

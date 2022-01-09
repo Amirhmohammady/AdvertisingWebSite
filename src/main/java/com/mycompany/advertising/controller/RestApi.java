@@ -1,16 +1,10 @@
 package com.mycompany.advertising.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mycompany.advertising.components.utils.CreateTokenException;
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
-import com.mycompany.advertising.components.utils.SendSmsException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
-import com.mycompany.advertising.service.api.SmsService;
-import com.mycompany.advertising.service.api.TokenForChangePhoneNumberService;
 import com.mycompany.advertising.service.api.UserService;
 import com.mycompany.advertising.service.api.VerificationTokenService;
-import com.mycompany.advertising.service.util.FarazSmsResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -80,15 +73,15 @@ public class RestApi {
             userTo.setUsername(newpn);
             userTo.setProfilename((String) body.get("profilename"));
             userTo.setFullname((String) body.get("fullname"));
-            userTo.setPassword((String) body.get("password"));
+            String pass = (String) body.get("password");
+            if (pass != null && !pass.equals("")) userTo.setPassword(pass);
             userTo.setAboutme((String) body.get("aboutme"));
             userTo.setWebsiteurl((String) body.get("websiteurl"));
             userTo.setEmail((String) body.get("email"));
             confirmpass = (String) body.get("confirmpass");
-        }catch (Exception e){
+        } catch (Exception e) {
             return e.getMessage();
         }
-        logger.info(confirmpass);
         logger.info("try to edit user " + userTo);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!(principal instanceof UserTo)) return ("Error in editing user! can not find current user!");

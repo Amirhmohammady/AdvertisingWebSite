@@ -189,6 +189,9 @@ public class UserServiceImpl implements UserService {
         olddata.setWebsiteurl(newdata.getWebsiteurl());
         olddata.setFullname(newdata.getFullname());
         olddata.setEmail(newdata.getEmail());
+        if (newdata.getPassword() != null && !newdata.getPassword().equals("")){
+            olddata.setPassword(passwordEncoder.encode(newdata.getPassword()));
+        }
         userRepository.save(olddata);
     }
     /*@Override

@@ -48,6 +48,12 @@ public class SmsSeviceImpl implements SmsService {
     public void sendSms(String message, String phonenumber) throws SendSmsException {
         String url = "https://sms.farazsms.com/class/sms/webservice/send_url.php?from=" + farazsmsfromnumber +
                 "&to=" + phonenumber + "&msg=" + message + "&uname=" + farazsmsusername + "&pass=" + farazsmspassword;
+        /*Unirest.setTimeouts(0, 0);
+        HttpResponse response = Unirest.post("https://api.parsaspace.com/v2/user/login/refresh")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .field("username", "your username")
+                .field("password", "your password")
+                .asString();*/
         String response;
         FarazSmsResponse farazsmsresponse = new FarazSmsResponse();
         try {

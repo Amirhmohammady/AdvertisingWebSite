@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Service
+
 public class StorageServiceImpl implements StorageService {
     private final static Logger logger = Logger.getLogger(ImageResizer.class);
 

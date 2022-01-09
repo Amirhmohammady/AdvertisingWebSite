@@ -1,11 +1,11 @@
 package com.mycompany.advertising.controller;
 
-import com.mycompany.advertising.service.api.AuthenticationFacade;
-import com.mycompany.advertising.service.api.AvertiseService;
-import com.mycompany.advertising.service.api.StorageService;
 import com.mycompany.advertising.entity.AvertiseStatus;
 import com.mycompany.advertising.model.to.AvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.api.AuthenticationFacade;
+import com.mycompany.advertising.service.api.AvertiseService;
+import com.mycompany.advertising.service.api.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +27,11 @@ import java.util.Optional;
 public class AvertiseController {
 
     @Autowired
+    AuthenticationFacade authenticationFacade;
+    @Autowired
     private StorageService storageService;
     @Autowired
     private AvertiseService avertiseService;
-    @Autowired
-    AuthenticationFacade authenticationFacade;
     //private UserService userService;
 
     @GetMapping("/showAvertise")
@@ -50,12 +51,19 @@ public class AvertiseController {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     //@ResponseBody
     public String addAvertise(Model model, @RequestParam(required = false, name = "pic") MultipartFile file,
-                             @RequestParam(required = false, name = "description") String description,
-                             @RequestParam(required = false, name = "tel_link") String telegramlink) {
+                              @RequestParam(required = false, name = "description") String description,
+                              @RequestParam(required = false, name = "tel_link") String telegramlink) {
         //String filename = StringUtils.cleanPath(file.getOriginalFilename());
         UserTo userTo = authenticationFacade.getUserToDetails();
         if (file != null) {
-            List<String> files = storageService.storeImage(file);
+            List<String> files = null;
+            try {
+                files = storageService.storeImage(file);
+                model.addAttribute("succsessmessage", "Successfully added your advertise");
+            } catch (IOException e) {
+                model.addAttribute("succsessmessage", e.getMessage());
+                e.printStackTrace();
+            }
             AvertiseTo avertiseTo = new AvertiseTo();
             avertiseTo.setTelegramlink(telegramlink);
             avertiseTo.setImagename(files.get(0));
@@ -64,7 +72,6 @@ public class AvertiseController {
             avertiseTo.setText(description);
             avertiseTo.setOwnerid(userTo.getId());
             avertiseService.addAvertise(avertiseTo);
-            model.addAttribute("succsessmessage","Successfully added your advertise");
         } else {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println("add_advertise no param");
@@ -88,7 +95,7 @@ public class AvertiseController {
             if (authenticationFacade.hasRole("ROLE_ADMIN")) {
                 isAuthenticated = true;
                 System.out.println("admin-------------------------");
-            } else if (userTo != null & userTo.getId() == avertiseoptl.get().getOwnerid()) {
+            } else if (userTo != null && userTo.getId() == avertiseoptl.get().getOwnerid()) {
                 isAuthenticated = true;
                 System.out.println("not admin-------------------------");
             }
