@@ -153,13 +153,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/custom-dependency-1.3.2.jar</systemPath>
-            <!--<version>1.5.7</version>-->
-        </dependency>
+            &lt;!&ndash;<version>1.5.7</version>&ndash;&gt;
+        </dependency>-->
         <!--mysql-->
         <!--
                 <dependency>

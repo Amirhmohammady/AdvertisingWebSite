@@ -137,7 +137,7 @@ public class StorageServiceUplodIr implements StorageService {
 
     private Connection.Response myExecute(Connection connection) throws IOException {
         Connection.Response response = connection.execute();
-        cookies = response.cookies();
+        cookies.putAll(response.cookies());
         return response;
     }
 
