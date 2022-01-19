@@ -50,14 +50,14 @@
                 </configuration>
             </plugin>
             <!--it means my war file doesnt need web.xml-->
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <!-- webapp-runner.jar for running the app heroku/webapp-runner -->
             <!--            <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
@@ -92,8 +92,8 @@
         </plugins>
     </build>
 
-    <packaging>war</packaging>
-    <!--packaging>jar</packaging-->
+    <!--<packaging>war</packaging>-->
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- ConfigurationProperties Remove Warning-->
