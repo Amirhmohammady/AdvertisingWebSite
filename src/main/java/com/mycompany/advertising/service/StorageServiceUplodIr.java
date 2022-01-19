@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 @Service
 public class StorageServiceUplodIr implements StorageService {
     private static final Logger logger = Logger.getLogger(StorageServiceUplodIr.class);
-    private Map<String, String> cookies;
+    private Map<String, String> cookies = new HashMap<String, String>();
     private String username = "siroos234";
     private String password = "kirekiloft112!@#A";
 
@@ -53,7 +53,7 @@ public class StorageServiceUplodIr implements StorageService {
         result.add(rslt);
         if (file.getOriginalFilename().lastIndexOf('.') >= 0) {
             int indx = rslt.lastIndexOf('.');
-            result.add(rslt.substring(0, indx) + "_t" + rslt.substring(indx));
+            result.add(rslt.substring(0, indx) + "_t" + ".jpg");//rslt.substring(indx));
         } else result.add(rslt + "_t");
         return result;
     }
@@ -99,8 +99,10 @@ public class StorageServiceUplodIr implements StorageService {
         response = myExecute(connection);
         document = response.parse();
         java.util.List<Map<String, String>> mapList = new ObjectMapper().readValue(document.select("body").first().html(), java.util.List.class);
-        if (!mapList.get(0).get("file_status").equals("OK"))
+        if (!mapList.get(0).get("file_status").equals("OK")) {
+            logger.warn("upload.ir returns " + mapList.get(0).get("file_status"));
             throw new IOException("can not upolad file " + mapList.get(0).get("file_status"));
+        }
         String link = mapList.get(0).get("file_code");
         connection = readyConnection("http://uplod.ir/" + link + "/" + filename + ".htm", Connection.Method.GET);
         response = myExecute(connection);
@@ -115,12 +117,14 @@ public class StorageServiceUplodIr implements StorageService {
         Document document = response.parse();
         Elements elements = document.select("body div div div form input");
         Map<String, String> hiddenInputs = new HashMap<String, String>();
+        //logger.trace(elements);
         for (Element element : elements) {
             if (element.attr("type") != null && element.attr("type").equals("hidden"))
                 hiddenInputs.put(element.attr("name"), element.attr("value"));
         }
         connection.data(hiddenInputs);
         elements = document.select("body div div div form tr td input");
+        //logger.trace(elements);
         connection.data(elements.get(0).attr("name"), username, elements.get(1).attr("name"), password);
         connection.method(Connection.Method.POST);
         myExecute(connection);
@@ -137,7 +141,7 @@ public class StorageServiceUplodIr implements StorageService {
 
     private Connection.Response myExecute(Connection connection) throws IOException {
         Connection.Response response = connection.execute();
-        cookies.putAll(response.cookies());
+        if (response != null && response.cookies() != null) cookies.putAll(response.cookies());
         return response;
     }
 
