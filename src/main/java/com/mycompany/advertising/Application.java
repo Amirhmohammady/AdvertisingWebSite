@@ -22,10 +22,10 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
-@PropertySources({
+/*@PropertySources({
         //@PropertySource(value = "file:../amirExtraFiles/adv-web/log4j.properties", ignoreResourceNotFound= false),
         @PropertySource(value = "file:../amirExtraFiles/adv-web/application.properties", ignoreResourceNotFound= false)
-})
+})*/
 /*@PropertySources({
         @PropertySource(value = "file:/application.properties", ignoreResourceNotFound = true)
 })*/
