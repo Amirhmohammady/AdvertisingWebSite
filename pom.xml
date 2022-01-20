@@ -159,12 +159,12 @@
             <artifactId>mariadb-java-client</artifactId>
             &lt;!&ndash;<version>1.5.7</version>&ndash;&gt;
         </dependency>-->
-        <!--mysql-->
-        <!--<dependency>
+        <!--war mysql need for jar-->
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            &lt;!&ndash;<version>6.0.6</version>&ndash;&gt;
-        </dependency>-->
+            <!--<version>6.0.6</version>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
