@@ -9,16 +9,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 
 import java.util.HashMap;
 import java.util.Map;
-
-//import com.mycompany.advertising.api.UserService;
-//import com.mycompany.advertising.entity.Role;
-//import com.mycompany.advertising.model.to.UserTo;
-//import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
@@ -27,7 +20,7 @@ import java.util.Map;
         @PropertySource(value = "file:../amirExtraFiles/adv-web/application.properties", ignoreResourceNotFound= false)
 })*/
 /*@PropertySources({
-        @PropertySource(value = "file:/application.properties", ignoreResourceNotFound = true)
+        @PropertySource(value = "file:/applsication.properties", ignoreResourceNotFound = true)
 })*/
 public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package com.mycompany.advertising.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.advertising.service.api.StorageService;
 import org.apache.log4j.Logger;
 import org.jsoup.Connection;
@@ -24,9 +23,9 @@ import java.util.stream.Stream;
 /**
  * Created by Amir on 1/9/2022.
  */
-//@Service
-public class StorageServiceUplodIr implements StorageService {
-    private static final Logger logger = Logger.getLogger(StorageServiceUplodIr.class);
+@Service
+public class StorageServiceUuploadIr implements StorageService {
+    private static final Logger logger = Logger.getLogger(StorageServiceUuploadIr.class);
     private Map<String, String> cookies = new HashMap<String, String>();
     @Value("${upload.website.username}")
     private String username;
@@ -43,10 +42,10 @@ public class StorageServiceUplodIr implements StorageService {
         int i;
         for (i = 0; i < 3; i++) {
             if (isLogin()) {
-                logger.trace("logged in in uplod.ir");
+                logger.trace("logged in in Uupload.ir");
                 break;
             } else {
-                logger.trace("is not login in uplod.ir");
+                logger.trace("is not login in Uupload.ir");
                 login();
             }
         }
@@ -56,8 +55,8 @@ public class StorageServiceUplodIr implements StorageService {
         result.add(rslt);
         if (file.getOriginalFilename().lastIndexOf('.') >= 0) {
             int indx = rslt.lastIndexOf('.');
-            result.add(rslt.substring(0, indx) + "_t" + ".jpg");//rslt.substring(indx));
-        } else result.add(rslt + "_t");
+            result.add(rslt.substring(0, indx) + "_thumb" + rslt.substring(indx));
+        } else result.add(rslt + "_thumb");
         return result;
     }
 
@@ -82,8 +81,36 @@ public class StorageServiceUplodIr implements StorageService {
     }
 
     private String uploadInputStream(InputStream is, String filename) throws IOException {
-        logger.trace("uploadInputStream: " + filename);
-        Connection connection = readyConnection("http://uplod.ir/", Connection.Method.GET);
+        logger.debug("try to upload image to uupload.ir " + filename);
+        Connection connection = readyConnection("https://uupload.ir/", Connection.Method.GET);
+        Connection.Response response = myExecute(connection);
+        Document document = response.parse();
+        Element formelement = document.select("#upload_form1").first();//body div div form input");
+        Elements inputelements = formelement.select("input");
+        Map<String, String> hiddenInputs = new HashMap<String, String>();
+        for (Element telement : inputelements) {
+            if (telement.attr("type") != null && telement.attr("type").equals("hidden"))
+                hiddenInputs.put(telement.attr("name"), telement.attr("value"));
+        }
+        String action = formelement.attr("action");
+        connection = readyConnection(action, Connection.Method.POST);
+        connection.data(hiddenInputs);
+        connection.data("ittl", "0");
+        connection.data("__userfile[]", filename, is);
+        connection.ignoreContentType(true);
+        response = myExecute(connection);
+        document = response.parse();
+        Element linkelement = document.select("body table tr td input").get(0);
+        String rslt = linkelement.attr("value");
+        logger.info("uload link: " + rslt);
+        return rslt;
+    }
+
+    private void login() throws IOException {
+        logger.trace("try to login in uupload.ir");
+        Connection connection = readyConnection("https://my.uupload.ir/", Connection.Method.GET);
+        myExecute(connection);
+        connection = readyConnection("https://uupload.ir/info.php?act=login", Connection.Method.GET);
         Connection.Response response = myExecute(connection);
         Document document = response.parse();
         Elements elements = document.select("body div div form input");
@@ -92,54 +119,25 @@ public class StorageServiceUplodIr implements StorageService {
             if (element.attr("type") != null && element.attr("type").equals("hidden"))
                 hiddenInputs.put(element.attr("name"), element.attr("value"));
         }
-        String action = document.select("#uploadfile").first().attr("action");
-        connection = readyConnection(action, Connection.Method.POST);
+        connection = readyConnection("https://uupload.ir/users.php?act=login-d", Connection.Method.GET);
         connection.data(hiddenInputs);
-        connection.data("file_0", filename, is);
-        //if set file_public_0 to 1 file_0 will be private
-        //connection.data("file_public_0", "1");
-        connection.ignoreContentType(true);
-        response = myExecute(connection);
-        document = response.parse();
-        java.util.List<Map<String, String>> mapList = new ObjectMapper().readValue(document.select("body").first().html(), java.util.List.class);
-        if (!mapList.get(0).get("file_status").equals("OK")) {
-            logger.warn("upload.ir returns " + mapList.get(0).get("file_status"));
-            throw new IOException("can not upolad file " + mapList.get(0).get("file_status"));
-        }
-        String link = mapList.get(0).get("file_code");
-        connection = readyConnection("http://uplod.ir/" + link + "/" + filename + ".htm", Connection.Method.GET);
-        response = myExecute(connection);
-        document = response.parse();
-        return document.select("#img-preview").first().attr("src");
-    }
-
-    private void login() throws IOException {
-        logger.trace("try to login in uplod.ir");
-        Connection connection = readyConnection("http://uplod.ir/login.html", Connection.Method.GET);
-        Connection.Response response = myExecute(connection);
-        Document document = response.parse();
-        Elements elements = document.select("body div div div form input");
-        Map<String, String> hiddenInputs = new HashMap<String, String>();
-        //logger.trace(elements);
-        for (Element element : elements) {
-            if (element.attr("type") != null && element.attr("type").equals("hidden"))
-                hiddenInputs.put(element.attr("name"), element.attr("value"));
-        }
-        connection.data(hiddenInputs);
-        elements = document.select("body div div div form tr td input");
-        //logger.trace(elements);
-        connection.data(elements.get(0).attr("name"), username, elements.get(1).attr("name"), password);
+        connection.data("username", username, "password", password, "rememberme", "1");
         connection.method(Connection.Method.POST);
         myExecute(connection);
     }
 
     private boolean isLogin() throws IOException {
-        Connection connection = readyConnection("http://uplod.ir/", Connection.Method.GET);
+        Connection connection = readyConnection("https://uupload.ir/", Connection.Method.GET);
         Connection.Response response = myExecute(connection);
         Document document = response.parse();
-        Element element = document.select("body div div div a").get(1);
-        if (element == null || element.text().equals("ثبت نام")) return false;
-        else return true;
+        Element element = document.select("body div div a").get(15);
+        if (element == null || element.text().equals("ورود")) {
+            logger.info("is not logged in");
+            return false;
+        } else {
+            logger.info("is logged in");
+            return true;
+        }
     }
 
     private Connection.Response myExecute(Connection connection) throws IOException {
