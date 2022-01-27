@@ -9,16 +9,18 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
-/*@PropertySources({
+@PropertySources({
         //@PropertySource(value = "file:../amirExtraFiles/adv-web/log4j.properties", ignoreResourceNotFound= false),
         @PropertySource(value = "file:../amirExtraFiles/adv-web/application.properties", ignoreResourceNotFound= false)
-})*/
+})
 /*@PropertySources({
         @PropertySource(value = "file:/applsication.properties", ignoreResourceNotFound = true)
 })*/

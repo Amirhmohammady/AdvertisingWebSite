@@ -93,7 +93,8 @@ public class MainController {
             userService.createUser(user);
             eventPublisher.publishEvent(new OnSigningUpCompleteEvent(user));
             logger.info(user.toString() + "is registered successfully");
-            return "redirect:/regitrationConfirm/phonenumber=" + phonenumber;
+            model.addAttribute("msg",user.toString() + "is registered successfully");
+            //return "redirect:/regitrationConfirm/phonenumber=" + phonenumber;
         } catch (UserAlreadyExistException uia) {
             logger.info("can not save " + user.toString() + " the user name is exist");
         }
