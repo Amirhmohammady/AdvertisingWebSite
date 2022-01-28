@@ -70,7 +70,7 @@ public class AvertiseController {
             avertiseTo.setStatus(AvertiseStatus.Not_Accepted);
             avertiseTo.setSmallimagename(files.get(1));
             avertiseTo.setText(description);
-            avertiseTo.setOwnerid(userTo.getId());
+            avertiseTo.setUserTo(userTo);
             avertiseService.addAvertise(avertiseTo);
         } else {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -89,13 +89,13 @@ public class AvertiseController {
         if (avertiseoptl.isPresent()) {
             UserTo userTo = authenticationFacade.getUserToDetails();
             boolean isAuthenticated = false;
-            System.out.println(avertiseoptl.get().getOwnerid() + "-------------------------");
+            System.out.println(avertiseoptl.get().getUserTo() + "-------------------------");
             System.out.println(userTo.getId() + "-------------------------");
             System.out.println("testtttttttttttttttttttttttt");
             if (authenticationFacade.hasRole("ROLE_ADMIN")) {
                 isAuthenticated = true;
                 System.out.println("admin-------------------------");
-            } else if (userTo != null && userTo.getId() == avertiseoptl.get().getOwnerid()) {
+            } else if (userTo != null && userTo.getId() == avertiseoptl.get().getUserTo().getId()) {
                 isAuthenticated = true;
                 System.out.println("not admin-------------------------");
             }

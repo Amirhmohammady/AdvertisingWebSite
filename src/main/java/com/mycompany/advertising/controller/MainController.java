@@ -3,14 +3,15 @@ package com.mycompany.advertising.controller;
 import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
 import com.mycompany.advertising.entity.Role;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
+import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.AvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.api.AdminMessageService;
 import com.mycompany.advertising.service.api.AvertiseService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -24,7 +25,10 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
+
+//import org.springframework.context.MessageSource;
 
 /**
  * Created by Amir on 1/30/2020.
@@ -32,15 +36,16 @@ import java.util.List;
 @Controller
 public class MainController {
     private final static Logger logger = Logger.getLogger(MainController.class);
-
+    /*@Autowired
+    private MessageSource messages;*/
+    @Autowired
+    AdminMessageService adminMessageService;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
     @Autowired
     private AvertiseService messageService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private MessageSource messages;
 
     @GetMapping("/login")
     public String loginGet() {
@@ -93,7 +98,7 @@ public class MainController {
             userService.createUser(user);
             eventPublisher.publishEvent(new OnSigningUpCompleteEvent(user));
             logger.info(user.toString() + "is registered successfully");
-            model.addAttribute("msg",user.toString() + "is registered successfully");
+            model.addAttribute("msg", user.toString() + "is registered successfully");
             //return "redirect:/regitrationConfirm/phonenumber=" + phonenumber;
         } catch (UserAlreadyExistException uia) {
             logger.info("can not save " + user.toString() + " the user name is exist");
@@ -135,6 +140,11 @@ public class MainController {
             avertiseTos = messageService.getPageAvertises(pagenumber).getContent();
         } else {
             avertiseTos = messageService.getPageAvertises(pagenumber, search).getContent();
+        }
+        AdminMessageTo adminMessageTo = adminMessageService.getLastMessage();
+        if (adminMessageTo != null) model.addAttribute("adminMessage", adminMessageService.getLastMessage());
+        else {
+            model.addAttribute("adminMessage", new AdminMessageTo(new UserTo(), "There is no message yet", new Date(1000)));
         }
         model.addAttribute("advertises", avertiseTos);
         return "index";

@@ -14,7 +14,9 @@ public class AvertiseTo {
     @GeneratedValue
     @Column(name = "ID", nullable = false)
     private Long id;
-    private Long ownerid;
+    @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    private UserTo userTo;
     private String text;
     private String telegramlink;
     private Date startdate;
@@ -64,12 +66,16 @@ public class AvertiseTo {
         return id;
     }
 
-    public Long getOwnerid() {
-        return ownerid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setOwnerid(Long ownerid) {
-        this.ownerid = ownerid;
+    public UserTo getUserTo() {
+        return userTo;
+    }
+
+    public void setUserTo(UserTo userTo) {
+        this.userTo = userTo;
     }
 
     public Date getExpiredate() {
