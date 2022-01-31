@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 public class AvertiseTo {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     @Column(name = "ID", nullable = false)
     private Long id;
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)

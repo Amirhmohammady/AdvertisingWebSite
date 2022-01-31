@@ -78,10 +78,13 @@
 			<h3>Contact us</h3>
 			<a href="https://t.me/Amir_m32">Telegram</a>
 		</div>
-		<div class="ah01-blue_box">
-			<h3 th:text="${adminMessage.message}"></h3>
-			<a></a>
-			<a></a>
+		<div th:if="${adminMessage != null}" class="ah01-blue_box">
+			<a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h3 th:text="${adminMessage.title}"></h3></a>
+			<h5 th:text="${adminMessage.title}"></h5>
+			<a th:href="@{/adminMessgesList}"></a>
+		</div>
+		<div th:unless="${adminMessage != null}" class="ah01-blue_box">
+			<h5>there is no message yet</h5>
 		</div>
 	</div>
 </main>

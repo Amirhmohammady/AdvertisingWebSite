@@ -25,7 +25,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.List;
 
 //import org.springframework.context.MessageSource;
@@ -142,10 +141,12 @@ public class MainController {
             avertiseTos = messageService.getPageAvertises(pagenumber, search).getContent();
         }
         AdminMessageTo adminMessageTo = adminMessageService.getLastMessage();
-        if (adminMessageTo != null) model.addAttribute("adminMessage", adminMessageService.getLastMessage());
-        else {
-            model.addAttribute("adminMessage", new AdminMessageTo(new UserTo(), "There is no message yet", new Date(1000)));
-        }
+        if (adminMessageTo != null) model.addAttribute("adminMessage", adminMessageTo);
+        /*else {
+            adminMessageTo = new AdminMessageTo(new UserTo(), "There is no message yet", new Date(1000));
+            adminMessageTo.setId((long) 0);
+            model.addAttribute("adminMessage", adminMessageTo);
+        }*/
         model.addAttribute("advertises", avertiseTos);
         return "index";
     }

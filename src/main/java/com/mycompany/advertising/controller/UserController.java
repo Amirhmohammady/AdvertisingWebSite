@@ -1,6 +1,8 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.api.AdminMessageService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Created by Amir on 8/21/2020.
@@ -23,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     private final static Logger logger = Logger.getLogger(UserController.class);
 
+    @Autowired
+    AdminMessageService adminMessageService;
     @Autowired
     UserService userService;
 
@@ -48,7 +51,24 @@ public class UserController {
 
     @GetMapping("/adminMessage")
     @Secured("ROLE_ADMIN")
-    public String adminMessage(Model model) {
+    public String adminMessageGet(Model model) {
+        model.addAttribute("pfragment01", "adminMessage");
+        return "profile2/DashboardAdmin";
+    }
+
+    @PostMapping("/adminMessage")
+    @Secured("ROLE_ADMIN")
+    public String adminMessagePost(Model model, @RequestParam String title, @RequestParam String message) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserTo) {
+            AdminMessageTo adminMessage = new AdminMessageTo();
+            adminMessage.setDate(new Date());
+            adminMessage.setMessage(message);
+            adminMessage.setTitle(title);
+            adminMessage.setOwner((UserTo) principal);
+            adminMessageService.addAdminMessage(adminMessage);
+            logger.info("message added: " + message);
+        } else logger.warn("message NOT added: " + message);
         model.addAttribute("pfragment01", "adminMessage");
         return "profile2/DashboardAdmin";
     }

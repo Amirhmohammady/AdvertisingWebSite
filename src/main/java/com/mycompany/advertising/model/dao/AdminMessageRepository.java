@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
  * Created by Amir on 1/27/2022.
  */
 @Repository
-public interface AdminMessageRepository  extends JpaRepository<AdminMessageTo,Long> {
-    AdminMessageTo findTopByOrderByIdDesc();
+public interface AdminMessageRepository extends JpaRepository<AdminMessageTo, Long> {
+    AdminMessageTo findFirstByOrderByIdDesc();
+
     Page<AdminMessageTo> findAll(Pageable page);
 }

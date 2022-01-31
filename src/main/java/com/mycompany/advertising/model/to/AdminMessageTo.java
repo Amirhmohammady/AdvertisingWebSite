@@ -9,22 +9,16 @@ import java.util.Date;
 @Entity
 public class AdminMessageTo {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     @Column(name = "ID", nullable = false)
     private Long id;
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private UserTo owner;
+    @Column(columnDefinition = "TEXT", length = 2048)
     private String message;
+    private String title;
     private Date date;
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public AdminMessageTo() {
     }
@@ -33,6 +27,22 @@ public class AdminMessageTo {
 
         this.owner = owner;
         this.message = message;
+        this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -58,5 +68,16 @@ public class AdminMessageTo {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "AdminMessageTo{" +
+                "id=" + id +
+                ", owner=" + owner.getUsername() +
+                ", message='" + message + '\'' +
+                ", title='" + title + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

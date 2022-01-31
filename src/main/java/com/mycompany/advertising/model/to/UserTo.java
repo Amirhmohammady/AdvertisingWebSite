@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class UserTo implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     @Column(name = "ID", nullable = false)
     private Long id;
 
