@@ -46,6 +46,13 @@ public class UserController {
         return "profile";
     }
 
+    @GetMapping("/adminMessage")
+    @Secured("ROLE_ADMIN")
+    public String adminMessage(Model model) {
+        model.addAttribute("pfragment01", "adminMessage");
+        return "profile2/DashboardAdmin";
+    }
+
     @GetMapping("/unaccepted_adverteses")
     @Secured({"ROLE_ADMIN"})
     public String unacceptedAdverteses(Model model, @PathVariable String search, @PathVariable int pagenumber) {
@@ -71,6 +78,7 @@ public class UserController {
         if (principal instanceof UserTo) {
             model.addAttribute("userTo", principal);
         } else model.addAttribute("userTo", new UserTo());
+        model.addAttribute("pfragment01", "profile");
         if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
         if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
         return "index";
