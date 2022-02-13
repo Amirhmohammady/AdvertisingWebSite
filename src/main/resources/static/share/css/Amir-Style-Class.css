@@ -310,7 +310,10 @@ body{
 	background-color: #c2cece;
 	margin:5px;
 	font-family: sans-serif;
-	font-size: 90%
+	font-size: 90%;
+	overflow: hidden;
+	max-width: 100px;
+	max-height: 70px;
 }
 
 .ah01-adver_body{

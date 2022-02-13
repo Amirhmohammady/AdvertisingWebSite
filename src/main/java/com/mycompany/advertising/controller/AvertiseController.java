@@ -1,9 +1,9 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.entity.AvertiseStatus;
 import com.mycompany.advertising.model.to.AvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
-import com.mycompany.advertising.service.api.AuthenticationFacade;
 import com.mycompany.advertising.service.api.AvertiseService;
 import com.mycompany.advertising.service.api.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;

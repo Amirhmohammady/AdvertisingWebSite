@@ -14,4 +14,6 @@ public interface AdminMessageRepository extends JpaRepository<AdminMessageTo, Lo
     AdminMessageTo findFirstByOrderByIdDesc();
 
     Page<AdminMessageTo> findAll(Pageable page);
+
+    AdminMessageTo findById(long id);
 }

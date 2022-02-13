@@ -12,4 +12,6 @@ public interface AdminMessageService {
     AdminMessageTo getLastMessage();
 
     Page<AdminMessageTo> getPageAdminMessage(int page);
+
+    AdminMessageTo getAdminMessageById(long id);
 }

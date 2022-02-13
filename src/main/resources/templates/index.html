@@ -80,7 +80,7 @@
 		</div>
 		<div th:if="${adminMessage != null}" class="ah01-blue_box">
 			<a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h3 th:text="${adminMessage.title}"></h3></a>
-			<h5 th:text="${adminMessage.title}"></h5>
+			<h5 th:text="${adminMessage.message}"></h5>
 			<a th:href="@{/adminMessgesList}"></a>
 		</div>
 		<div th:unless="${adminMessage != null}" class="ah01-blue_box">

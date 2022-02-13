@@ -1,4 +1,4 @@
-package com.mycompany.advertising.service.api;
+package com.mycompany.advertising.components.api;
 
 import com.mycompany.advertising.model.to.UserTo;
 

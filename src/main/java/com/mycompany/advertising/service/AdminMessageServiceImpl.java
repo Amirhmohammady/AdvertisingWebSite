@@ -39,4 +39,9 @@ public class AdminMessageServiceImpl implements AdminMessageService {
         Pageable pageable = PageRequest.of((page - 1) * 100, page * 30);//, Sort.by("text")
         return adminMessageRepository.findAll(pageable);
     }
+
+    @Override
+    public AdminMessageTo getAdminMessageById(long id) {
+        return adminMessageRepository.findById(id);
+    }
 }

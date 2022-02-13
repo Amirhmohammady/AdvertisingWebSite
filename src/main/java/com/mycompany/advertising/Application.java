@@ -33,7 +33,6 @@ public class Application extends SpringBootServletInitializer {
 
     private static Map<String, Object> getExternalPeroperties() {
         Map<String, Object> result = new HashMap<>();
-
         return result;
     }
 

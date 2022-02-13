@@ -1,6 +1,6 @@
 package com.mycompany.advertising.components;
 
-import com.mycompany.advertising.service.api.AuthenticationFacade;
+import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.model.to.UserTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

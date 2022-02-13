@@ -2,6 +2,7 @@ package com.mycompany.advertising.model.to;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Amir on 1/27/2022.
@@ -15,19 +16,40 @@ public class AdminMessageTo {
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private UserTo owner;
+    @OneToMany(targetEntity = UserCommentTo.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "msgowner_id")
+    //@JoinColumn(nullable = true) it is wrong
+    private List<UserCommentTo> comments;
     @Column(columnDefinition = "TEXT", length = 2048)
     private String message;
     private String title;
     private Date date;
+    private int messageCnt = 0;
 
     public AdminMessageTo() {
     }
 
     public AdminMessageTo(UserTo owner, String message, Date date) {
-
+        this();
         this.owner = owner;
         this.message = message;
         this.date = date;
+    }
+
+    public int getMessageCnt() {
+        return messageCnt;
+    }
+
+    public void setMessageCnt(int messageCnt) {
+        this.messageCnt = messageCnt;
+    }
+
+    public List<UserCommentTo> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<UserCommentTo> comments) {
+        this.comments = comments;
     }
 
     public String getTitle() {
