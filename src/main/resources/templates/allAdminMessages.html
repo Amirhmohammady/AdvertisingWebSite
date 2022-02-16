@@ -1,6 +1,7 @@
-﻿<!doctype html>
+<!doctype html>
 
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
 	<meta charset="utf-8">
 	<title>Album example for Bootstrap</title>
@@ -31,7 +32,7 @@
 	<div class="ah01-show_in_row_center">
 		<select name="languages" id="languages">
 			<option value="english">en</option>
-			<option selected value="farsi">فا</option>
+			<option selected value="farsi">ูุง</option>
 		</select>
 		<a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login}">Login</a>
 		<div th:if="${#request.userPrincipal}" class="ah01-dropdown">
@@ -42,51 +43,40 @@
 				<a href="#contact">Messages</a>
 			</div>
 		</div>
-		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}"/>
+		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn"
+			 style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}" />
 	</div>
 </header>
 <main role="main" style="margin-top: 30px;">
-	<div class="ah01-show_in_row_center ah01-adver_body">
-		<div th:each="advertise : ${advertises}" id="adverCard">
-			<img id="cardImg" th:src="${advertise.smallimagename}" alt="Card image cap">
-			<div>
-				<a th:href="${advertise.telegramlink}">title </a>
+	<table class="table" style="margin-top:0px;width:95%;margin-top:30px;max-width: 1000px;">
+		<tbody>
+		<tr th:each="adminMessage : ${adminMessages.getContent()}">
+			<td scope="row">
+				<b>
+					<div class="recent">
+						<a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h3 th:text="${adminMessage.title}"></h3></a>
+					</div>
+					<h4 th:text="${adminMessage.message}"></h4>
 
-				<p id="adver_text">[[${advertise.text}]]</p>
-				<div class="ah01-row_wrap_space_between">
-					<a class="ah01_button_style01" th:href="@{/index.html}">View</a>
-					<a class="ah01_button_style01" th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}" th:href="@{http://www.thymeleaf/documentation.html}">
-						Edit</a>
-					<a class="ah01_button_style01" th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}" href="delete.html">
-						Delete</a>
-				</div>
-			</div>
-		</div>
-	</div>
+					<div class="ah01-row_wrap_space_between ah01-margin5_inner_childs">
+						<h6 th:text="${adminMessage.date}"></h6>
+						<a style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href=""
+						   title="Bootstrap 3 themes generator">Delete</a>
+					</div>
+				</b>
+			</td>
+		</tr>
+		</tbody>
+	</table>
 
 	<div class="ah01-show_in_row_center" style="padding:20px;">
 		<div class="ah01-padding10_inner_childs">
-			<a href="https://t.me/Amir_Hosein31"><<</a>
+			<a href="https://t.me/Amir_Hosein31"> << </a>
 			<a href="https://t.me/Amir_Hosein31">1</a>
 			<a href="https://t.me/Amir_Hosein31">2</a>
 			<a href="https://t.me/Amir_Hosein31">3</a>
 			<a href="https://t.me/Amir_Hosein31">4</a>
 			<a href="https://t.me/Amir_Hosein31">>></a>
-		</div>
-	</div>
-
-	<div class="ah01-show_in_row_center" style="padding:20px;">
-		<div class="ah01-blue_box ah01-show_childs_columns_center ah01-margin5_inner_childs">
-			<h3>Contact us</h3>
-			<div><a href="https://t.me/Amir_m32" class="btn btn-primary btn-sm">Telegram</a></div>
-			<div><a th:href="@{/adminMessgesList/1}" class="btn btn-primary btn-sm">All messages</a></div>
-		</div>
-		<div th:if="${adminMessage != null}" class="ah01-blue_box ah01-show_childs_columns_center" style="display: block;">
-			<div><a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h4 th:text="${adminMessage.title}"   style="overflow: hidden;max-height: 20px;"></h4></a></div>
-			<h5 th:text="${adminMessage.message}" style="overflow: hidden;max-height: 80px;"></h5>
-		</div>
-		<div th:unless="${adminMessage != null}" class="ah01-blue_box">
-			<h5>there is no message yet</h5>
 		</div>
 	</div>
 </main>
@@ -99,7 +89,7 @@
 	}
 
 	// Close the dropdown if the user clicks outside of it
-	document.onclick = function(event) {
+	document.onclick = function (event) {
 		if (!event.target.matches('.ah01-dropspn')) {
 			var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
 			var i;
@@ -114,4 +104,5 @@
 </script>
 
 </body>
+
 </html>

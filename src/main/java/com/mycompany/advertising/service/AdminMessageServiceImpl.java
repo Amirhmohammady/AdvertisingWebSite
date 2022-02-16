@@ -1,7 +1,9 @@
 package com.mycompany.advertising.service;
 
 import com.mycompany.advertising.model.dao.AdminMessageRepository;
+import com.mycompany.advertising.model.dao.UserCommentRepository;
 import com.mycompany.advertising.model.to.AdminMessageTo;
+import com.mycompany.advertising.model.to.UserCommentTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminMessageServiceImpl implements AdminMessageService {
     private static final Logger logger = Logger.getLogger(AdminMessageServiceImpl.class);
+    @Autowired
+    UserCommentRepository userCommentRepository;
     @Autowired
     AdminMessageRepository adminMessageRepository;
 
@@ -36,12 +40,17 @@ public class AdminMessageServiceImpl implements AdminMessageService {
     @Override
     public Page<AdminMessageTo> getPageAdminMessage(int page) {
         logger.info("request fo admin message pag " + page);
-        Pageable pageable = PageRequest.of((page - 1) * 100, page * 30);//, Sort.by("text")
-        return adminMessageRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
+        return adminMessageRepository.findAllByOrderByIdDesc(pageable);
     }
 
     @Override
     public AdminMessageTo getAdminMessageById(long id) {
         return adminMessageRepository.findById(id);
+    }
+
+    @Override
+    public void addUserComment(UserCommentTo userCommentTo) {
+        userCommentRepository.save(userCommentTo);
     }
 }

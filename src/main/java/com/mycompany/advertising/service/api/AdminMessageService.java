@@ -1,6 +1,7 @@
 package com.mycompany.advertising.service.api;
 
 import com.mycompany.advertising.model.to.AdminMessageTo;
+import com.mycompany.advertising.model.to.UserCommentTo;
 import org.springframework.data.domain.Page;
 
 /**
@@ -14,4 +15,6 @@ public interface AdminMessageService {
     Page<AdminMessageTo> getPageAdminMessage(int page);
 
     AdminMessageTo getAdminMessageById(long id);
+
+    void addUserComment(UserCommentTo userCommentTo);
 }

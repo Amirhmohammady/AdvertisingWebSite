@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface AdminMessageRepository extends JpaRepository<AdminMessageTo, Long> {
     AdminMessageTo findFirstByOrderByIdDesc();
 
-    Page<AdminMessageTo> findAll(Pageable page);
+    Page<AdminMessageTo> findAllByOrderByIdDesc(Pageable page);
 
     AdminMessageTo findById(long id);
 }
