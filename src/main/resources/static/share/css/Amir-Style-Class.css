@@ -280,6 +280,22 @@ body{
 	margin: 15px 15px 15px 15px;
 }
 
+.ah01-padding5_all_childs * {
+	padding: 5px 5px 5px 5px;
+}
+
+.ah01-padding15_all_childs * {
+	padding: 15px 15px 15px 15px;
+}
+
+.ah01-padding5_inner_childs > * {
+	padding: 5px 5px 5px 5px;
+}
+
+.ah01-padding15_inner_childs > * {
+	padding: 15px 15px 15px 15px;
+}
+
 .ah01-padding10_all_childs  * {
 	padding:10px;
 }
@@ -294,6 +310,11 @@ body{
 	width: 90%;
 	max-width: 500px;
 	padding: 10px
+}
+
+.ah01-border_style01_no_width{
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 0.5rem;
 }
 
 .ah01-border_style01_inner_child > *{
