@@ -12,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
+
 /**
  * Created by Amir on 1/28/2022.
  */
@@ -45,12 +48,24 @@ public class AdminMessageServiceImpl implements AdminMessageService {
     }
 
     @Override
-    public AdminMessageTo getAdminMessageById(long id) {
+    public Optional<AdminMessageTo> getAdminMessageById(Long id) {
         return adminMessageRepository.findById(id);
     }
 
     @Override
     public void addUserComment(UserCommentTo userCommentTo) {
         userCommentRepository.save(userCommentTo);
+    }
+
+    @Override
+    @Transactional
+    public int deleteUserCommentById(long id) {
+        return userCommentRepository.deleteByIdCont(id);
+    }
+
+    @Override
+    @Transactional
+    public int deleteAdminMessageById(long id) {
+        return adminMessageRepository.deleteByIdCount(id);
     }
 }

@@ -2,6 +2,9 @@ package com.mycompany.advertising.model.to;
 
 import com.mycompany.advertising.components.utils.AViewableException;
 import com.mycompany.advertising.entity.Role;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +46,9 @@ public class UserTo implements UserDetails {
     @Enumerated(EnumType.STRING)
     //@OneToMany(cascade = CascadeType.ALL)
     @ElementCollection(fetch = FetchType.EAGER)
+    @JoinColumn()//reqired for OnDelete
+    @OnDelete(action = OnDeleteAction.CASCADE)//for CASCADE
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})//for CASCADE
     private List<Role> roles;
     /*@Column(nullable = true)
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)

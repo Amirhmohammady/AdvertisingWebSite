@@ -332,13 +332,17 @@
                 <section class="panel" div style="padding:30px;margin: 20px;color: #111;">
                     <div class="ah01-padding15_inner_childs ah01-border_style01_no_width">
                         <div th:text="${adminMessage.title}" class="ah01-row_wrap_space_between"
-                             style="border-bottom: 1px solid rgba(0,0,0,.125);">
+                             style="border-bottom: 1px solid rgba(0,0,0,.125);font-size: large;">
                         </div>
-                        <div th:text="${adminMessage.message}" style="border-bottom: 1px solid rgba(0,0,0,.125);">
+                        <div th:text="${adminMessage.message}"
+                             style="border-bottom: 1px solid rgba(0,0,0,.125);font-size: medium;">
                         </div>
-                        <div class="ah01-row_wrap_space_between ah01-margin5_inner_childs" style="background: #e3e3e3;padding:0;">
+                        <div class="ah01-row_wrap_space_between ah01-margin5_inner_childs"
+                             style="background: #d3ebff;padding:0;">
                             <h6 th:text="${adminMessage.date}"></h6>
-                            <a style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href=""
+                            <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                               th:attr="onclick=|deleteAdminMessageAndRefresh(${adminMessage.id})|"
+                               style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href="javascript:void(0)"
                                title="Bootstrap 3 themes generator">Delete</a>
                         </div>
                     </div>
@@ -368,13 +372,16 @@
                 <section th:if="${adminMessage.comments != null AND adminMessage.comments.size() > 0}"
                          class="ah01-margin15_inner_childs panel" div style="padding:30px;margin: 20px;color: #111;">
                     <!--use comments-->
-                    <div th:each="comment : ${adminMessage.comments}"
+                    <div th:each="comment : ${adminMessage.comments}" th:id=" 'usrcmnt' + ${comment.id}"
                          class="ah01-margin5_all_childs ah01-border_style01_no_width">
-                        <div class="ah01-row_wrap_space_between" style="background: aliceblue;border-bottom: 1px solid rgba(0,0,0,.125);">
+                        <div class="ah01-row_wrap_space_between"
+                             style="background: aliceblue;border-bottom: 1px solid rgba(0,0,0,.125);">
                             <div th:text="${comment.name}"></div>
                             <div class="ah01-show_in_row">
                                 <h6 th:text="${comment.date}"></h6>
-                                <a style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href=""
+                                <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                                   th:attr="onclick=|deleteUserCommentMessage(${comment.id})|"
+                                   style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href="javascript:void(0)"
                                    title="Bootstrap 3 themes generator">Delete</a>
                             </div>
                         </div>
@@ -390,11 +397,11 @@
     <div class="text-right">
         <div class="credits">
             <!--
-          All the links in the footer should remain intact.
-          You can delete the links only if you purchased the pro version.
-          Licensing information: https://bootstrapmade.com/license/
-          Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
-        -->
+      All the links in the footer should remain intact.
+      You can delete the links only if you purchased the pro version.
+      Licensing information: https://bootstrapmade.com/license/
+      Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+    -->
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
     </div>
@@ -408,7 +415,26 @@
 <script th:src="@{/share/niceAdmin/js/jquery.nicescroll.js}" type="text/javascript"></script>
 <!--custome script for all page-->
 <script th:src="@{/share/niceAdmin/js/scripts.js}"></script>
-
+<script th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    function deleteAdminMessageAndRefresh(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            let stts01 = this.status;
+            if (stts01 == 200) window.location.replace("[[@{/index/search=/page=1}]]");
+        };
+        xhttp.open("DELETE", "[[@{/restapi/adminMessage/}]]" + id, true);
+        xhttp.send();
+    }
+    function deleteUserCommentMessage(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            let stts01 = this.status;
+            if (stts01 == 200) document.getElementById('usrcmnt' + id).remove();
+        };
+        xhttp.open("DELETE", "[[@{/restapi/userComment/}]]" + id, true);
+        xhttp.send();
+    }
+</script>
 
 </body>
 

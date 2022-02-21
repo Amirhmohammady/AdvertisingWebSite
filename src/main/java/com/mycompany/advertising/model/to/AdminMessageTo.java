@@ -1,5 +1,8 @@
 package com.mycompany.advertising.model.to;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -14,11 +17,12 @@ public class AdminMessageTo {
     @Column(name = "ID", nullable = false)
     private Long id;
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)//cuz cascade is restricted
     private UserTo owner;
-    @OneToMany(targetEntity = UserCommentTo.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "msgowner_id")
-    //@JoinColumn(nullable = true) it is wrong
+    @OneToMany(targetEntity = UserCommentTo.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "msgowner")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    //@JoinColumn(name = "msgowner_id")
+    //@JoinColumn(nullable = true)//it is wrong
     private List<UserCommentTo> comments;
     @Column(columnDefinition = "TEXT", length = 2048)
     private String message;

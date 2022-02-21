@@ -15,7 +15,7 @@ public class AvertiseTo {
     @Column(name = "ID", nullable = false)
     private Long id;
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)//cuz cascade is restricted
     private UserTo userTo;
     private String text;
     private String telegramlink;

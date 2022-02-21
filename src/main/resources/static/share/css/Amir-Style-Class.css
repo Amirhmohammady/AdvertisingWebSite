@@ -343,21 +343,21 @@ body{
 }
 .ah01-adver_body #adver_text{
 	height:150px;
-	overflow-y:hidden;
+	overflow:hidden;
 }
 .ah01-adver_body #adverCard{
 	margin:10px;
 	padding:10px;
 	border-radius: 10px;
-	border: 2px solid rgba(0,0,0,.15);
+	border: 1px solid rgba(0,0,0,.15);
 	width:155px;
 	background-color: #e8f3ff;
 }
 .ah01-adver_body #cardImg{
 	height: 180px;
 	width: 100%;
-	border: 2px solid rgba(0,0,0,.15);
-	border-radius: 50%;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: 5%;
 	background-color: #c6cfd7;
 }
 

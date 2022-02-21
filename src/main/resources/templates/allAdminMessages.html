@@ -3,104 +3,126 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-	<meta charset="utf-8">
-	<title>Album example for Bootstrap</title>
+    <meta charset="utf-8">
+    <title>Album example for Bootstrap</title>
 
-	<!--meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
 
-	<link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
-	<!-- bootstrap theme -->
-	<link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+    <!-- bootstrap theme -->
+    <link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
 </head>
 
 <body>
 <header class="ah01-row_wrap_space_between ah01-navbar">
-	<div id="leftdiv" class="ah01-show_in_row">
-		<a id="addad" th:href="@{/addAvertise}">Add your ad</a>
-		<div class="search-row" id="top_menu">
-			<form action="?" id="searchbar" method="get">
-				<div style="position:relative;">
-					<input id="searchbox" placeholder="Search" type="text" name="search">
-					<input id="searchbutton" type="submit" value="" class="ah01-put_right_center">
-				</div>
-			</form>
-		</div>
-	</div>
-	<div class="ah01-show_in_row_center">
-		<select name="languages" id="languages">
-			<option value="english">en</option>
-			<option selected value="farsi">ูุง</option>
-		</select>
-		<a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login}">Login</a>
-		<div th:if="${#request.userPrincipal}" class="ah01-dropdown">
-			<span onclick="myFunction()" class="ah01-dropspn">SARA</span>
-			<div id="dropAH" class="ah01-dropdown-content">
-				<a th:href="@{/logout}">LogOUT</a>
-				<a th:href="@{/User/Dashboard}">Profile</a>
-				<a href="#contact">Messages</a>
-			</div>
-		</div>
-		<img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn"
-			 style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}" />
-	</div>
+    <div id="leftdiv" class="ah01-show_in_row">
+        <a id="addad" th:href="@{/addAvertise}">Add your ad</a>
+        <div class="search-row" id="top_menu">
+            <form action="?" id="searchbar" method="get">
+                <div style="position:relative;">
+                    <input id="searchbox" placeholder="Search" type="text" name="search">
+                    <input id="searchbutton" type="submit" value="" class="ah01-put_right_center">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="ah01-show_in_row_center">
+        <select name="languages" id="languages">
+            <option value="english">en</option>
+            <option selected value="farsi">ูุง</option>
+        </select>
+        <a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login}">Login</a>
+        <div th:if="${#request.userPrincipal}" class="ah01-dropdown">
+            <span onclick="myFunction()" class="ah01-dropspn">SARA</span>
+            <div id="dropAH" class="ah01-dropdown-content">
+                <a th:href="@{/logout}">LogOUT</a>
+                <a th:href="@{/User/Dashboard}">Profile</a>
+                <a href="#contact">Messages</a>
+            </div>
+        </div>
+        <img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn"
+             style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}" />
+    </div>
 </header>
 <main role="main" style="margin-top: 30px;">
-	<table class="table" style="margin-top:0px;width:95%;margin-top:30px;max-width: 1000px;">
-		<tbody>
-		<tr th:each="adminMessage : ${adminMessages.getContent()}">
-			<td scope="row">
-				<b>
-					<div class="recent">
-						<a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h3 th:text="${adminMessage.title}"></h3></a>
-					</div>
-					<h4 th:text="${adminMessage.message}"></h4>
+    <table class="table" style="margin-top:0px;width:95%;margin-top:30px;max-width: 1000px;">
+        <tbody>
+        <tr th:each="adminMessage : ${adminMessages.getContent()}" th:id=" 'admnmsg' + ${adminMessage.id}">
+            <td scope="row">
+                <div class="recent">
+                    <a th:href="@{'/adminMessages/' + ${adminMessage.id}}">
+                        <h3 th:text="${adminMessage.title}"></h3>
+                    </a>
+                </div>
+                <h4 th:text="${adminMessage.message}"></h4>
+                <div class="ah01-row_wrap_space_between ah01-margin5_inner_childs" style="background: #d3ebff;">
+                    <h6 th:text="${adminMessage.date}"></h6>
+                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                       style="font-size: 10px;padding: 2px;"
+                       th:attr="onclick=|deleteAdminMessage(${adminMessage.id})|" class="btn-danger btb-sm"
+                       href="javascript:void(0)" title="Bootstrap 3 themes generator">Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-					<div class="ah01-row_wrap_space_between ah01-margin5_inner_childs">
-						<h6 th:text="${adminMessage.date}"></h6>
-						<a style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href=""
-						   title="Bootstrap 3 themes generator">Delete</a>
-					</div>
-				</b>
-			</td>
-		</tr>
-		</tbody>
-	</table>
-
-	<div class="ah01-show_in_row_center" style="padding:20px;">
-		<div class="ah01-padding10_inner_childs">
-			<a href="https://t.me/Amir_Hosein31"> << </a>
-			<a href="https://t.me/Amir_Hosein31">1</a>
-			<a href="https://t.me/Amir_Hosein31">2</a>
-			<a href="https://t.me/Amir_Hosein31">3</a>
-			<a href="https://t.me/Amir_Hosein31">4</a>
-			<a href="https://t.me/Amir_Hosein31">>></a>
-		</div>
-	</div>
+    <div class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
+        <ul class="pagination">
+            <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#"
+                                                                                              aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+            <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1"
+                                                            tabindex="0" class="page-link">1</a></li>
+            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0"
+                                                      class="page-link">2</a></li>
+            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0"
+                                                      class="page-link">3</a></li>
+            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0"
+                                                      class="page-link">4</a></li>
+            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0"
+                                                      class="page-link">5</a></li>
+            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0"
+                                                      class="page-link">6</a></li>
+            <li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1"
+                                                                             data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
+        </ul>
+    </div>
 </main>
 
-<script>
-	/* When the user clicks on the button,
-	 toggle between hiding and showing the dropdown content */
-	function myFunction() {
-		document.getElementById("dropAH").classList.toggle("ah01-show");
-	}
+<script th:if="${#request.userPrincipal}">
+    /* When the user clicks on the button,
+     toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("dropAH").classList.toggle("ah01-show");
+    }
 
-	// Close the dropdown if the user clicks outside of it
-	document.onclick = function (event) {
-		if (!event.target.matches('.ah01-dropspn')) {
-			var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
-			var i;
-			for (i = 0; i < dropdowns.length; i++) {
-				var openDropdown = dropdowns[i];
-				if (openDropdown.classList.contains('ah01-show')) {
-					openDropdown.classList.remove('ah01-show');
-				}
-			}
-		}
-	}
+    // Close the dropdown if the user clicks outside of it
+    document.onclick = function (event) {
+        if (!event.target.matches('.ah01-dropspn')) {
+            var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('ah01-show')) {
+                    openDropdown.classList.remove('ah01-show');
+                }
+            }
+        }
+    }
+</script>
+<script th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    function deleteAdminMessage(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            let stts01 = this.status;
+            if (stts01 == 200) document.getElementById('admnmsg' + id).remove();
+        };
+        xhttp.open("DELETE", "[[@{/restapi/adminMessage/}]]" + id, true);
+        xhttp.send();
+    }
 </script>
 
 </body>

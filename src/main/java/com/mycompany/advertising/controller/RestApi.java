@@ -3,10 +3,13 @@ package com.mycompany.advertising.controller;
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
+import com.mycompany.advertising.service.api.AdminMessageService;
 import com.mycompany.advertising.service.api.UserService;
 import com.mycompany.advertising.service.api.VerificationTokenService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +28,8 @@ public class RestApi {
     UserService userservice;
     @Autowired
     VerificationTokenService verificationTokenService;
+    @Autowired
+    AdminMessageService adminMessageService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -93,5 +98,21 @@ public class RestApi {
         } catch (Exception e) {
             return e.getMessage();
         }
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @DeleteMapping("/userComment/{id}")
+    public ResponseEntity<String> deleteUserComment(@PathVariable long id) {
+        int rows = adminMessageService.deleteUserCommentById(id);
+        if (rows > 0) return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("fail to delete", HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @DeleteMapping("/adminMessage/{id}")
+    public ResponseEntity<String> deleteAdminMessage(@PathVariable long id) {
+        int rows = adminMessageService.deleteAdminMessageById(id);
+        if (rows > 0) return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("fail to delete", HttpStatus.NOT_ACCEPTABLE);
     }
 }

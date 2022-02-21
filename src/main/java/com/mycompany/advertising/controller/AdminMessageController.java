@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Created by Amir on 2/11/2022.
@@ -26,11 +27,11 @@ public class AdminMessageController {
 
     @GetMapping("/adminMessages/{msgId}")
     public String adminMessagesGet(Model model, @PathVariable long msgId) {
-        AdminMessageTo adminMessageTo = adminMessageService.getAdminMessageById(msgId);
-        if (adminMessageTo == null) {
+        Optional<AdminMessageTo> adminMessageTo = adminMessageService.getAdminMessageById(msgId);
+        if (!adminMessageTo.isPresent()) {
             return errorfolder + "error-404";
         }
-        model.addAttribute("adminMessage", adminMessageTo);
+        model.addAttribute("adminMessage", adminMessageTo.get());
         return "adminMessage";
     }
 
@@ -44,17 +45,17 @@ public class AdminMessageController {
     public String adminMessagesPost(Model model, @PathVariable long msgId,
                                     @RequestParam(required = false, name = "name") String name,
                                     @RequestParam(required = false, name = "message") String message) {
-        AdminMessageTo adminMessageTo = adminMessageService.getAdminMessageById(msgId);
-        if (adminMessageTo == null) {
+        Optional<AdminMessageTo> adminMessageTo = adminMessageService.getAdminMessageById(msgId);
+        if (!adminMessageTo.isPresent()) {
             return errorfolder + "error-404";
         }
-        model.addAttribute("adminMessage", adminMessageTo);
-        if (adminMessageTo.getMessageCnt() >= 20) return "adminMessage";
+        model.addAttribute("adminMessage", adminMessageTo.get());
+        if (adminMessageTo.get().getMessageCnt() >= 20) return "adminMessage";
         UserCommentTo userCommentTo = new UserCommentTo();
         userCommentTo.setDate(new Date());
         userCommentTo.setMessage(message);
         userCommentTo.setName(name);
-        userCommentTo.setMsgowner(adminMessageTo);
+        userCommentTo.setMsgowner(adminMessageTo.get());
         adminMessageService.addUserComment(userCommentTo);
         return "adminMessage";
     }

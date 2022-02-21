@@ -12,7 +12,7 @@ public class UserCommentTo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     @Column(name = "ID", nullable = false)
     private Long id;
-    @ManyToOne(targetEntity = AdminMessageTo.class, fetch = FetchType.EAGER)
+    @ManyToOne//(targetEntity = AdminMessageTo.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private AdminMessageTo msgowner;
     @Column(columnDefinition = "TEXT", length = 512)
