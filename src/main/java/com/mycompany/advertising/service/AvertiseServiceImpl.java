@@ -30,7 +30,7 @@ public class AvertiseServiceImpl implements AvertiseService {
     public Page<AvertiseTo> getPageAvertises(int page, String search) {
         Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
         //messageRepository.findAllByTextOrTelegramlink(search, search, pageable).getTotalPages();
-        return avertiseRepository.findAllByTextOrTelegramlink(search, search, pageable);//.getContent();
+        return avertiseRepository.findAllByTextOrWebSiteLink(search, search, pageable);//.getContent();
     }
 
     @Override

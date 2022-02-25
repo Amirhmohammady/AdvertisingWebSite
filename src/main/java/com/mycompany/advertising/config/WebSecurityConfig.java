@@ -27,10 +27,10 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${max.inactive.interval.seconds.remember.me}")
-    private int rememberMeSessionTimeout;
     @Autowired
     AuthenticationFailureHandler authenticationFailureHandler;
+    @Value("${max.inactive.interval.seconds.remember.me}")
+    private int rememberMeSessionTimeout;
     //@Autowired
     //@Qualifier("persistentTokenRepository")
     //private PersistentTokenRepository persistentTokenRepository;
@@ -74,6 +74,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .permitAll().and()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         http
+                .headers()
+                .xssProtection()
+                .and()
+                .contentSecurityPolicy("script-src 'self'");
+        http
                 .authorizeRequests()
                 .anyRequest().permitAll().and()
                 .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/").and()
@@ -84,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
                 .tokenValiditySeconds(rememberMeSessionTimeout).tokenRepository(persistentTokenRepository())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-                //for enabling multipart sending and handling logout
+        //for enabling multipart sending and handling logout
         http.csrf().disable();
     }
 

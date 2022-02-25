@@ -16,7 +16,7 @@ public interface AvertiseRepository extends JpaRepository<AvertiseTo,Long> {
     //List<MessageTo> findAllByPrice(double price, Pageable pageable);
     //List<Email> findByEmailIdInAndPincodeIn(List<String> emails, List<String> pinCodes);
     //List<Transaction> findAllByIdOrParentId(Long id, Long parentId);
-    Page<AvertiseTo> findAllByTextOrTelegramlink(String text, String telegramlink, Pageable pageable);
+    Page<AvertiseTo> findAllByTextOrWebSiteLink(String text, String webSiteLink, Pageable pageable);
     Page<AvertiseTo> findAll(Pageable page);
     List<AvertiseTo> findAll();
     List<AvertiseTo> findAllById(Long id);

@@ -17,17 +17,46 @@ public class AvertiseTo {
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)//cuz cascade is restricted
     private UserTo userTo;
+    @Column(length = 100)
+    private String title;
+    @Column(columnDefinition = "TEXT", length = 2048)
     private String text;
-    private String telegramlink;
+    private String webSiteLink;
     private Date startdate;
     private Date expiredate;
-    private String imagename;
-    private String smallimagename;
+    private String imageUrl;
+    private String smallImageUrl;
+    private String imageUrl2;
+    private String smallImageUrl2;
     @Enumerated(EnumType.STRING)
     private AvertiseStatus status;
     private String info;
 
     public AvertiseTo() {
+    }
+
+    public String getSmallImageUrl2() {
+        return smallImageUrl2;
+    }
+
+    public void setSmallImageUrl2(String smallImageUrl2) {
+        this.smallImageUrl2 = smallImageUrl2;
+    }
+
+    public String getImageUrl2() {
+        return imageUrl2;
+    }
+
+    public void setImageUrl2(String imageUrl2) {
+        this.imageUrl2 = imageUrl2;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getInfo() {
@@ -46,12 +75,12 @@ public class AvertiseTo {
         this.status = status;
     }
 
-    public String getSmallimagename() {
-        return smallimagename;
+    public String getSmallImageUrl() {
+        return smallImageUrl;
     }
 
-    public void setSmallimagename(String smallimagename) {
-        this.smallimagename = smallimagename;
+    public void setSmallImageUrl(String smallImageUrl) {
+        this.smallImageUrl = smallImageUrl;
     }
 
     public String getText() {
@@ -86,12 +115,12 @@ public class AvertiseTo {
         this.expiredate = expiredate;
     }
 
-    public String getImagename() {
-        return imagename;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImagename(String imagename) {
-        this.imagename = imagename;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Date getStartdate() {
@@ -102,11 +131,11 @@ public class AvertiseTo {
         this.startdate = startdate;
     }
 
-    public String getTelegramlink() {
-        return telegramlink;
+    public String getWebSiteLink() {
+        return webSiteLink;
     }
 
-    public void setTelegramlink(String telegramlink) {
-        this.telegramlink = telegramlink;
+    public void setWebSiteLink(String webSiteLink) {
+        this.webSiteLink = webSiteLink;
     }
 }

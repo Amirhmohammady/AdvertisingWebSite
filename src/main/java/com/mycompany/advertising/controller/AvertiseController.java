@@ -7,6 +7,7 @@ import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.AvertiseService;
 import com.mycompany.advertising.service.api.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,13 +33,18 @@ public class AvertiseController {
     private StorageService storageService;
     @Autowired
     private AvertiseService avertiseService;
+    @Value("${amir.error.folder}")
+    String errorfolder;
     //private UserService userService;
 
-    @GetMapping("/showAvertise")
-    public String showAvertise(Model model) {
-        List<AvertiseTo> avertises = avertiseService.getPageAvertises(1).getContent();
-        model.addAttribute("avertises", avertises);
-        return "show_advertise";
+    @GetMapping("/showAvertise/id={id}")
+    public String showAvertise(Model model, @PathVariable long id) {
+        Optional<AvertiseTo> avertise = avertiseService.getAvertiseById(id);
+        if (!avertise.isPresent()) {
+            return errorfolder + "error-404";
+        }
+        model.addAttribute("avertises", avertise.get());
+        return "showAdvertise";
     }
 
     @GetMapping("/addAvertise")
@@ -49,7 +55,6 @@ public class AvertiseController {
 
     @PostMapping("/addAvertise")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    //@ResponseBody
     public String addAvertise(Model model, @RequestParam(required = false, name = "pic") MultipartFile file,
                               @RequestParam(required = false, name = "description") String description,
                               @RequestParam(required = false, name = "tel_link") String telegramlink) {
@@ -65,10 +70,10 @@ public class AvertiseController {
                 e.printStackTrace();
             }
             AvertiseTo avertiseTo = new AvertiseTo();
-            avertiseTo.setTelegramlink(telegramlink);
-            avertiseTo.setImagename(files.get(0));
+            avertiseTo.setWebSiteLink(telegramlink);
+            avertiseTo.setImageUrl(files.get(0));
             avertiseTo.setStatus(AvertiseStatus.Not_Accepted);
-            avertiseTo.setSmallimagename(files.get(1));
+            avertiseTo.setSmallImageUrl(files.get(1));
             avertiseTo.setText(description);
             avertiseTo.setUserTo(userTo);
             avertiseService.addAvertise(avertiseTo);
@@ -104,7 +109,7 @@ public class AvertiseController {
         return "redirect:" + previouslink;
     }
 
-    @GetMapping("/edit/id={id}")
+    @GetMapping("/editAvertise/id={id}")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String edit(Model model, @PathVariable Long id,

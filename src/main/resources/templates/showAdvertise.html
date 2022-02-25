@@ -1,6 +1,7 @@
-﻿<!doctype html>
+<!doctype html>
 
-<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8">
     <title>Album example for Bootstrap</title>
@@ -19,7 +20,6 @@
 <header class="ah01-row_wrap_space_between ah01-navbar">
     <div id="leftdiv" class="ah01-show_in_row">
         <a id="addad" th:href="@{/addAvertise}">Add your ad</a>
-
         <div class="search-row" id="top_menu">
             <form action="?" id="searchbar" method="get">
                 <div style="position:relative;">
@@ -32,55 +32,48 @@
     <div class="ah01-show_in_row_center">
         <select name="languages" id="languages">
             <option value="english">en</option>
-            <option selected value="farsi">فا</option>
+            <option selected value="farsi">ูุง</option>
         </select>
         <a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login}">Login</a>
-
         <div th:if="${#request.userPrincipal}" class="ah01-dropdown">
             <span onclick="myFunction()" class="ah01-dropspn">SARA</span>
-
             <div id="dropAH" class="ah01-dropdown-content">
                 <a th:href="@{/logout}">LogOUT</a>
                 <a th:href="@{/User/Dashboard}">Profile</a>
                 <a href="#contact">Messages</a>
             </div>
         </div>
-        <img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;"
-             th:src="@{/share/img/avatar1_small.jpg}"/>
+        <img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn"
+             style="border-radius:40%;" th:src="@{/share/img/avatar1_small.jpg}" />
     </div>
 </header>
 <main role="main" style="margin-top: 30px;">
-    <div class="ah01-show_in_row_center ah01-adver_body">
-        <div th:each="advertise : ${advertises}" th:id="'adverCard' + ${advertise.id}">
-            <a th:href="@{'/showAvertise/id=' + ${advertise.id}}">
-                <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
-            </a>
-            <div>
-                <a th:href="@{'/showAvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
-                <p>[[${advertise.text}]]</p>
-                <div class="ah01-row_wrap_space_between">
-                    <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">Link</a>
-                    <a class="ah01_button_style01"
-                       th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
-                       th:href="@{'/editAvertise/id=' + ${advertise.id}}">
-                        Edit</a>
-                    <a class="ah01_button_style01 btn-danger"
-                       th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
-                       href="delete.html">
-                        Delete</a>
+    <table class="table" style="margin-top:0px;width:95%;margin-top:30px;max-width: 1000px;">
+        <tbody>
+        <tr th:each="adminMessage : ${adminMessages.getContent()}" th:id=" 'admnmsg' + ${adminMessage.id}">
+            <td scope="row">
+                <div class="recent">
+                    <a th:href="@{'/adminMessages/' + ${adminMessage.id}}">
+                        <h3 th:text="${adminMessage.title}"></h3>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </div>
+                <h4 th:text="${adminMessage.message}"></h4>
+                <div class="ah01-row_wrap_space_between ah01-margin5_inner_childs" style="background: #d3ebff;">
+                    <h6 th:text="${adminMessage.date}"></h6>
+                    <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                       style="font-size: 10px;padding: 2px;"
+                       th:attr="onclick=|deleteAdminMessage(${adminMessage.id})|" class="btn-danger btb-sm"
+                       href="javascript:void(0)" title="Bootstrap 3 themes generator">Delete</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     <div class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
         <ul class="pagination">
             <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#"
-                                                                                              aria-controls="example1"
-                                                                                              data-dt-idx="0"
-                                                                                              tabindex="0"
-                                                                                              class="page-link">Previous</a>
-            </li>
+                                                                                              aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
             <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1"
                                                             tabindex="0" class="page-link">1</a></li>
             <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0"
@@ -94,31 +87,12 @@
             <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0"
                                                       class="page-link">6</a></li>
             <li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1"
-                                                                             data-dt-idx="7" tabindex="0"
-                                                                             class="page-link">Next</a></li>
+                                                                             data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
         </ul>
-    </div>
-    <div class="ah01-show_in_row_center" style="padding:20px;">
-        <div class="ah01-blue_box ah01-show_childs_columns_center ah01-margin5_inner_childs">
-            <h3>Contact us</h3>
-
-            <div><a href="https://t.me/Amir_m32" class="btn btn-primary btn-sm">Telegram</a></div>
-            <div><a th:href="@{/adminMessgesList/1}" class="btn btn-primary btn-sm">All messages</a></div>
-        </div>
-        <div th:if="${adminMessage != null}" class="ah01-blue_box ah01-show_childs_columns_center"
-             style="display: block;">
-            <div><a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h4 th:text="${adminMessage.title}"
-                                                                            style="overflow: hidden;max-height: 20px;"></h4>
-            </a></div>
-            <h5 th:text="${adminMessage.message}" style="overflow: hidden;max-height: 80px;"></h5>
-        </div>
-        <div th:unless="${adminMessage != null}" class="ah01-blue_box">
-            <h5>there is no message yet</h5>
-        </div>
     </div>
 </main>
 
-<script>
+<script th:if="${#request.userPrincipal}">
     /* When the user clicks on the button,
      toggle between hiding and showing the dropdown content */
     function myFunction() {
@@ -139,6 +113,18 @@
         }
     }
 </script>
+<script th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    function deleteAdminMessage(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            let stts01 = this.status;
+            if (stts01 == 200) document.getElementById('admnmsg' + id).remove();
+        };
+        xhttp.open("DELETE", "[[@{/restapi/adminMessage/}]]" + id, true);
+        xhttp.send();
+    }
+</script>
 
 </body>
+
 </html>
