@@ -1,6 +1,6 @@
 package com.mycompany.advertising.model.to;
 
-import com.mycompany.advertising.entity.AvertiseStatus;
+import com.mycompany.advertising.entity.AdvertiseStatus;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Amir on 10/28/2019.
  */
 @Entity
-public class AvertiseTo {
+public class AdvertiseTo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     @Column(name = "ID", nullable = false)
@@ -29,10 +29,10 @@ public class AvertiseTo {
     private String imageUrl2;
     private String smallImageUrl2;
     @Enumerated(EnumType.STRING)
-    private AvertiseStatus status;
+    private AdvertiseStatus status;
     private String info;
 
-    public AvertiseTo() {
+    public AdvertiseTo() {
     }
 
     public String getSmallImageUrl2() {
@@ -67,11 +67,11 @@ public class AvertiseTo {
         this.info = info;
     }
 
-    public AvertiseStatus getStatus() {
+    public AdvertiseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(AvertiseStatus status) {
+    public void setStatus(AdvertiseStatus status) {
         this.status = status;
     }
 

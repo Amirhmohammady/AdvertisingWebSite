@@ -4,10 +4,10 @@ import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
 import com.mycompany.advertising.entity.Role;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.AdminMessageTo;
-import com.mycompany.advertising.model.to.AvertiseTo;
+import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
-import com.mycompany.advertising.service.api.AvertiseService;
+import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class MainController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
     @Autowired
-    private AvertiseService messageService;
+    private AdvertiseService messageService;
     @Autowired
     private UserService userService;
 
@@ -120,8 +120,6 @@ public class MainController {
                             @RequestParam(required = false, name = "search") String search02,
                             @RequestParam(required = false, name = "lan") String language,
                             HttpServletRequest request, HttpServletResponse response) {
-
-        List<AvertiseTo> avertiseTos;
         boolean hasparam = false;
         if (language != null) {
             hasparam = true;
@@ -135,10 +133,11 @@ public class MainController {
         }
         if (hasparam) return "redirect:/index/search=" + search + "/page=" + pagenumber;
         if (pagenumber < 1) pagenumber = 1;
+        List<AdvertiseTo> advertiseTos;
         if (search == null | search.equals("")) {
-            avertiseTos = messageService.getPageAvertises(pagenumber).getContent();
+            advertiseTos = messageService.getPageAdvertises(pagenumber).getContent();
         } else {
-            avertiseTos = messageService.getPageAvertises(pagenumber, search).getContent();
+            advertiseTos = messageService.getPageAdvertises(pagenumber, search).getContent();
         }
         AdminMessageTo adminMessageTo = adminMessageService.getLastMessage();
         if (adminMessageTo != null) model.addAttribute("adminMessage", adminMessageTo);
@@ -147,7 +146,7 @@ public class MainController {
             adminMessageTo.setId((long) 0);
             model.addAttribute("adminMessage", adminMessageTo);
         }*/
-        model.addAttribute("advertises", avertiseTos);
+        model.addAttribute("advertises", advertiseTos);
         return "index";
     }
 

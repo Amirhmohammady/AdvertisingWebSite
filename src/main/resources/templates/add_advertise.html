@@ -1,26 +1,37 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
 	<!-- amir css core CSS -->
 	<link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
 </head>
+
 <body>
-<div class="ah01-margin5_inner_childs" style="margin-left: 2%;">
+<div class="ah01-margin5_inner_childs ah01-show_childs_columns_center">
 	<h2>Sending Message</h2>
-	<p>Please create your message below. We will get back to you at the earliest!</p>
+	<p>Please create your advertise below. We will get back to you at the earliest!</p>
 	<br>
-	<form class="ah01-margin5_inner_childs" method="POST" enctype="multipart/form-data" th:action="@{/addAvertise}">
+	<form class="ah01-margin5_inner_childs" style="width: 100%;" method="POST" enctype="multipart/form-data"
+		  th:action="@{/addAdvertise}">
+		<p>Title:</p>
+		<input class="ah01-border_style01" type="text" name="title" />
+		<br>
+		<p>Main Message Picture:</p>
+		<input class="ah01-border_style01" type="file" name="pic" accept="image/*" />
+		<br>
 		<p>Description:</p>
-		<textarea class="ah01-border_style01" style="height: 170px;" name="description"></textarea><!--size="100"-->
+		<textarea class="ah01-border_style01" style="height: 170px;" name="description"></textarea>
+		<!--size="100"-->
 		<p>Telegram Link:</p>
-		<input class="ah01-border_style01" type="text" name="tel_link"/>
+		<input class="ah01-border_style01" type="text" name="tel_link" />
 		<br>
-		<p>Message Picture:</p>
-		<input class="ah01-border_style01" type="file" name="pic" accept="image/*"/>
+		<p>Second Message Picture:</p>
+		<input class="ah01-border_style01" type="file" name="pic2" accept="image/*" />
 		<br>
-		<input class="ah01-border_style01" type="submit" value="Send →"/>
+		<input class="ah01-border_style01" style="width: 100px;margin: 0 auto;" type="submit" value="Send →" />
 	</form>
 	<p th:if="${succsessmessage}">[[${succsessmessage}]]</p>
 </div>
+
 </body>
 </html>

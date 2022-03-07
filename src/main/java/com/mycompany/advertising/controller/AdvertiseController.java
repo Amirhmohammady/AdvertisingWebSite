@@ -1,10 +1,10 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.components.api.AuthenticationFacade;
-import com.mycompany.advertising.entity.AvertiseStatus;
-import com.mycompany.advertising.model.to.AvertiseTo;
+import com.mycompany.advertising.entity.AdvertiseStatus;
+import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
-import com.mycompany.advertising.service.api.AvertiseService;
+import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,39 +25,39 @@ import java.util.Optional;
  * Created by Amir on 11/2/2019.
  */
 @Controller
-public class AvertiseController {
+public class AdvertiseController {
 
     @Autowired
     AuthenticationFacade authenticationFacade;
+    @Value("${amir.error.folder}")
+    String errorfolder;
     @Autowired
     private StorageService storageService;
     @Autowired
-    private AvertiseService avertiseService;
-    @Value("${amir.error.folder}")
-    String errorfolder;
+    private AdvertiseService advertiseService;
     //private UserService userService;
 
-    @GetMapping("/showAvertise/id={id}")
-    public String showAvertise(Model model, @PathVariable long id) {
-        Optional<AvertiseTo> avertise = avertiseService.getAvertiseById(id);
-        if (!avertise.isPresent()) {
+    @GetMapping("/showAdvertise/id={id}")
+    public String showAdvertise(Model model, @PathVariable Long id) {
+        Optional<AdvertiseTo> advertise = advertiseService.getAdvertiseById(id);
+        if (!advertise.isPresent()) {
             return errorfolder + "error-404";
         }
-        model.addAttribute("avertises", avertise.get());
+        model.addAttribute("advertise", advertise.get());
         return "showAdvertise";
     }
 
-    @GetMapping("/addAvertise")
+    @GetMapping("/addAdvertise")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String addAvertise() {
+    public String addAdvertise() {
         return "add_advertise";
     }
 
-    @PostMapping("/addAvertise")
+    @PostMapping("/addAdvertise")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String addAvertise(Model model, @RequestParam(required = false, name = "pic") MultipartFile file,
-                              @RequestParam(required = false, name = "description") String description,
-                              @RequestParam(required = false, name = "tel_link") String telegramlink) {
+    public String addAdvertise(Model model, @RequestParam(required = true, name = "pic") MultipartFile file,
+                               @RequestParam(required = false, name = "description") String description,
+                               @RequestParam(required = false, name = "tel_link") String telegramlink) {
         //String filename = StringUtils.cleanPath(file.getOriginalFilename());
         UserTo userTo = authenticationFacade.getUserToDetails();
         if (file != null) {
@@ -69,14 +69,14 @@ public class AvertiseController {
                 model.addAttribute("succsessmessage", e.getMessage());
                 e.printStackTrace();
             }
-            AvertiseTo avertiseTo = new AvertiseTo();
-            avertiseTo.setWebSiteLink(telegramlink);
-            avertiseTo.setImageUrl(files.get(0));
-            avertiseTo.setStatus(AvertiseStatus.Not_Accepted);
-            avertiseTo.setSmallImageUrl(files.get(1));
-            avertiseTo.setText(description);
-            avertiseTo.setUserTo(userTo);
-            avertiseService.addAvertise(avertiseTo);
+            AdvertiseTo advertiseTo = new AdvertiseTo();
+            advertiseTo.setWebSiteLink(telegramlink);
+            advertiseTo.setImageUrl(files.get(0));
+            advertiseTo.setStatus(AdvertiseStatus.Not_Accepted);
+            advertiseTo.setSmallImageUrl(files.get(1));
+            advertiseTo.setText(description);
+            advertiseTo.setUserTo(userTo);
+            advertiseService.addAdvertise(advertiseTo);
         } else {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println("add_advertise no param");
@@ -90,35 +90,35 @@ public class AvertiseController {
     //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String delete(Model model, @PathVariable Long id, //Principal principal,
                          @RequestParam(required = true, name = "pLink") String previouslink) {
-        Optional<AvertiseTo> avertiseoptl = avertiseService.getAvertiseById(id);
-        if (avertiseoptl.isPresent()) {
+        Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
+        if (advertiseoptl.isPresent()) {
             UserTo userTo = authenticationFacade.getUserToDetails();
             boolean isAuthenticated = false;
-            System.out.println(avertiseoptl.get().getUserTo() + "-------------------------");
+            System.out.println(advertiseoptl.get().getUserTo() + "-------------------------");
             System.out.println(userTo.getId() + "-------------------------");
             System.out.println("testtttttttttttttttttttttttt");
             if (authenticationFacade.hasRole("ROLE_ADMIN")) {
                 isAuthenticated = true;
                 System.out.println("admin-------------------------");
-            } else if (userTo != null && userTo.getId() == avertiseoptl.get().getUserTo().getId()) {
+            } else if (userTo != null && userTo.getId() == advertiseoptl.get().getUserTo().getId()) {
                 isAuthenticated = true;
                 System.out.println("not admin-------------------------");
             }
-            if (isAuthenticated) avertiseService.deleteAvertiseById(id);
+            if (isAuthenticated) advertiseService.deleteAdvertiseById(id);
         }
         return "redirect:" + previouslink;
     }
 
-    @GetMapping("/editAvertise/id={id}")
+    @GetMapping("/editAdvertise/id={id}")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String edit(Model model, @PathVariable Long id,
                        @RequestParam(required = true, name = "pLink") String previouslink) {
-        Optional<AvertiseTo> avertiseoptl = avertiseService.getAvertiseById(id);
+        Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
         UserTo userTo = authenticationFacade.getUserToDetails();
-        if (avertiseoptl.isPresent())
+        if (advertiseoptl.isPresent())
             if (userTo != null)
-                if (userTo.getId() == avertiseoptl.get().getId()) ;
+                if (userTo.getId() == advertiseoptl.get().getId()) ;
 
         return "redirect:" + previouslink;
     }

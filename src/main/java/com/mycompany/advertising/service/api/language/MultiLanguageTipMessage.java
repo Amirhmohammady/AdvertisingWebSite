@@ -6,6 +6,6 @@ package com.mycompany.advertising.service.api.language;
 public interface MultiLanguageTipMessage {
     public void addEnglishMessage(String msg);
     public void addPersianMessage(String msg);
-    public void addAvertise(String language, String msg);
+    public void addAdvertise(String language, String msg);
     public String getLastMessage();
 }

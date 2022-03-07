@@ -28,7 +28,7 @@ public class MultiLanguageTipMessageImpl implements MultiLanguageTipMessage {
     }
 
     @Override
-    public void addAvertise(String language, String msg) {
+    public void addAdvertise(String language, String msg) {
         LanguageEntity languageEntity = new LanguageEntity(language, "home.welcome", msg);
         languageRepository.save(languageEntity);
     }

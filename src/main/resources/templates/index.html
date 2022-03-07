@@ -18,7 +18,7 @@
 <body>
 <header class="ah01-row_wrap_space_between ah01-navbar">
     <div id="leftdiv" class="ah01-show_in_row">
-        <a id="addad" th:href="@{/addAvertise}">Add your ad</a>
+        <a id="addad" th:href="@{/addAdvertise}">Add your ad</a>
 
         <div class="search-row" id="top_menu">
             <form action="?" id="searchbar" method="get">
@@ -52,17 +52,17 @@
 <main role="main" style="margin-top: 30px;">
     <div class="ah01-show_in_row_center ah01-adver_body">
         <div th:each="advertise : ${advertises}" th:id="'adverCard' + ${advertise.id}">
-            <a th:href="@{'/showAvertise/id=' + ${advertise.id}}">
+            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
                 <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
             </a>
             <div>
-                <a th:href="@{'/showAvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
+                <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
                 <p>[[${advertise.text}]]</p>
                 <div class="ah01-row_wrap_space_between">
                     <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">Link</a>
                     <a class="ah01_button_style01"
                        th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
-                       th:href="@{'/editAvertise/id=' + ${advertise.id}}">
+                       th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
                         Edit</a>
                     <a class="ah01_button_style01 btn-danger"
                        th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"

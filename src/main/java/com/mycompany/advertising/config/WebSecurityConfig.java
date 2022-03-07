@@ -73,11 +73,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logout()
 //                .permitAll().and()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        http
+        /*http
                 .headers()
                 .xssProtection()
                 .and()
-                .contentSecurityPolicy("script-src 'self'");
+                .contentSecurityPolicy("script-src 'self'");*/
         http
                 .authorizeRequests()
                 .anyRequest().permitAll().and()

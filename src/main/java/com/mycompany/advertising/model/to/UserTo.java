@@ -66,7 +66,7 @@ public class UserTo implements UserDetails {
     }
 
     public void setFullname(String fullname) {
-        if (fullname == null) websiteurl = "";
+        if (fullname == null) fullname = "";
         if (fullname.length() > 50)
             throw new AViewableException("Full Name should less than 50 chars");
         this.fullname = fullname;
