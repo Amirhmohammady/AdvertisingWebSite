@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -45,6 +46,11 @@ public class AdminMessageServiceImpl implements AdminMessageService {
         logger.info("request fo admin message pag " + page);
         Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
         return adminMessageRepository.findAllByOrderByIdDesc(pageable);
+    }
+
+    @Override
+    public List<AdminMessageTo> getAllAdminMessage() {
+        return adminMessageRepository.findAll();
     }
 
     @Override

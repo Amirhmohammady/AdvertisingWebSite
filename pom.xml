@@ -162,10 +162,10 @@
         </dependency>-->
         <!--war mysql need for jar-->
         <!--<dependency>-->
-            <!--<groupId>mysql</groupId>-->
-            <!--<artifactId>mysql-connector-java</artifactId>-->
-            <!--&lt;!&ndash;<version>6.0.6</version>&ndash;&gt;-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>mysql</groupId>-->
+        <!--<artifactId>mysql-connector-java</artifactId>-->
+        <!--&lt;!&ndash;<version>6.0.6</version>&ndash;&gt;-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -214,10 +214,10 @@
             <version>1.10.2</version>
         </dependency>
         <!--XML Response MediaType.APPLICATION_XML_VALUE-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
 </project>
 

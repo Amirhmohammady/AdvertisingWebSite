@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,6 +77,7 @@ public class AdvertiseController {
             advertiseTo.setSmallImageUrl(files.get(1));
             advertiseTo.setText(description);
             advertiseTo.setUserTo(userTo);
+            advertiseTo.setDate(LocalDateTime.now());
             advertiseService.addAdvertise(advertiseTo);
         } else {
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");

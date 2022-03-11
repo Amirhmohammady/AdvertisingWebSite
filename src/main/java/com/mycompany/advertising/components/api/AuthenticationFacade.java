@@ -9,4 +9,5 @@ public interface AuthenticationFacade {
 
     UserTo getUserToDetails();
     boolean hasRole(String role);
+    String getDomainName();
 }

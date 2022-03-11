@@ -3,6 +3,7 @@ package com.mycompany.advertising.model.to;
 import com.mycompany.advertising.entity.AdvertiseStatus;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
 public class AdvertiseTo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
-    @Column(name = "ID", nullable = false)
+    @Column(nullable = false)
     private Long id;
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)//cuz cascade is restricted
@@ -31,8 +32,18 @@ public class AdvertiseTo {
     @Enumerated(EnumType.STRING)
     private AdvertiseStatus status;
     private String info;
+    @Column(nullable = false)
+    private LocalDateTime date;
 
     public AdvertiseTo() {
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     public String getSmallImageUrl2() {

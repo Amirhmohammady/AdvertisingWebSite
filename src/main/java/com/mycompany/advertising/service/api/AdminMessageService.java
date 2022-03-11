@@ -4,6 +4,7 @@ import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.UserCommentTo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,6 +16,8 @@ public interface AdminMessageService {
     AdminMessageTo getLastMessage();
 
     Page<AdminMessageTo> getPageAdminMessage(int page);
+
+    List<AdminMessageTo> getAllAdminMessage();
 
     Optional<AdminMessageTo> getAdminMessageById(Long id);
 

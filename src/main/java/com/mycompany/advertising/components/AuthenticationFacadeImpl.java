@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collection;
 
@@ -20,7 +21,7 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
         if (principal instanceof UserTo) {
-            return (UserTo)principal;
+            return (UserTo) principal;
         } else {
             return null;
         }
@@ -31,15 +32,20 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
         System.out.println("checking for Authentication----------------------");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-        for(GrantedAuthority authoritie:authorities){
+        for (GrantedAuthority authoritie : authorities) {
             System.out.println(authoritie.toString());
-            if (role.equals(authoritie.getAuthority())){
+            if (role.equals(authoritie.getAuthority())) {
                 System.out.println("returning true in hasRole");
                 return true;
             }
         }
         System.out.println("returning false in hasRole");
         return false;
+    }
+
+    @Override
+    public String getDomainName() {
+        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     }
     /*@Override
     public UserTo getUserToDetails2() {
