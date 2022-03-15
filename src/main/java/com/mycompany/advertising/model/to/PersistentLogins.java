@@ -3,7 +3,7 @@ package com.mycompany.advertising.model.to;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by Amir on 12/8/2021.
@@ -17,7 +17,7 @@ public class PersistentLogins {
     @Column(nullable = false)
     private String token;
     @Column(nullable = false)
-    private Date lastUsed;
+    private LocalDateTime lastUsed;
 
     public PersistentLogins() {
     }
@@ -46,11 +46,11 @@ public class PersistentLogins {
         this.token = token;
     }
 
-    public Date getLastUsed() {
+    public LocalDateTime getLastUsed() {
         return lastUsed;
     }
 
-    public void setLastUsed(Date lastUsed) {
+    public void setLastUsed(LocalDateTime lastUsed) {
         this.lastUsed = lastUsed;
     }
 }

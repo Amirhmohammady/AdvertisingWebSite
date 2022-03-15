@@ -4,7 +4,6 @@ import com.mycompany.advertising.entity.AdvertiseStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by Amir on 10/28/2019.
@@ -13,18 +12,19 @@ import java.util.Date;
 public class AdvertiseTo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
-    @Column(nullable = false)
     private Long id;
     @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)//cuz cascade is restricted
     private UserTo userTo;
     @Column(length = 100)
     private String title;
-    @Column(columnDefinition = "TEXT", length = 2048)
+    @Column(nullable = false, columnDefinition = "TEXT", length = 2048)
     private String text;
     private String webSiteLink;
-    private Date startdate;
-    private Date expiredate;
+    @Column(nullable = false)
+    private LocalDateTime startdate;
+    @Column(nullable = false)
+    private LocalDateTime expiredate;
     private String imageUrl;
     private String smallImageUrl;
     private String imageUrl2;
@@ -118,11 +118,11 @@ public class AdvertiseTo {
         this.userTo = userTo;
     }
 
-    public Date getExpiredate() {
+    public LocalDateTime getExpiredate() {
         return expiredate;
     }
 
-    public void setExpiredate(Date expiredate) {
+    public void setExpiredate(LocalDateTime expiredate) {
         this.expiredate = expiredate;
     }
 
@@ -134,11 +134,11 @@ public class AdvertiseTo {
         this.imageUrl = imageUrl;
     }
 
-    public Date getStartdate() {
+    public LocalDateTime getStartdate() {
         return startdate;
     }
 
-    public void setStartdate(Date startdate) {
+    public void setStartdate(LocalDateTime startdate) {
         this.startdate = startdate;
     }
 

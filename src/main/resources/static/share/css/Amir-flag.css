@@ -1,0 +1,13 @@
+i.flag:before{display:inline-block;width:16px;height:11px;content:"";background:url(../niceAdmin/img/icons/flags.png) no-repeat -108px -1976px}
+i.flag:not(.icon):before{content:"";background:url(../niceAdmin/img/icons/flags.png) no-repeat -108px -1976px}
+i.flag.iran:before{background-position:-36px -780px}
+i.flag-ir:before,i.flag-iran:before{background-position:-36px -780px!important}
+i.flag.united.kingdom:before{background-position:-36px -26px}
+
+
+
+
+
+
+
+

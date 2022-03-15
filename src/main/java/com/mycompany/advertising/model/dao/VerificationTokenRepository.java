@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
 
     @Modifying
     @Query("DELETE FROM VerificationTokenTo t where t.expiryDate <= ?1")
-    void deleteAllExpiredTokenSince(Date now);
+    void deleteAllExpiredTokenSince(LocalDateTime now);
 
     //@Query(value = "SELECT token FROM verification_token_to WHERE verification_token_to.user_id = (SELECT id FROM user_to WHERE username = ?1 LIMIT 1) LIMIT 1", nativeQuery = true)
     //String findTokenByPhoneNumber(String phonenumber);
@@ -33,7 +33,7 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     //List<VerificationTokenTo> findByExpiryDateGreaterThan(Date date);
     //List<VerificationTokenTo> findByExpiryDateGreaterThanEqual(Date date);
     //List<VerificationTokenTo> findByExpiryDateLessThanEqual(Date date);
-    List<VerificationTokenTo> findByExpiryDateLessThan(Date date);
+    List<VerificationTokenTo> findByExpiryDateLessThan(LocalDateTime date);
 
     //void deleteAll(List<VerificationTokenTo> verificationTokenTos);
     boolean existsByUser_Username(String username);

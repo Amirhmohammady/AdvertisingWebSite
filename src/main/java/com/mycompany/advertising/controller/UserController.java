@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by Amir on 8/21/2020.
@@ -62,7 +62,7 @@ public class UserController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserTo) {
             AdminMessageTo adminMessage = new AdminMessageTo();
-            adminMessage.setDate(new Date());
+            adminMessage.setDate(LocalDateTime.now());
             adminMessage.setMessage(message);
             adminMessage.setTitle(title);
             adminMessage.setOwner((UserTo) principal);

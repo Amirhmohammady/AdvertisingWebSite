@@ -12,7 +12,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * Created by Amir on 10/30/2021.
@@ -41,7 +42,7 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 * * * ?")
     public void doEveryHoure() {
         //deleteUserTocken
-        userservice.deleteAllExiredToken(new Date(System.currentTimeMillis()));
+        userservice.deleteAllExiredToken(LocalDateTime.now());
         logger.info("all expired token deleted");
     }
 

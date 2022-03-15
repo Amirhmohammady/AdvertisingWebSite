@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
@@ -77,7 +77,7 @@ public class TokenForChangePhoneNumberServiceImpl implements TokenForChangePhone
         TokenForChangePhoneNumberTo tokenForChangePhoneNumber = new TokenForChangePhoneNumberTo();
         tokenForChangePhoneNumber.setToken(new DecimalFormat("000000").format(new Random().nextInt(999999)));
         smsService.sendSms("your vrification code is: " + tokenForChangePhoneNumber.getToken(), userTo.getUsername());
-        tokenForChangePhoneNumber.setExpiryDate(new Date(System.currentTimeMillis() + (1000 * 60 * expiretockentime)));
+        tokenForChangePhoneNumber.setExpiryDate(LocalDateTime.now().plusMinutes(expiretockentime));//new Date(System.currentTimeMillis() + (1000 * 60 * expiretockentime)));
         tokenForChangePhoneNumber.setUser(userTo);
         tokenForChangePhoneNumber.setNewPhoneNumber(newphonenumber);
         tokenForChangePhoneNumberRepository.save(tokenForChangePhoneNumber);

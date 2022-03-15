@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -52,7 +52,7 @@ public class AdminMessageController {
         model.addAttribute("adminMessage", adminMessageTo.get());
         if (adminMessageTo.get().getMessageCnt() >= 20) return "adminMessage";
         UserCommentTo userCommentTo = new UserCommentTo();
-        userCommentTo.setDate(new Date());
+        userCommentTo.setDate(LocalDateTime.now());
         userCommentTo.setMessage(message);
         userCommentTo.setName(name);
         userCommentTo.setMsgowner(adminMessageTo.get());

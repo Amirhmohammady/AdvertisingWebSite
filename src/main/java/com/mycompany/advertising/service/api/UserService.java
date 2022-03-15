@@ -7,7 +7,7 @@ import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.util.UserStatuseByPhoneNumber;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by Amir on 6/7/2020.
@@ -34,7 +34,7 @@ public interface UserService {
 
     //public VerificationTokenTo getVerificationToken(String VerificationToken);
     //@Transactional put in implementation
-    void deleteAllExiredToken(Date date);
+    void deleteAllExiredToken(LocalDateTime date);
 
     String getCorrectFormatPhoneNo(String phonenumber) throws PhoneNumberFormatException;
 

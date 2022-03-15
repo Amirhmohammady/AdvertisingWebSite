@@ -1,7 +1,7 @@
 package com.mycompany.advertising.model.to;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by Amir on 2/1/2022.
@@ -18,7 +18,7 @@ public class UserCommentTo {
     @Column(columnDefinition = "TEXT", length = 512)
     private String message;
     private String name;
-    private Date date;
+    private LocalDateTime date;
 
     public Long getId() {
         return id;
@@ -52,11 +52,11 @@ public class UserCommentTo {
         this.name = name;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

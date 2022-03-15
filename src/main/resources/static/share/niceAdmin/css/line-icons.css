@@ -76,7 +76,12 @@
 	height: 20px;
 	display: inline-block !important;
 }
-
+.icon-language-l {
+	background: url('../img/icons/line-icon.png') no-repeat -687px -98px;
+	width: 26px;
+	height: 26px;
+	display: inline-block !important;
+}
 
 
 

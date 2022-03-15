@@ -4,7 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,13 +27,13 @@ public class AdminMessageTo {
     @Column(columnDefinition = "TEXT", length = 2048)
     private String message;
     private String title;
-    private Date date;
+    private LocalDateTime date;
     private int messageCnt = 0;
 
     public AdminMessageTo() {
     }
 
-    public AdminMessageTo(UserTo owner, String message, Date date) {
+    public AdminMessageTo(UserTo owner, String message, LocalDateTime date) {
         this();
         this.owner = owner;
         this.message = message;
@@ -64,11 +64,11 @@ public class AdminMessageTo {
         this.title = title;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

@@ -2,7 +2,7 @@ package com.mycompany.advertising.model.to;
 
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by Amir on 5/12/2021.
@@ -21,7 +21,7 @@ public class VerificationTokenTo {
     @JoinColumn(nullable = false, referencedColumnName = "username")
     private UserTo user;
 
-    private Date expiryDate;
+    private LocalDateTime expiryDate;
 
     /*private Date calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();
@@ -33,7 +33,7 @@ public class VerificationTokenTo {
 
     }
 
-    public VerificationTokenTo(String token, UserTo user, Date expiryDate) {
+    public VerificationTokenTo(String token, UserTo user, LocalDateTime expiryDate) {
         this.token = token;
         this.user = user;
         this.expiryDate = expiryDate;
@@ -63,11 +63,11 @@ public class VerificationTokenTo {
         this.user = user;
     }
 
-    public Date getExpiryDate() {
+    public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 }

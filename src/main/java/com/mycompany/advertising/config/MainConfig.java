@@ -46,7 +46,7 @@ public class MainConfig implements WebMvcConfigurer {
     //set language to save in cookie and set cookie name
     public LocaleResolver localeResolver() {
         CookieLocaleResolver r = new CookieLocaleResolver();
-        r.setDefaultLocale(new Locale("fa"));//Locale.US);
+        r.setDefaultLocale(new Locale("fa"));//Locale.US);//new Locale("fa")
         r.setCookieName("localeInfo");
         //if set to -1, the cookie is deleted when browser shuts down
         //r.setCookieMaxAge(24*60*60);

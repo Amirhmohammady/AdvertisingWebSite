@@ -10,45 +10,24 @@
     <meta name="author" content="">
     <!--link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico"-->
 
-    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/share/niceAdmin/css/bootstrap.min.css}" rel="stylesheet">
+    <!--flag-->
+    <link th:href="@{/share/css/Amir-flag.css}" rel="stylesheet">
     <!-- bootstrap theme -->
     <link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
+    <!--external css-->
+    <!-- font icon -->
+    <link th:href="@{/share/niceAdmin/css/elegant-icons-style.css}" rel="stylesheet" />
+    <link th:href="@{/share/niceAdmin/css/font-awesome.min.css}" rel="stylesheet" />
+    <!-- Custom styles -->
+    <link th:href="@{/share/niceAdmin/css/style.css}" rel="stylesheet">
+    <link th:href="@{/share/niceAdmin/css/style-responsive.css}" rel="stylesheet" />
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
 </head>
 
 <body>
-<header class="ah01-row_wrap_space_between ah01-navbar">
-    <div id="leftdiv" class="ah01-show_in_row">
-        <a id="addad" th:href="@{/addAdvertise}">Add your ad</a>
-
-        <div class="search-row" id="top_menu">
-            <form action="?" id="searchbar" method="get">
-                <div style="position:relative;">
-                    <input id="searchbox" placeholder="Search" type="text" name="search">
-                    <input id="searchbutton" type="submit" value="" class="ah01-put_right_center">
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="ah01-show_in_row_center">
-        <select name="languages" id="languages">
-            <option value="english">en</option>
-            <option selected value="farsi">فا</option>
-        </select>
-        <a th:unless="${#request.userPrincipal}" id="loginNavbar" th:href="@{/login}">Login</a>
-
-        <div th:if="${#request.userPrincipal}" class="ah01-dropdown">
-            <span onclick="myFunction()" class="ah01-dropspn">SARA</span>
-
-            <div id="dropAH" class="ah01-dropdown-content">
-                <a th:href="@{/logout}">LogOUT</a>
-                <a th:href="@{/User/Dashboard}">Profile</a>
-                <a href="#contact">Messages</a>
-            </div>
-        </div>
-        <img th:if="${#request.userPrincipal}" onclick="myFunction()" class="ah01-dropspn" style="border-radius:40%;"
-             th:src="@{/share/img/avatar1_small.jpg}"/>
-    </div>
-</header>
+<span th:insert="fragments/navbar.html"  th:remove="tag"></span>
 <main role="main" style="margin-top: 30px;">
     <div class="ah01-show_in_row_center ah01-adver_body">
         <div th:each="advertise : ${advertises}" th:id="'adverCard' + ${advertise.id}">
@@ -64,7 +43,7 @@
                        th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
                        th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
                         Edit</a>
-                    <a class="ah01_button_style01 btn-danger"
+                    <a class="ah01_button_style01_no_background btn-danger"
                        th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
                        href="delete.html">
                         Delete</a>
@@ -117,7 +96,7 @@
         </div>
     </div>
 </main>
-
+<span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
 <script>
     /* When the user clicks on the button,
      toggle between hiding and showing the dropdown content */

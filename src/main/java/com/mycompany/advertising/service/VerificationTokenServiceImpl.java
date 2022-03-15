@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -51,7 +51,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     @Override
-    public void deleteAllExpiredTokenSince(Date now) {
+    public void deleteAllExpiredTokenSince(LocalDateTime now) {
         verificationTokenRepository.deleteAllExpiredTokenSince(now);
     }
 
@@ -67,7 +67,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     }
 
     @Override
-    public List<VerificationTokenTo> findByExpiryDateLessThan(Date date) {
+    public List<VerificationTokenTo> findByExpiryDateLessThan(LocalDateTime date) {
         return verificationTokenRepository.findByExpiryDateLessThan(date);
     }
 
@@ -79,7 +79,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         VerificationTokenTo token = new VerificationTokenTo(new DecimalFormat(
                 "000000").format(new Random().nextInt(999999)),
                 user,
-                new Date(System.currentTimeMillis() + (1000 * 60 * expiretockentime)));
+                LocalDateTime.now().plusMinutes(expiretockentime));//(System.currentTimeMillis() + (1000 * 60 * expiretockentime)));
         //Amir todo remove try/catch
         try {
             smsService.sendSms("your vrification code is: " + token.getToken(), user.getUsername());

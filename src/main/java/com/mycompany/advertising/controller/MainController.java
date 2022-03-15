@@ -134,7 +134,7 @@ public class MainController {
         if (hasparam) return "redirect:/index/search=" + search + "/page=" + pagenumber;
         if (pagenumber < 1) pagenumber = 1;
         List<AdvertiseTo> advertiseTos;
-        if (search == null | search.equals("")) {
+        if (search == null || search.equals("")) {
             advertiseTos = messageService.getPageAdvertises(pagenumber).getContent();
         } else {
             advertiseTos = messageService.getPageAdvertises(pagenumber, search).getContent();

@@ -16,9 +16,9 @@
 
 @media (max-width: 768px) {
 
-    .header {
+    /*.header {
         position: absolute;
-    }
+    }*/
 
     /*sidebar*/
 
@@ -203,7 +203,7 @@
     /*--*/
 
     /*.chart-position {*/
-        /*margin-top: 0px;*/
+    /*margin-top: 0px;*/
     /*}*/
 
     .timeline-desk .album a {
@@ -224,15 +224,15 @@
 }
 
 
-@media (max-width: 740px) {
-    #task_notificatoin_bar,#mail_notificatoin_bar,#alert_notificatoin_bar{
+@media (max-width: 840px) {
+    #task_notificatoin_bar,#mail_notificatoin_bar,#alert_notificatoin_bar,#amir_language_bar{
         display: none;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 630px) {
 
-    .notification-row,.task_notificatoin_bar, .search-row,.knob-charts, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{
+    .search-row,.task_notificatoin_bar,.knob-charts, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{/*.notification-row,*/
         display: none;
     }
 
@@ -269,16 +269,21 @@
     }
 
     .chart-position {
-       margin-top: 0px;
-     }
+        margin-top: 0px;
+    }
 }
 
+@media (max-width:400px) {
+    .notification-row{
+        display: none;
+    }
+}
 @media (max-width:320px) {
     .login-social-link a {
         padding: 15px 17px !important;
     }
 
-    .notification-row, .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {
+    .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {/*.notification-row,*/
         display: none;
     }
 

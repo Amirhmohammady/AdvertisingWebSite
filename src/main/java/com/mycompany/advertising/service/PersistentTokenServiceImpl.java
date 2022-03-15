@@ -12,8 +12,6 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;*/
 
-import java.util.Date;
-
 //@Repository("persistentTokenRepository")
 //@Service
 //@Transactional
@@ -35,7 +33,7 @@ public class PersistentTokenServiceImpl{}/* implements PersistentTokenRepository
     }
 
     @Override
-    public void updateToken(String series, String tokenValue, Date lastUsed) {
+    public void updateToken(String series, String tokenValue, LocalDateTime lastUsed) {
         PersistentLogins logins = persistentLoginsRepository.findTopBySeries(series);
         logins.setToken(tokenValue);
         logins.setLastUsed(lastUsed);
@@ -96,7 +94,7 @@ public class PersistentTokenServiceImpl{}/* implements PersistentTokenRepository
     }
 
     @Override
-    public void updateToken(String series, String tokenValue, Date lastUsed) {
+    public void updateToken(String series, String tokenValue, LocalDateTime lastUsed) {
         Session session = hibernatesessionFactory.getCurrentSession();
         PersistentLoginsTo logins = session.get(PersistentLoginsTo.class, series);
         logins.setToken(tokenValue);

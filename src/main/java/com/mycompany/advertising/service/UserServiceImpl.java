@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteAllExiredToken(Date date) {
+    public void deleteAllExiredToken(LocalDateTime date) {
         List<VerificationTokenTo> verificationTokenTos = verificationTokenRepository.findByExpiryDateLessThan(date);
         if (verificationTokenTos.size() > 0) {
             List<UserTo> userTos = verificationTokenTos.stream().map((vto) -> {

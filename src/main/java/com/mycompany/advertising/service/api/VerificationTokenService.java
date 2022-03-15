@@ -6,7 +6,7 @@ import com.mycompany.advertising.components.utils.SendSmsException;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,13 +17,13 @@ public interface VerificationTokenService {
 
     VerificationTokenTo findByUser(UserTo user);
 
-    void deleteAllExpiredTokenSince(Date now);
+    void deleteAllExpiredTokenSince(LocalDateTime now);
 
     VerificationTokenTo findByUser_Username(String phonenumber);
 
     long deleteByUser(UserTo user);
 
-    List<VerificationTokenTo> findByExpiryDateLessThan(Date date);
+    List<VerificationTokenTo> findByExpiryDateLessThan(LocalDateTime date);
 
     public void saveVerificationToken(UserTo user) throws CreateTokenException, PhoneNumberFormatException, SendSmsException;
 
