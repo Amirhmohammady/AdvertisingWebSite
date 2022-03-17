@@ -20,7 +20,26 @@
 		<!-- notificatoin dropdown start-->
 		<ul class="nav pull-right top-menu">
 			<!-- Amir language bar -->
-
+			<li id="amir_language_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="icon-language-l"></i>
+				</a>
+				<ul class="dropdown-menu extended notification" style="width: 40px !important;max-width: 60px !important;min-width: 60px !important;">
+					<div class="notify-arrow notify-arrow-blue"></div>
+					<li>
+						<a th:href="@{/lan=fa}">
+							<span><i class="iran flag"></i></span>
+							<span class="small italic pull-right">fa</span>
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/lan=en}">
+							<span><i class="united kingdom flag"></i></span>
+							<span class="small italic pull-right">en</span>
+						</a>
+					</li>
+				</ul>
+			</li>
 			<li class="dropdown">
 				<a th:href="@{/login}" class="dropdown-toggle">Lo<span class="lite">gin</span></a>
 			</li>

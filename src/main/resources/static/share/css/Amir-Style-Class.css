@@ -69,8 +69,12 @@ body{
 	align-items:center;
 }
 
-.ah01-show_childs_in_row{
-
+.ah01-show_all_childs_in_row *{
+	display:flex;
+	flex-flow:row;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items:center;
 }
 
 .ah01-row_wrap_space_between {

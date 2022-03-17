@@ -18,25 +18,28 @@
     <link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
-    <link th:href="@{/share/niceAdmin/css/elegant-icons-style.css}" rel="stylesheet" />
-    <link th:href="@{/share/niceAdmin/css/font-awesome.min.css}" rel="stylesheet" />
+    <link th:href="@{/share/niceAdmin/css/elegant-icons-style.css}" rel="stylesheet"/>
+    <link th:href="@{/share/niceAdmin/css/font-awesome.min.css}" rel="stylesheet"/>
     <!-- Custom styles -->
     <link th:href="@{/share/niceAdmin/css/style.css}" rel="stylesheet">
-    <link th:href="@{/share/niceAdmin/css/style-responsive.css}" rel="stylesheet" />
+    <link th:href="@{/share/niceAdmin/css/style-responsive.css}" rel="stylesheet"/>
     <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
 </head>
 
 <body>
-<span th:insert="fragments/navbar.html"  th:remove="tag"></span>
+<span th:insert="fragments/navbar.html" th:remove="tag"></span>
 <main role="main" style="margin-top: 30px;">
     <div class="ah01-show_in_row_center ah01-adver_body">
         <div th:each="advertise : ${advertises}" th:id="'adverCard' + ${advertise.id}">
             <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
                 <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
             </a>
+
             <div>
                 <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
+
                 <p>[[${advertise.text}]]</p>
+
                 <div class="ah01-row_wrap_space_between">
                     <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">Link</a>
                     <a class="ah01_button_style01"
@@ -78,13 +81,13 @@
         </ul>
     </div>
     <div class="ah01-show_in_row_center" style="padding:20px;">
-        <div class="ah01-blue_box ah01-show_childs_columns_center ah01-margin5_inner_childs">
+        <div class="ah01-blue_box ah01-show_childs_column_center ah01-margin5_inner_childs">
             <h3>Contact us</h3>
 
             <div><a href="https://t.me/Amir_m32" class="btn btn-primary btn-sm">Telegram</a></div>
             <div><a th:href="@{/adminMessgesList/1}" class="btn btn-primary btn-sm">All messages</a></div>
         </div>
-        <div th:if="${adminMessage != null}" class="ah01-blue_box ah01-show_childs_columns_center"
+        <div th:if="${adminMessage != null}" class="ah01-blue_box ah01-show_childs_column_center"
              style="display: block;">
             <div><a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h4 th:text="${adminMessage.title}"
                                                                             style="overflow: hidden;max-height: 20px;"></h4>

@@ -1,27 +1,44 @@
-@media (min-width: 980px) {
-
+/*Amir changes started*/
+@media (max-width:450px) {
+    .tasks-bar {
+        right: -130px !important;
+    }
+    .tasks-bar > div{
+        right: 140px !important;
+    }
 }
-
+@media (max-width:400px) {
+    .inbox {
+        right: -100px !important;
+    }
+    .inbox > div{
+        right: 110px !important;
+    }
+}
+@media (max-width:350px) {
+    .notification {
+        right: -40px !important;
+    }
+    .notification > div{
+        right: 50px !important;
+    }
+}
+/*Amir changes ended*/
+@media (min-width: 980px) {
+}
 @media (min-width: 768px) and (max-width: 979px) {
-
     .inbox-wrapper .inbox-left {
         width: 30%;
     }
-
     .inbox-wrapper .inbox-right {
         width: 70%;
     }
-
 }
-
 @media (max-width: 768px) {
-
     /*.header {
         position: absolute;
     }*/
-
     /*sidebar*/
-
     #sidebar {
         height: auto;
         overflow: hidden;
@@ -29,18 +46,14 @@
         width: 100%;
         z-index: 1001;
     }
-
-
     /* body container */
     #main-content {
         margin: 0px!important;
         position: none !important;
     }
-
     #sidebar > ul > li > a > span {
         line-height: 35px;
     }
-
     #sidebar > ul > li {
         margin: 0 10px 5px 10px;
     }
@@ -53,7 +66,6 @@
     #sidebar > ul > li > a i{
         /*display: none !important;*/
     }
-
     .mail-info, .mail-info:hover {
         display: none !important;
     }
@@ -61,12 +73,10 @@
         margin-right: 10px;
         margin-top: 15px;
     }
-
     #sidebar ul > li.active > a .arrow, #sidebar ul > li > a:hover .arrow, #sidebar ul > li > a:focus .arrow,
     #sidebar > ul > li.active > a .arrow.open, #sidebar > ul > li > a:hover .arrow.open, #sidebar > ul > li > a:focus .arrow.open{
         margin-top: 15px;
     }
-
     #sidebar > ul > li > a, #sidebar > ul > li > ul.sub > li {
         width: 100%;
     }
@@ -76,18 +86,14 @@
     #sidebar > ul > li > ul.sub > li > a:hover {
         /*background: #4A8BC2 !important ;*/
     }
-
-
     /* sidebar */
     #sidebar {
         margin: 0px !important;
     }
-
     /* sidebar collabler */
     #sidebar .btn-navbar.collapsed .arrow {
         display: none;
     }
-
     #sidebar .btn-navbar .arrow {
         position: absolute;
         right: 35px;
@@ -98,57 +104,43 @@
         border-left: 15px solid transparent;
         border-right: 15px solid transparent;
     }
-
-
     /*---------*/
-
     .btn {
         margin-bottom: 5px;
     }
-
-
     .inbox-wrapper aside {
         display: block;
     }
-
     .inbox-wrapper .inbox-left , .inbox-wrapper .inbox-right{
         width: 100% ;
     }
-
     /* full calendar fix */
     .fc-header-right {
         left:25px;
         position: absolute;
     }
-
     .fc-header-left .fc-button {
         margin: 0px !important;
         top: -10px !important;
     }
-
     .fc-header-right .fc-button {
         margin: 0px !important;
         top: -50px !important;
     }
-
     .fc-state-active, .fc-state-active .fc-button-inner, .fc-state-hover, .fc-state-hover .fc-button-inner {
         background: none !important;
         color: #FFFFFF !important;
     }
-
     .fc-state-default, .fc-state-default .fc-button-inner {
         background: none !important;
     }
-
     .fc-button {
         border: none !important;
         margin-right: 2px;
     }
-
     .fc-view {
         top: 0px !important;
     }
-
     .fc-button .fc-button-inner {
         margin: 0px !important;
         padding: 2px !important;
@@ -172,11 +164,9 @@
         text-shadow: 0 1px 0px rgba(255, 255, 255, .6) !important;
         text-align: center;
     }
-
     .fc-button.fc-state-disabled .fc-button-inner {
         color: #bcbbbb !important;
     }
-
     .fc-button.fc-state-active .fc-button-inner {
         background-color: #e5e4e4 !important;
         background-image: -moz-linear-gradient(top, #e5e4e4, #dddcdc) !important;
@@ -186,146 +176,99 @@
         background-image: linear-gradient(to bottom, #e5e4e4, #dddcdc) !important;
         filter: progid:dximagetransform.microsoft.gradient(startColorstr='#e5e4e4', endColorstr='#dddcdc', GradientType=0) !important;
     }
-
     .fc-content {
         margin-top: 50px;
     }
-
     .fc-header-title h2 {
         line-height: 40px !important;
         font-size: 12px !important;
     }
-
     .fc-header {
         margin-bottom:0px !important;
     }
-
     /*--*/
-
     /*.chart-position {*/
     /*margin-top: 0px;*/
     /*}*/
-
     .timeline-desk .album a {
         margin-bottom: 5px;
         margin-right: 4px;
     }
-
     .stepy-titles li {
         margin: 10px 3px;
     }
-
     .mail-option .btn {
         margin-bottom: 0;
     }
-
-
-
 }
-
-
-@media (max-width: 840px) {
+/*@media (max-width: 840px) {
     #task_notificatoin_bar,#mail_notificatoin_bar,#alert_notificatoin_bar,#amir_language_bar{
         display: none;
     }
-}
-
+}*/
 @media (max-width: 630px) {
-
-    .search-row,.task_notificatoin_bar,.knob-charts, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{/*.notification-row,*/
+    .task_notificatoin_bar,.knob-charts, .dont-show , .inbox-head .sr-input, .inbox-head .sr-btn{/*.search-row,.notification-row,*/
         display: none;
     }
-
     .inbox-wrapper aside {
         display: block;
     }
-
     .inbox-wrapper .inbox-left , .inbox-wrapper .inbox-right{
         width: 100% ;
-    }
-
-    #top_menu .nav > li, ul.top-menu > li {
-        float: right;
     }
     .hidden-phone {
         display: none !important;
     }
 
-    .dataTables_filter {
-        float: left;
-    }
-
     .dataTables_info {
         margin-bottom: 10px;
     }
-
     .mail-option .btn {
         margin-bottom: 0;
     }
-
     .mail-option .inbox-pagination {
         margin-top: 10px;
         float: left;
     }
-
     .chart-position {
         margin-top: 0px;
     }
 }
-
-@media (max-width:400px) {
+/*@media (max-width:400px) {
     .notification-row{
         display: none;
     }
-}
+}*/
 @media (max-width:320px) {
     .login-social-link a {
         padding: 15px 17px !important;
     }
-
     .search, .dont-show, .inbox-head .sr-input, .inbox-head .sr-btn {/*.notification-row,*/
         display: none;
     }
-
     .inbox-wrapper aside {
         display: block ;
     }
-
     .inbox-wrapper .inbox-left , .inbox-wrapper .inbox-right{
         width: 100% ;
     }
-
-    #top_menu .nav > li, ul.top-menu > li {
-        float: right;
-    }
-
     .hidden-phone {
         display: none !important;
     }
-
     .dataTables_filter {
         float: left;
     }
-
     .dataTables_info {
         margin-bottom: 10px;
     }
-
     .mail-option .btn {
         margin-bottom: 0;
     }
-
     .mail-option .inbox-pagination {
         margin-top: 10px;
         float: left;
     }
-
     .chart-position {
         margin-top: 0px;
     }
-
 }
-
-
-
-
