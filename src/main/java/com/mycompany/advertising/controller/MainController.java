@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
 //import org.springframework.context.MessageSource;
 
 /**
@@ -107,16 +106,13 @@ public class MainController {
 
     @GetMapping("/")
     public String defualt() {
-        return "redirect:/index/search=/page=1";
+        return "redirect:/index";
     }
 
-    @GetMapping("/index")
-    public String index(Model model) {
-        return "redirect:/index/search=/page=1";
-    }
-
-    @GetMapping(value = "/index/search={search}/page={pagenumber}")//, produces = "text/plain;charset=UTF-8")
-    public String mainIndex(Model model, @PathVariable String search, @PathVariable int pagenumber,
+    @GetMapping(value = {"/index", "/index/search={search}/page={pagenumber}"})
+//, produces = "text/plain;charset=UTF-8")
+    public String indexGet(Model model, @PathVariable(required = false) String search,
+                            @PathVariable(required = false) Integer pagenumber,
                             @RequestParam(required = false, name = "search") String search02,
                             @RequestParam(required = false, name = "lan") String language,
                             HttpServletRequest request, HttpServletResponse response) {
@@ -132,7 +128,7 @@ public class MainController {
             search = search02;
         }
         if (hasparam) return "redirect:/index/search=" + search + "/page=" + pagenumber;
-        if (pagenumber < 1) pagenumber = 1;
+        if (pagenumber == null || pagenumber < 1) pagenumber = 1;
         List<AdvertiseTo> advertiseTos;
         if (search == null || search.equals("")) {
             advertiseTos = messageService.getPageAdvertises(pagenumber).getContent();

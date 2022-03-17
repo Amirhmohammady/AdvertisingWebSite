@@ -16,7 +16,7 @@
 		<!--  search form end -->
 	</div>
 
-	<div th:unless="${#request.userPrincipal}" class="top-nav notification-row">
+	<div class="top-nav notification-row">
 		<!-- notificatoin dropdown start-->
 		<ul class="nav pull-right top-menu">
 			<!-- Amir language bar -->
@@ -24,36 +24,7 @@
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 					<i class="icon-language-l"></i>
 				</a>
-				<ul class="dropdown-menu extended notification" style="width: 40px !important;max-width: 60px !important;min-width: 60px !important;">
-					<div class="notify-arrow notify-arrow-blue"></div>
-					<li>
-						<a th:href="@{/lan=fa}">
-							<span><i class="iran flag"></i></span>
-							<span class="small italic pull-right">fa</span>
-						</a>
-					</li>
-					<li>
-						<a th:href="@{/lan=en}">
-							<span><i class="united kingdom flag"></i></span>
-							<span class="small italic pull-right">en</span>
-						</a>
-					</li>
-				</ul>
-			</li>
-			<li class="dropdown">
-				<a th:href="@{/login}" class="dropdown-toggle">Lo<span class="lite">gin</span></a>
-			</li>
-		</ul>
-	</div>
-	<div th:if="${#request.userPrincipal}" class="top-nav notification-row">
-		<!-- notificatoin dropdown start-->
-		<ul class="nav pull-right top-menu">
-			<!-- Amir language bar -->
-			<li id="amir_language_bar" class="dropdown">
-				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-					<i class="icon-language-l"></i>
-				</a>
-				<ul class="dropdown-menu extended notification" style="width: 40px !important;max-width: 60px !important;min-width: 60px !important;">
+				<ul class="dropdown-menu extended notification" style="width: 70px !important;max-width: 75px !important;min-width: 70px !important;">
 					<div class="notify-arrow notify-arrow-blue"></div>
 					<li>
 						<a th:href="@{/lan=fa}">
@@ -70,7 +41,7 @@
 				</ul>
 			</li>
 			<!-- task notificatoin start -->
-			<li id="task_notificatoin_bar" class="dropdown">
+			<li th:if="${#request.userPrincipal}" id="task_notificatoin_bar" class="dropdown">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 					<i class="icon-task-l"></i>
 					<span class="badge bg-important">5</span>
@@ -160,7 +131,7 @@
 			</li>
 			<!-- task notificatoin end -->
 			<!-- inbox notificatoin start-->
-			<li id="mail_notificatoin_bar" class="dropdown">
+			<li th:if="${#request.userPrincipal}" id="mail_notificatoin_bar" class="dropdown">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 					<i class="icon-envelope-l"></i>
 					<span class="badge bg-important">5</span>
@@ -225,7 +196,7 @@
 			</li>
 			<!-- inbox notificatoin end -->
 			<!-- alert notification start-->
-			<li id="alert_notificatoin_bar" class="dropdown">
+			<li th:if="${#request.userPrincipal}" id="alert_notificatoin_bar" class="dropdown">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 
 					<i class="icon-bell-l"></i>
@@ -271,7 +242,7 @@
 			</li>
 			<!-- alert notification end-->
 			<!-- user login dropdown start-->
-			<li class="dropdown">
+			<li th:if="${#request.userPrincipal}" class="dropdown">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
                                 <img alt="" th:src="@{/share/niceAdmin/img/avatar1_small.jpg}">
@@ -302,6 +273,9 @@
 						<a href="documentation.html"><i class="icon_key_alt"></i> Documentation</a>
 					</li>
 				</ul>
+			</li>
+			<li th:unless="${#request.userPrincipal}" class="dropdown">
+				<a th:href="@{/login}" class="dropdown-toggle">Lo<span class="lite">gin</span></a>
 			</li>
 			<!-- user login dropdown end -->
 		</ul>
