@@ -104,18 +104,13 @@ public class MainController {
         return "signup";
     }
 
-    @GetMapping("/")
-    public String defualt() {
-        return "redirect:/index";
-    }
-
-    @GetMapping(value = {"/index", "/index/search={search}/page={pagenumber}"})
+    @GetMapping(value = {"/", "/index", "/index/search={search}/page={pagenumber}"})
 //, produces = "text/plain;charset=UTF-8")
     public String indexGet(Model model, @PathVariable(required = false) String search,
-                            @PathVariable(required = false) Integer pagenumber,
-                            @RequestParam(required = false, name = "search") String search02,
-                            @RequestParam(required = false, name = "lan") String language,
-                            HttpServletRequest request, HttpServletResponse response) {
+                           @PathVariable(required = false) Integer pagenumber,
+                           @RequestParam(required = false, name = "search") String search02,
+                           @RequestParam(required = false, name = "lan") String language,
+                           HttpServletRequest request, HttpServletResponse response) {
         boolean hasparam = false;
         if (language != null) {
             hasparam = true;

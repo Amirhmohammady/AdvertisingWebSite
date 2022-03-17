@@ -44,7 +44,10 @@
 <body>
 <!-- container section start -->
 <section id="container" class="">
-    <span th:insert="fragments/navbar.html"  th:remove="tag"> </span>
+    <!--header start-->
+    <header class="header dark-bg" th:insert="fragments/navbar.html">
+    </header>
+    <!--header end-->
     <!--main content start-->
     <section class="wrapper" style="margin-top: 0px;">
         <div class="row">
@@ -74,7 +77,7 @@
                             <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
                                th:attr="onclick=|deleteAdminMessageAndRefresh(${adminMessage.id})|"
                                style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href="javascript:void(0)"
-                               title="Bootstrap 3 themes generator">Delete</a>
+                               title="Bootstrap 3 themes generator">[[#{delete.text}]]</a>
                         </div>
                     </div>
                 </section>
@@ -113,7 +116,7 @@
                                 <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
                                    th:attr="onclick=|deleteUserCommentMessage(${comment.id})|"
                                    style="font-size: 10px;padding: 2px;" class="btn-danger btb-sm" href="javascript:void(0)"
-                                   title="Bootstrap 3 themes generator">Delete</a>
+                                   title="Bootstrap 3 themes generator">[[#{delete.text}]]</a>
                             </div>
                         </div>
                         <div th:text="${comment.message}"></div>

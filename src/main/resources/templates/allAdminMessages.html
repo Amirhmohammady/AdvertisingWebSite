@@ -26,7 +26,10 @@
 </head>
 
 <body>
-<span th:insert="fragments/navbar.html"  th:remove="tag"> </span>
+<!--header start-->
+<header class="header dark-bg" th:insert="fragments/navbar.html">
+</header>
+<!--header end-->
 <main role="main" style="margin-top: 30px;">
     <table class="table" style="margin-top:0px;width:95%;margin-top:30px;max-width: 1000px;">
         <tbody>
@@ -43,7 +46,7 @@
                     <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
                        style="font-size: 10px;padding: 2px;"
                        th:attr="onclick=|deleteAdminMessage(${adminMessage.id})|" class="btn-danger btb-sm"
-                       href="javascript:void(0)" title="Bootstrap 3 themes generator">Delete</a>
+                       href="javascript:void(0)" title="Bootstrap 3 themes generator">[[#{delete.text}]]</a>
                 </div>
             </td>
         </tr>

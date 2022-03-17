@@ -41,7 +41,10 @@
 <body>
 <!-- container section start -->
 <section id="container" class="">
-    <span th:insert="fragments/navbarComplete.html"  th:remove="tag"> </span>
+    <!--header start-->
+    <header class="header dark-bg" th:insert="fragments/navbarComplete.html">
+    </header>
+    <!--header end-->
     <span th:insert="fragments/sidebarAdmin.html"  th:remove="tag"> </span>
 
     <!--main content start-->
