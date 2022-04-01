@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 /**
  * Created by Amir on 1/9/2022.
  */
-@Service
+//@Service
 public class StorageServiceUuploadIr implements StorageService {
     private static final Logger logger = Logger.getLogger(StorageServiceUuploadIr.class);
     private Map<String, String> cookies = new HashMap<String, String>();

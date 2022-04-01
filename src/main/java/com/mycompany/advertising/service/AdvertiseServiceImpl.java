@@ -24,15 +24,15 @@ public class AdvertiseServiceImpl implements AdvertiseService {
 
     @Override
     public Page<AdvertiseTo> getPageAdvertises(int page) {
-        Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
-        Page<AdvertiseTo> result = advertiseRepository.findAll(pageable);//.getContent();;
+        Pageable pageable = PageRequest.of(page - 1, 30);//, Sort.by("text")
+        Page<AdvertiseTo> result = advertiseRepository.findAll(pageable);//.getContent();
         logger.info("get advertises at page " + page + " reult: " + result.getTotalElements());
         return result;
     }
 
     @Override
     public Page<AdvertiseTo> getPageAdvertises(int page, String search) {
-        Pageable pageable = PageRequest.of((page - 1) * 30, page * 30);//, Sort.by("text")
+        Pageable pageable = PageRequest.of(page - 1, 30);//, Sort.by("text")
         //messageRepository.findAllByTextOrTelegramlink(search, search, pageable).getTotalPages();
         return advertiseRepository.findAllByTextOrWebSiteLink(search, search, pageable);//.getContent();
     }

@@ -32,98 +32,66 @@
 </header>
 <!--header end-->
 <span  th:remove="tag"></span>
-    <div class="ah01-show_in_row_center ah01-adver_body">
-        <div th:each="advertise : ${advertises}" th:id="'adverCard' + ${advertise.id}">
-            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
-                <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
-            </a>
+<div class="ah01-show_in_row_center ah01-adver_body">
+    <div th:each="advertise : ${advertises.getContent()}" th:id="'adverCard' + ${advertise.id}">
+        <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
+            <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
+        </a>
 
-            <div>
-                <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
+        <div>
+            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
 
-                <p>[[${advertise.text}]]</p>
+            <p>[[${advertise.text}]]</p>
 
-                <div class="ah01-row_wrap_space_between">
-                    <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">[[#{link.text}]]</a>
-                    <a class="ah01_button_style01"
-                       th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
-                       th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
-                        [[#{edit.text}]]</a>
-                    <a class="ah01_button_style01_no_background btn-danger"
-                       th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
-                       href="delete.html">
-                        [[#{delete.text}]]</a>
-                </div>
+            <div class="ah01-row_wrap_space_between">
+                <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">[[#{link.text}]]</a>
+                <a class="ah01_button_style01"
+                   th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
+                   th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
+                    [[#{edit.text}]]</a>
+                <a class="ah01_button_style01_no_background btn-danger"
+                   th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
+                   href="delete.html">
+                    [[#{delete.text}]]</a>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
-        <ul class="pagination">
-            <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#"
-                                                                                              aria-controls="example1"
-                                                                                              data-dt-idx="0"
-                                                                                              tabindex="0"
-                                                                                              class="page-link">Previous</a>
-            </li>
-            <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1"
-                                                            tabindex="0" class="page-link">1</a></li>
-            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0"
-                                                      class="page-link">2</a></li>
-            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0"
-                                                      class="page-link">3</a></li>
-            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0"
-                                                      class="page-link">4</a></li>
-            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="5" tabindex="0"
-                                                      class="page-link">5</a></li>
-            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="6" tabindex="0"
-                                                      class="page-link">6</a></li>
-            <li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1"
-                                                                             data-dt-idx="7" tabindex="0"
-                                                                             class="page-link">Next</a></li>
-        </ul>
-    </div>
-    <div class="ah01-show_in_row_center" style="padding:20px;">
-        <div class="ah01-blue_box ah01-show_childs_column_center ah01-margin5_inner_childs">
-            <h3>[[#{contactUs.text}]]</h3>
+<div class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
+    <ul th:if="${pages[0]!=1 OR pages[1]!=1}" class="pagination">
+        <li class="paginate_button page-item previous" th:classappend="${currentPage==1} ? 'disabled'" id="example1_previous"><a th:attr="href=${currentPage!=1} ? @{'/index/search=' + ${search} + '/page=' + ${currentPage-1}}"
+                                                                                                                                 aria-controls="example1"
+                                                                                                                                 data-dt-idx="0"
+                                                                                                                                 tabindex="0"
+                                                                                                                                 class="page-link">Previous</a>
+        </li>
+        <li th:each="pageNo: ${#numbers.sequence(pages[0], pages[1])}" class="paginate_button page-item" th:classappend="${pageNo==currentPage} ? 'active'"><a th:attrappend="href=${pageNo!=currentPage} ? @{'/index/search=' + ${search} + '/page=' + ${pageNo}}" aria-controls="example1" th:attr="data-dt-idx=|${pageNo}|"
+                                                                                                                                                               tabindex="0" class="page-link">[[${pageNo}]]</a></li>
+        <li class="paginate_button page-item next" th:classappend="${currentPage==advertises.getTotalPages()} ? 'disabled'" id="example1_next"><a th:attr="href=${currentPage!=advertises.getTotalPages()} ? @{'/index/search=' + ${search} + '/page=' + ${currentPage+1}}" aria-controls="example1"
+                                                                                                                                                  data-dt-idx="7" tabindex="0"
+                                                                                                                                                  class="page-link">Next</a></li>
+    </ul>
+</div>
+<div class="ah01-show_in_row_center" style="padding:20px;">
+    <div class="ah01-blue_box ah01-show_childs_column_center ah01-margin5_inner_childs">
+        <h3>[[#{contactUs.text}]]</h3>
 
-            <div><a href="https://t.me/Amir_m32" class="btn btn-primary btn-sm">[[#{telegram.text}]]</a></div>
-            <div><a th:href="@{/adminMessgesList/1}" class="btn btn-primary btn-sm">[[#{allAdminMessages.text}]]</a></div>
-        </div>
-        <div th:if="${adminMessage != null}" class="ah01-blue_box ah01-show_childs_column_center"
-             style="display: block;">
-            <div><a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h4 th:text="${adminMessage.title}"
-                                                                            style="overflow: hidden;max-height: 20px;"></h4>
-            </a></div>
-            <h5 th:text="${adminMessage.message}" style="overflow: hidden;max-height: 80px;"></h5>
-        </div>
-        <div th:unless="${adminMessage != null}" class="ah01-blue_box">
-            <h5>there is no message yet</h5>
-        </div>
+        <div><a href="https://t.me/Amir_m32" class="btn btn-primary btn-sm">[[#{telegram.text}]]</a></div>
+        <div><a th:href="@{/adminMessgesList/1}" class="btn btn-primary btn-sm">[[#{allAdminMessages.text}]]</a></div>
     </div>
+    <div th:if="${adminMessage != null}" class="ah01-blue_box ah01-show_childs_column_center"
+         style="display: block;">
+        <div><a th:href="@{'/adminMessages/' + ${adminMessage.id}}"><h4 th:text="${adminMessage.title}"
+                                                                        style="overflow: hidden;max-height: 20px;"></h4>
+        </a></div>
+        <h5 th:text="${adminMessage.message}" style="overflow: hidden;max-height: 80px;"></h5>
+    </div>
+    <div th:unless="${adminMessage != null}" class="ah01-blue_box">
+        <h5>there is no message yet</h5>
+    </div>
+</div>
 </main>
 <span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
-<script>
-    /* When the user clicks on the button,
-     toggle between hiding and showing the dropdown content */
-    function myFunction() {
-        document.getElementById("dropAH").classList.toggle("ah01-show");
-    }
-
-    // Close the dropdown if the user clicks outside of it
-    document.onclick = function (event) {
-        if (!event.target.matches('.ah01-dropspn')) {
-            var dropdowns = document.getElementsByClassName("ah01-dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('ah01-show')) {
-                    openDropdown.classList.remove('ah01-show');
-                }
-            }
-        }
-    }
-</script>
-
 </body>
 </html>

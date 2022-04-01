@@ -11,20 +11,18 @@ import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 //import org.springframework.context.MessageSource;
 
@@ -38,6 +36,8 @@ public class MainController {
     private MessageSource messages;*/
     @Autowired
     AdminMessageService adminMessageService;
+    @Value("${amir.error.folder}")
+    String errorfolder;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
     @Autowired
@@ -108,36 +108,26 @@ public class MainController {
 //, produces = "text/plain;charset=UTF-8")
     public String indexGet(Model model, @PathVariable(required = false) String search,
                            @PathVariable(required = false) Integer pagenumber,
-                           @RequestParam(required = false, name = "search") String search02,
-                           @RequestParam(required = false, name = "lan") String language,
-                           HttpServletRequest request, HttpServletResponse response) {
-        boolean hasparam = false;
-        if (language != null) {
-            hasparam = true;
-            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-            localeResolver.setLocale(request, response, StringUtils.parseLocaleString(language));
-        }
+                           @RequestParam(required = false, name = "search") String search02) {
         if (search02 != null) {
-            hasparam = true;
             pagenumber = 1;
             search = search02;
         }
-        if (hasparam) return "redirect:/index/search=" + search + "/page=" + pagenumber;
         if (pagenumber == null || pagenumber < 1) pagenumber = 1;
-        List<AdvertiseTo> advertiseTos;
+        Page<AdvertiseTo> advertiseTos;
         if (search == null || search.equals("")) {
-            advertiseTos = messageService.getPageAdvertises(pagenumber).getContent();
+            advertiseTos = messageService.getPageAdvertises(pagenumber);
         } else {
-            advertiseTos = messageService.getPageAdvertises(pagenumber, search).getContent();
+            advertiseTos = messageService.getPageAdvertises(pagenumber, search);
         }
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<" + advertiseTos.getTotalPages());
+        if (pagenumber > advertiseTos.getTotalPages()) return errorfolder + "error-404";
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pagenumber);
         AdminMessageTo adminMessageTo = adminMessageService.getLastMessage();
         if (adminMessageTo != null) model.addAttribute("adminMessage", adminMessageTo);
-        /*else {
-            adminMessageTo = new AdminMessageTo(new UserTo(), "There is no message yet", new Date(1000));
-            adminMessageTo.setId((long) 0);
-            model.addAttribute("adminMessage", adminMessageTo);
-        }*/
-        model.addAttribute("advertises", advertiseTos);
+        model.addAttribute("advertises", advertiseTos);//.getContent());
+        model.addAttribute("pages", getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
         return "index";
     }
 
@@ -152,5 +142,23 @@ public class MainController {
     public String confirmRegistration(Model model, @PathVariable String phonenumber) {
         model.addAttribute("phonenumber", phonenumber);
         return "confirmRegistration";
+    }
+
+    int[] getMyPage(int totalpages, int currentpage, int pagelength) {
+        int[] result = new int[2];
+        if (totalpages < pagelength) {
+            result[0] = 1;
+            result[1] = totalpages;
+        } else if (currentpage <= pagelength / 2) {
+            result[0] = 1;
+            result[1] = pagelength;
+        } else if (currentpage + pagelength / 2 > totalpages) {
+            result[0] = totalpages - pagelength + 1;
+            result[1] = totalpages;
+        } else {
+            result[1] = currentpage + pagelength / 2;
+            result[0] = result[1] - pagelength + 1;
+        }
+        return result;
     }
 }

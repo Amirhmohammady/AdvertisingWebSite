@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll().and()
                 .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/").and()
                 .formLogin()//.successHandler(authenticationSuccessHandler)
-//maybe fo controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
+                //maybe for controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
                 .failureUrl("/login_error").failureHandler(authenticationFailureHandler).loginPage("/login")
                 .permitAll()//.usernameParameter("phonenumber")
                 .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
