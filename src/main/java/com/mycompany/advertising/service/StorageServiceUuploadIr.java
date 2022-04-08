@@ -8,8 +8,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,7 +32,6 @@ public class StorageServiceUuploadIr implements StorageService {
 
     @Override
     public void init() {
-
     }
 
     @Override
@@ -61,7 +58,7 @@ public class StorageServiceUuploadIr implements StorageService {
     }
 
     @Override
-    public Stream<Path> loadAll() {
+    public Stream<Path> loadAll() throws IOException {
         return null;
     }
 
@@ -71,13 +68,7 @@ public class StorageServiceUuploadIr implements StorageService {
     }
 
     @Override
-    public Resource loadAsResource(String filename) {
-        return null;
-    }
-
-    @Override
     public void deleteAll() {
-
     }
 
     private String uploadInputStream(InputStream is, String filename) throws IOException {

@@ -1,9 +1,13 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
+import com.mycompany.advertising.entity.Role;
+import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
+import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
 import com.mycompany.advertising.service.api.VerificationTokenService;
 import org.apache.log4j.Logger;
@@ -16,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by Amir on 11/4/2021.
@@ -31,7 +36,11 @@ public class RestApi {
     @Autowired
     AdminMessageService adminMessageService;
     @Autowired
+    AuthenticationFacade authenticationFacade;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AdvertiseService advertiseService;
 
     @GetMapping("/sendsms/{phonenumber}")
     public String sendSMS(@PathVariable String phonenumber) {
@@ -104,6 +113,20 @@ public class RestApi {
     @DeleteMapping("/userComment/{id}")
     public ResponseEntity<String> deleteUserComment(@PathVariable long id) {
         int rows = adminMessageService.deleteUserCommentById(id);
+        if (rows > 0) return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("fail to delete", HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @DeleteMapping("/advertise/{id}")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<String> deleteAdvertise(@PathVariable Long id) {
+        Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
+        int rows = 0;
+        if (advertiseoptl.isPresent()) {
+            UserTo userTo = authenticationFacade.getUserToDetails();
+            if (userTo != null && (userTo.hasRole(Role.ROLE_ADMIN) || advertiseoptl.get().getUserTo().getId() == userTo.getId()))
+                rows = advertiseService.deleteAdvertiseById(id);
+        }
         if (rows > 0) return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
         return new ResponseEntity<>("fail to delete", HttpStatus.NOT_ACCEPTABLE);
     }

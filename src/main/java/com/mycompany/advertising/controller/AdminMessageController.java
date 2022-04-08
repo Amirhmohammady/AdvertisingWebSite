@@ -3,6 +3,7 @@ package com.mycompany.advertising.controller;
 import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.UserCommentTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -20,6 +23,7 @@ import java.util.Optional;
  */
 @Controller
 public class AdminMessageController {
+    Logger logger = Logger.getLogger(AdminMessageController.class);
     @Autowired
     AdminMessageService adminMessageService;
     @Value("${amir.error.folder}")
@@ -49,6 +53,12 @@ public class AdminMessageController {
         if (!adminMessageTo.isPresent()) {
             return errorfolder + "error-404";
         }
+        try {
+            message = URLDecoder.decode(message, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        logger.info("user sent comment \"" + name + " " + message + "\"");
         model.addAttribute("adminMessage", adminMessageTo.get());
         if (adminMessageTo.get().getMessageCnt() >= 20) return "adminMessage";
         UserCommentTo userCommentTo = new UserCommentTo();

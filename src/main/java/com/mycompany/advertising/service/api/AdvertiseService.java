@@ -21,5 +21,5 @@ public interface AdvertiseService {
 
     Page<AdvertiseTo> getPageAdvertises(int page, String search);
 
-    void deleteAdvertiseById(Long id);
+    int deleteAdvertiseById(Long id);
 }

@@ -159,6 +159,7 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             &lt;!&ndash;<version>1.5.7</version>&ndash;&gt;
+            <scope>runtime</scope>
         </dependency>-->
         <!--war mysql need for jar-->
         <!--<dependency>-->

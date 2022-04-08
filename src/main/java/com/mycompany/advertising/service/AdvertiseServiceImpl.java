@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     public Page<AdvertiseTo> getPageAdvertises(int page, String search) {
         Pageable pageable = PageRequest.of(page - 1, 30);//, Sort.by("text")
         //messageRepository.findAllByTextOrTelegramlink(search, search, pageable).getTotalPages();
-        return advertiseRepository.findAllByTextOrWebSiteLink(search, search, pageable);//.getContent();
+        return advertiseRepository.findAllByTextContainingOrWebSiteLinkContaining(search, search, pageable);//.getContent();
     }
 
     @Override
@@ -57,7 +58,8 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     }*/
 
     @Override
-    public void deleteAdvertiseById(Long id) {
-        advertiseRepository.deleteById(id);
+    @Transactional
+    public int deleteAdvertiseById(Long id) {
+        return advertiseRepository.deleteByIdCount(id);
     }
 }

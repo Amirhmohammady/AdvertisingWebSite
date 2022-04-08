@@ -1,15 +1,11 @@
 package com.mycompany.advertising.service;
 
-import com.mycompany.advertising.components.api.AuthenticationFacade;
-import com.mycompany.advertising.service.api.StorageService;
 import com.mycompany.advertising.components.ImageResizer;
+import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.config.StorageProperties;
-import com.mycompany.advertising.web.imagestorage.StorageException;
-import com.mycompany.advertising.web.imagestorage.StorageFileNotFoundException;
+import com.mycompany.advertising.service.api.StorageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
@@ -18,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,74 +73,48 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public List<String> storeImage(MultipartFile file) {
+    public List<String> storeImage(MultipartFile file) throws IOException {
         ArrayList<String> result = new ArrayList<String>();
         String filename = getNextFileName(StringUtils.cleanPath(file.getOriginalFilename()), rootLocation);
         String domainName = authenticationFacade.getDomainName();
-        try {
-            if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + filename);
-            }
-            if (filename.contains("..")) {
-                // This is a security check
-                throw new StorageException(
-                        "Cannot store file with relative path outside current directory "
-                                + filename);
-            }
-            try (InputStream inputStream = file.getInputStream()) {
-                logger.debug("try to store image file" + filename);
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
-                        StandardCopyOption.REPLACE_EXISTING);
-                logger.info("Successfully stored " + filename);
-            }
-            result.add(domainName + "/t/" + filename);
-        } catch (IOException e) {
-            throw new StorageException("Failed to store file " + filename, e);
+        if (file.isEmpty()) {
+            throw new IOException("Failed to store empty file " + filename);
         }
+        if (filename.contains("..")) {
+            // This is a security check
+            throw new IOException("Cannot store file with relative path outside current directory " + filename);
+        }
+        try (InputStream inputStream = file.getInputStream()) {
+            logger.debug("try to store image file" + filename);
+            Files.copy(inputStream, this.rootLocation.resolve(filename),
+                    StandardCopyOption.REPLACE_EXISTING);
+            logger.info("Successfully stored " + filename);
+        }
+        result.add(domainName + "/t/" + filename);
         String smallfilename = getFileNameWithNoExtention(filename)
                 + "Small." + getExtention(filename);
         smallfilename = getNextFileName(smallfilename, rootLocation);
-        try {
-            ImageResizer.resize(rootLocation.toString() + "\\" + filename,
-                    rootLocation.toString() + "\\" + smallfilename, 200, 200);
-            result.add(domainName + "/t/" + smallfilename);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ImageResizer.resize(rootLocation.toString() + "\\" + filename,
+                rootLocation.toString() + "\\" + smallfilename, 200, 200);
+        result.add(domainName + "/t/" + smallfilename);
         return result;
     }
 
     @Override
-    public Stream<Path> loadAll() {
+    public Stream<Path> loadAll() throws IOException {
         try {
             return Files.walk(this.rootLocation, 1)
                     .filter(path -> !path.equals(this.rootLocation))
                     .map(this.rootLocation::relativize);
         } catch (IOException e) {
-            throw new StorageException("Failed to read stored files", e);
+            logger.error("Failed to read stored files", e);
+            throw new IOException("Failed to read stored files");
         }
     }
 
     @Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
-    }
-
-    @Override
-    public Resource loadAsResource(String filename) {
-        try {
-            Path file = load(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new StorageFileNotFoundException(
-                        "Could not read file: " + filename);
-
-            }
-        } catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
-        }
     }
 
     @Override
@@ -159,7 +128,7 @@ public class StorageServiceImpl implements StorageService {
             Files.createDirectories(rootLocation);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new StorageException("Could not initialize storage", e);
+            logger.fatal("Could not initialize storage", e);
         }
     }
 }

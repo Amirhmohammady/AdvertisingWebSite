@@ -15,7 +15,7 @@ public class UserCommentTo {
     @ManyToOne//(targetEntity = AdminMessageTo.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private AdminMessageTo msgowner;
-    @Column(columnDefinition = "TEXT", length = 512)
+    @Column(columnDefinition = "BLOB", length = 512)//TEXT
     private String message;
     private String name;
     private LocalDateTime date;

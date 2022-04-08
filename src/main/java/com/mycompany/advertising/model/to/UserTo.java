@@ -48,7 +48,7 @@ public class UserTo implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinColumn()//reqired for OnDelete
     @OnDelete(action = OnDeleteAction.CASCADE)//for CASCADE
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})//for CASCADE
+    @Cascade(value = {org.hibernate.annotations.CascadeType.ALL})//for CASCADE
     private List<Role> roles;
     /*@Column(nullable = true)
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
@@ -135,6 +135,10 @@ public class UserTo implements UserDetails {
 
     public boolean getEnabled() {
         return enabled;
+    }
+
+    public boolean hasRole(Role role) {
+        return roles.contains(role);
     }
 
     @Override

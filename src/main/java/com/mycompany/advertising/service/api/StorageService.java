@@ -17,13 +17,10 @@ public interface StorageService {
     List<String> storeImage(MultipartFile file) throws IOException;
 
     //will delete
-    Stream<Path> loadAll();
+    Stream<Path> loadAll() throws IOException;
 
     //will delete
     Path load(String filename);
-
-    //will delete
-    Resource loadAsResource(String filename);
 
     //will add
     //void deleteUnusedImages();

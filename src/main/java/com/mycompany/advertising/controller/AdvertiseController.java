@@ -56,59 +56,47 @@ public class AdvertiseController {
 
     @PostMapping("/addAdvertise")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String addAdvertise(Model model, @RequestParam(required = true, name = "pic") MultipartFile file,
-                               @RequestParam(required = false, name = "description") String description,
-                               @RequestParam(required = false, name = "tel_link") String telegramlink) {
-        //String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        UserTo userTo = authenticationFacade.getUserToDetails();
-        if (file != null) {
-            List<String> files = null;
+    public String addAdvertise(Model model, @RequestParam(required = true) MultipartFile pic1,
+                               @RequestParam(required = false) String description,
+                               @RequestParam(required = false) String tel_link,
+                               @RequestParam(required = true) String title,
+                               @RequestParam(required = false) MultipartFile pic2) {
+        if (pic1 != null && !pic1.isEmpty()) {
+            UserTo userTo = authenticationFacade.getUserToDetails();
+            List<String> files;
+            AdvertiseTo advertiseTo = new AdvertiseTo();
+            String succsessmessage = new String();
             try {
-                files = storageService.storeImage(file);
-                model.addAttribute("succsessmessage", "Successfully added your advertise");
+                files = storageService.storeImage(pic1);
+                succsessmessage += "Successfully uploaded 1st pic";
+                advertiseTo.setImageUrl(files.get(0));
+                advertiseTo.setSmallImageUrl(files.get(1));
             } catch (IOException e) {
-                model.addAttribute("succsessmessage", e.getMessage());
+                succsessmessage += "Error uploading 1nd pic:" + e.getMessage();
                 e.printStackTrace();
             }
-            AdvertiseTo advertiseTo = new AdvertiseTo();
-            advertiseTo.setWebSiteLink(telegramlink);
-            advertiseTo.setImageUrl(files.get(0));
+            advertiseTo.setWebSiteLink(tel_link);
             advertiseTo.setStatus(AdvertiseStatus.Not_Accepted);
-            advertiseTo.setSmallImageUrl(files.get(1));
             advertiseTo.setText(description);
+            advertiseTo.setTitle(title);
             advertiseTo.setUserTo(userTo);
             advertiseTo.setDate(LocalDateTime.now());
+            if (pic2 != null && !pic2.isEmpty()) {
+                try {
+                    files = storageService.storeImage(pic2);
+                    succsessmessage += "\nSuccessfully uploaded 2nd pic";
+                    advertiseTo.setImageUrl2(files.get(0));
+                    advertiseTo.setSmallImageUrl2(files.get(1));
+                } catch (IOException e) {
+                    succsessmessage += "\nError uploading 2nd pic:" + e.getMessage();
+                    e.printStackTrace();
+                }
+            }
             advertiseService.addAdvertise(advertiseTo);
-        } else {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println("add_advertise no param");
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            succsessmessage += "\nSuccessfully added advertise";
+            model.addAttribute("succsessmessage", succsessmessage);
         }
         return "add_advertise";
-    }
-
-    @GetMapping("/delete/id={id}")
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public String delete(Model model, @PathVariable Long id, //Principal principal,
-                         @RequestParam(required = true, name = "pLink") String previouslink) {
-        Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
-        if (advertiseoptl.isPresent()) {
-            UserTo userTo = authenticationFacade.getUserToDetails();
-            boolean isAuthenticated = false;
-            System.out.println(advertiseoptl.get().getUserTo() + "-------------------------");
-            System.out.println(userTo.getId() + "-------------------------");
-            System.out.println("testtttttttttttttttttttttttt");
-            if (authenticationFacade.hasRole("ROLE_ADMIN")) {
-                isAuthenticated = true;
-                System.out.println("admin-------------------------");
-            } else if (userTo != null && userTo.getId() == advertiseoptl.get().getUserTo().getId()) {
-                isAuthenticated = true;
-                System.out.println("not admin-------------------------");
-            }
-            if (isAuthenticated) advertiseService.deleteAdvertiseById(id);
-        }
-        return "redirect:" + previouslink;
     }
 
     @GetMapping("/editAdvertise/id={id}")
@@ -121,7 +109,6 @@ public class AdvertiseController {
         if (advertiseoptl.isPresent())
             if (userTo != null)
                 if (userTo.getId() == advertiseoptl.get().getId()) ;
-
         return "redirect:" + previouslink;
     }
 }

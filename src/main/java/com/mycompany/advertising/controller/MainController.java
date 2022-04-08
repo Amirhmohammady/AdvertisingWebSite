@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 //import org.springframework.context.MessageSource;
 
@@ -104,15 +106,24 @@ public class MainController {
         return "signup";
     }
 
-    @GetMapping(value = {"/", "/index", "/index/search={search}/page={pagenumber}"})
+    @GetMapping(value = {"/index"})
+    public String indexSearchGet(@RequestParam(required = false, name = "search") String search) {
+        if (search == null) search = "";
+        try {
+            search = URLEncoder.encode(search, "UTF-8");
+            logger.info("encoded search is: " + search);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        logger.info("index page request search for " + search);
+        return "redirect:/index/search=" + search + "/page=1";
+    }
+
+    @GetMapping(value = {"/", "/index/search={search}/page={pagenumber}"})
 //, produces = "text/plain;charset=UTF-8")
     public String indexGet(Model model, @PathVariable(required = false) String search,
-                           @PathVariable(required = false) Integer pagenumber,
-                           @RequestParam(required = false, name = "search") String search02) {
-        if (search02 != null) {
-            pagenumber = 1;
-            search = search02;
-        }
+                           @PathVariable(required = false) Integer pagenumber) {
+        logger.info("index page request for page number " + pagenumber + " search " + search);
         if (pagenumber == null || pagenumber < 1) pagenumber = 1;
         Page<AdvertiseTo> advertiseTos;
         if (search == null || search.equals("")) {
@@ -120,12 +131,10 @@ public class MainController {
         } else {
             advertiseTos = messageService.getPageAdvertises(pagenumber, search);
         }
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<" + advertiseTos.getTotalPages());
-        if (pagenumber > advertiseTos.getTotalPages()) return errorfolder + "error-404";
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pagenumber);
-        AdminMessageTo adminMessageTo = adminMessageService.getLastMessage();
-        if (adminMessageTo != null) model.addAttribute("adminMessage", adminMessageTo);
+        model.addAttribute("adminMessage", adminMessageService.getLastMessage());
+        if (pagenumber > advertiseTos.getTotalPages()) return "index_notfound";
         model.addAttribute("advertises", advertiseTos);//.getContent());
         model.addAttribute("pages", getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
         return "index";

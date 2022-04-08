@@ -33,55 +33,10 @@
 <!--header end-->
 <span th:remove="tag"></span>
 
-<div class="ah01-show_in_row_center ah01-adver_body">
-    <div th:each="advertise : ${advertises.getContent()}" th:id="'adverCard' + ${advertise.id}">
-        <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
-            <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
-        </a>
-
-        <div>
-            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
-
-            <p>[[${advertise.text}]]</p>
-
-            <div class="ah01-row_wrap_space_between">
-                <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">[[#{link.text}]]</a>
-                <a class="ah01_button_style01"
-                   th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
-                   th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
-                    [[#{edit.text}]]</a>
-                <a class="ah01_button_style01_no_background btn-danger"
-                   th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
-                   th:attr="onclick=|deleteAdvertise(${advertise.id})|" href="javascript:void(0)">
-                    [[#{delete.text}]]</a>
-            </div>
-        </div>
-    </div>
+<div class="ah01-show_in_row_center">
+	<h2>موردی برای نمایش وجود ندارد</h2>
 </div>
 
-<div class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
-    <ul th:if="${pages[0]!=1 OR pages[1]!=1}" class="pagination">
-        <li class="paginate_button page-item previous" th:classappend="${currentPage==1} ? 'disabled'"
-            id="example1_previous"><a
-                th:attr="href=${currentPage!=1} ? @{'/index/search=' + (${search!=null}?${search}:'') + '/page=' + ${currentPage-1}}"
-                aria-controls="example1"
-                data-dt-idx="0"
-                tabindex="0"
-                class="page-link">Previous</a>
-        </li>
-        <li th:each="pageNo: ${#numbers.sequence(pages[0], pages[1])}" class="paginate_button page-item"
-            th:classappend="${pageNo==currentPage} ? 'active'"><a
-                th:attrappend="href=${pageNo!=currentPage} ? @{'/index/search=' + (${search!=null}?${search}:'') + '/page=' + ${pageNo}}"
-                aria-controls="example1" th:attr="data-dt-idx=|${pageNo}|"
-                tabindex="0" class="page-link">[[${pageNo}]]</a></li>
-        <li class="paginate_button page-item next"
-            th:classappend="${currentPage==advertises.getTotalPages()} ? 'disabled'" id="example1_next"><a
-                th:attr="href=${currentPage!=advertises.getTotalPages()} ? @{'/index/search=' + (${search!=null}?${search}:'') + '/page=' + ${currentPage+1}}"
-                aria-controls="example1"
-                data-dt-idx="7" tabindex="0"
-                class="page-link">Next</a></li>
-    </ul>
-</div>
 <div class="ah01-show_in_row_center" style="padding:20px;">
     <div class="ah01-blue_box ah01-show_childs_column_center ah01-margin5_inner_childs">
         <h3>[[#{contactUs.text}]]</h3>

@@ -1,13 +1,14 @@
 <!--logo start-->
-<a th:href="@{/addAdvertise}" class="logo">[[#{addadv.p1}]]&nbsp;<span class="lite">[[#{addadv.p2}]]</span></a>
+<a th:href="@{/addAdvertise}" class="logo" xmlns:th="http://www.w3.org/1999/xhtml">[[#{addadv.p1}]]&nbsp;<span class="lite">[[#{addadv.p2}]]</span></a>
 <!--logo end-->
 
 <div class="nav search-row" id="top_menu">
     <!--  search form start -->
     <ul class="nav top-menu">
         <li>
-            <form class="navbar-form">
-                <input class="form-control" th:placeholder="#{search.text}" type="text">
+            <form class="navbar-form" th:action="@{/index}" method="get">
+                <input class="form-control" th:placeholder="#{search.text}" type="text" name="search"
+                       th:value="${search!=null}?${search}:''">
             </form>
         </li>
     </ul>
