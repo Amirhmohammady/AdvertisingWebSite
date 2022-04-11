@@ -1,5 +1,6 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
@@ -11,7 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -28,18 +32,8 @@ public class UserController {
     AdminMessageService adminMessageService;
     @Autowired
     UserService userService;
-
-    /*@GetMapping("/DashboardUser")
-    @Secured("ROLE_USER")
-    public String userDashboard() {
-        return "DashboardUser";
-    }
-
-    @GetMapping("/DashboardAdmin")
-    @Secured("ROLE_ADMIN")
-    public String adminDashboard() {
-        return "DashboardAdmin";
-    }*/
+    @Autowired
+    AuthenticationFacade authenticationFacade;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -73,12 +67,6 @@ public class UserController {
         return "profile2/DashboardAdmin";
     }
 
-    @GetMapping("/unaccepted_adverteses")
-    @Secured({"ROLE_ADMIN"})
-    public String unacceptedAdverteses(Model model, @PathVariable String search, @PathVariable int pagenumber) {
-        return "unaccepted_adverteses";
-    }
-
     @GetMapping("/userlist")
     @Secured({"ROLE_ADMIN"})
     public String userList() {
@@ -91,16 +79,20 @@ public class UserController {
         return "user_list";
     }
 
+    @GetMapping("/Dashboard/unAcceptedAdvs")
+    @Secured({"ROLE_ADMIN"})
+    public String unAcceptedAdvsGet() {
+        return "profile2/unAcceptedAdvs";
+    }
+
     @GetMapping("/Dashboard")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public String dashboard(Model model, HttpServletRequest request) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserTo) {
-            model.addAttribute("userTo", principal);
-        } else model.addAttribute("userTo", new UserTo());
+        UserTo userTo = authenticationFacade.getCurrentUser();
+        model.addAttribute("userTo", userTo);
         model.addAttribute("pfragment01", "profile");
-        if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
-        if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
-        return "index";
+        //if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
+        //if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
+        return "profile2/Dashboard";
     }
 }

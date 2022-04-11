@@ -17,7 +17,7 @@ import java.util.Collection;
 public class AuthenticationFacadeImpl implements AuthenticationFacade {
 
     @Override
-    public UserTo getUserToDetails() {
+    public UserTo getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
         if (principal instanceof UserTo) {

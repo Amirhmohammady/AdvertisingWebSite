@@ -31,12 +31,11 @@
 <header class="header dark-bg" th:insert="fragments/navbar.html">
 </header>
 <!--header end-->
-<span th:remove="tag"></span>
-
+<span th:insert="fragments/topPageBar.html" th:remove="tag"/>
 <div class="ah01-show_in_row_center ah01-adver_body">
     <div th:each="advertise : ${advertises.getContent()}" th:id="'adverCard' + ${advertise.id}">
         <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
-            <img th:src="${advertise.smallImageUrl}" alt="Card image cap">
+            <img th:src="${advertise.smallImageUrl1}" alt="Card image cap">
         </a>
 
         <div>

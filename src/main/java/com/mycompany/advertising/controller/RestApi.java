@@ -2,7 +2,7 @@ package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.components.utils.PhoneNumberFormatException;
-import com.mycompany.advertising.entity.Role;
+import com.mycompany.advertising.model.to.enums.Role;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.VerificationTokenTo;
@@ -123,7 +123,7 @@ public class RestApi {
         Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
         int rows = 0;
         if (advertiseoptl.isPresent()) {
-            UserTo userTo = authenticationFacade.getUserToDetails();
+            UserTo userTo = authenticationFacade.getCurrentUser();
             if (userTo != null && (userTo.hasRole(Role.ROLE_ADMIN) || advertiseoptl.get().getUserTo().getId() == userTo.getId()))
                 rows = advertiseService.deleteAdvertiseById(id);
         }

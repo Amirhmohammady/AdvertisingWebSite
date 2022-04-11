@@ -37,7 +37,7 @@ public class GoogleController {
                 "<urlset xmlns:image=\"http://www.google.com/schemas/sitemap-image/1.1\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\" xmlns:video=\"http://www.google.com/schemas/sitemap-video/1.1\">";
         List<AdvertiseTo> advertiseTos = advertiseService.getAllAdvertises();
         for (AdvertiseTo a : advertiseTos) {
-            result += "<url><lastmod>" + a.getDate() + "</lastmod><loc>" + authenticationFacade.getDomainName() + "/showAdvertise/id=" + a.getId() + "</loc></url>";
+            result += "<url><lastmod>" + a.getStartdate() + "</lastmod><loc>" + authenticationFacade.getDomainName() + "/showAdvertise/id=" + a.getId() + "</loc></url>";
         }
         result += "</urlset>";
         return result;//new ResponseEntity<>(xmlUrlSet, HttpStatus.OK);

@@ -1,6 +1,6 @@
 package com.mycompany.advertising.model.to;
 
-import com.mycompany.advertising.entity.AdvertiseStatus;
+import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,25 +25,14 @@ public class AdvertiseTo {
     private LocalDateTime startdate;
     @Column(nullable = false)
     private LocalDateTime expiredate;
-    private String imageUrl;
-    private String smallImageUrl;
+    private String imageUrl1;
+    private String smallImageUrl1;
     private String imageUrl2;
     private String smallImageUrl2;
     @Enumerated(EnumType.STRING)
     private AdvertiseStatus status;
-    private String info;
-    @Column(nullable = false)
-    private LocalDateTime date;
 
     public AdvertiseTo() {
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 
     public String getSmallImageUrl2() {
@@ -70,14 +59,6 @@ public class AdvertiseTo {
         this.title = title;
     }
 
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
     public AdvertiseStatus getStatus() {
         return status;
     }
@@ -86,12 +67,12 @@ public class AdvertiseTo {
         this.status = status;
     }
 
-    public String getSmallImageUrl() {
-        return smallImageUrl;
+    public String getSmallImageUrl1() {
+        return smallImageUrl1;
     }
 
-    public void setSmallImageUrl(String smallImageUrl) {
-        this.smallImageUrl = smallImageUrl;
+    public void setSmallImageUrl1(String smallImageUrl1) {
+        this.smallImageUrl1 = smallImageUrl1;
     }
 
     public String getText() {
@@ -126,12 +107,12 @@ public class AdvertiseTo {
         this.expiredate = expiredate;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageUrl1() {
+        return imageUrl1;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl1(String imageUrl1) {
+        this.imageUrl1 = imageUrl1;
     }
 
     public LocalDateTime getStartdate() {

@@ -1,6 +1,6 @@
 package com.mycompany.advertising.service.util;
 
-import com.mycompany.advertising.entity.Role;
+import com.mycompany.advertising.model.to.enums.Role;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;

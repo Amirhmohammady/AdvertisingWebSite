@@ -1,7 +1,7 @@
-package com.mycompany.advertising.entity;
+package com.mycompany.advertising.model.to.enums;
 
 /**
- * Created by Amir on 8/9/2020.
+ * Created by Amir on 4/9/2022.
  */
 public enum AdvertiseStatus {
     Not_Accepted,

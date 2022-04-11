@@ -2,6 +2,7 @@ package com.mycompany.advertising.service;
 
 import com.mycompany.advertising.model.dao.AdvertiseRepository;
 import com.mycompany.advertising.model.to.AdvertiseTo;
+import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
 import com.mycompany.advertising.service.api.AdvertiseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +23,21 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     private static final Logger logger = Logger.getLogger(AdvertiseServiceImpl.class);
     @Autowired
     AdvertiseRepository advertiseRepository;
+    private int advPerPagee = 20;
 
     @Override
-    public Page<AdvertiseTo> getPageAdvertises(int page) {
-        Pageable pageable = PageRequest.of(page - 1, 30);//, Sort.by("text")
-        Page<AdvertiseTo> result = advertiseRepository.findAll(pageable);//.getContent();
+    public Page<AdvertiseTo> getPageAcceptedAdvertises(int page) {
+        Pageable pageable = PageRequest.of(page - 1, advPerPagee);//, Sort.by("text")
+        Page<AdvertiseTo> result = advertiseRepository.findAllByStatusOrderByStartdateDesc(AdvertiseStatus.Accepted, pageable);//.getContent();
         logger.info("get advertises at page " + page + " reult: " + result.getTotalElements());
         return result;
     }
 
     @Override
-    public Page<AdvertiseTo> getPageAdvertises(int page, String search) {
-        Pageable pageable = PageRequest.of(page - 1, 30);//, Sort.by("text")
+    public Page<AdvertiseTo> getPageAcceptedAdvertises(int page, String search) {
+        Pageable pageable = PageRequest.of(page - 1, advPerPagee);//, Sort.by("text")
         //messageRepository.findAllByTextOrTelegramlink(search, search, pageable).getTotalPages();
-        return advertiseRepository.findAllByTextContainingOrWebSiteLinkContaining(search, search, pageable);//.getContent();
+        return advertiseRepository.findAllByStatusAndTextContainingOrTitleContainingOrderByStartdateDesc(AdvertiseStatus.Accepted, search, search, pageable);//.getContent();
     }
 
     @Override
@@ -52,6 +54,11 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     @Override
     public Optional<AdvertiseTo> getAdvertiseById(Long id) {
         return advertiseRepository.findById(id);
+    }
+
+    @Override
+    public Page<AdvertiseTo> getPageNotAcceptedAdvertises(int page) {
+        return null;
     }
     /*public List<MessageTo> getMessagesById(Long id) {
         return messageRepository.findAllById(id);

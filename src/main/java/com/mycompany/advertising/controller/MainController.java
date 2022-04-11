@@ -1,11 +1,10 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
-import com.mycompany.advertising.entity.Role;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
-import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.model.to.enums.Role;
 import com.mycompany.advertising.service.api.AdminMessageService;
 import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 //import org.springframework.context.MessageSource;
 
 /**
@@ -127,9 +125,9 @@ public class MainController {
         if (pagenumber == null || pagenumber < 1) pagenumber = 1;
         Page<AdvertiseTo> advertiseTos;
         if (search == null || search.equals("")) {
-            advertiseTos = messageService.getPageAdvertises(pagenumber);
+            advertiseTos = messageService.getPageAcceptedAdvertises(pagenumber);
         } else {
-            advertiseTos = messageService.getPageAdvertises(pagenumber, search);
+            advertiseTos = messageService.getPageAcceptedAdvertises(pagenumber, search);
         }
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pagenumber);
@@ -151,6 +149,11 @@ public class MainController {
     public String confirmRegistration(Model model, @PathVariable String phonenumber) {
         model.addAttribute("phonenumber", phonenumber);
         return "confirmRegistration";
+    }
+
+    @GetMapping("/allPages")
+    public String allPagesget() {
+        return "allPages";
     }
 
     int[] getMyPage(int totalpages, int currentpage, int pagelength) {

@@ -1,7 +1,7 @@
 package com.mycompany.advertising.model.to;
 
 import com.mycompany.advertising.components.utils.AViewableException;
-import com.mycompany.advertising.entity.Role;
+import com.mycompany.advertising.model.to.enums.Role;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

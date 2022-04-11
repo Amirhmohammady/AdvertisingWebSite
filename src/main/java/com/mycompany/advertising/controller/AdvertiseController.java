@@ -1,9 +1,9 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.components.api.AuthenticationFacade;
-import com.mycompany.advertising.entity.AdvertiseStatus;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
 import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +62,15 @@ public class AdvertiseController {
                                @RequestParam(required = true) String title,
                                @RequestParam(required = false) MultipartFile pic2) {
         if (pic1 != null && !pic1.isEmpty()) {
-            UserTo userTo = authenticationFacade.getUserToDetails();
+            UserTo userTo = authenticationFacade.getCurrentUser();
             List<String> files;
             AdvertiseTo advertiseTo = new AdvertiseTo();
             String succsessmessage = new String();
             try {
                 files = storageService.storeImage(pic1);
                 succsessmessage += "Successfully uploaded 1st pic";
-                advertiseTo.setImageUrl(files.get(0));
-                advertiseTo.setSmallImageUrl(files.get(1));
+                advertiseTo.setImageUrl1(files.get(0));
+                advertiseTo.setSmallImageUrl1(files.get(1));
             } catch (IOException e) {
                 succsessmessage += "Error uploading 1nd pic:" + e.getMessage();
                 e.printStackTrace();
@@ -80,7 +80,7 @@ public class AdvertiseController {
             advertiseTo.setText(description);
             advertiseTo.setTitle(title);
             advertiseTo.setUserTo(userTo);
-            advertiseTo.setDate(LocalDateTime.now());
+            advertiseTo.setStartdate(LocalDateTime.now());
             if (pic2 != null && !pic2.isEmpty()) {
                 try {
                     files = storageService.storeImage(pic2);
@@ -105,7 +105,7 @@ public class AdvertiseController {
     public String edit(Model model, @PathVariable Long id,
                        @RequestParam(required = true, name = "pLink") String previouslink) {
         Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
-        UserTo userTo = authenticationFacade.getUserToDetails();
+        UserTo userTo = authenticationFacade.getCurrentUser();
         if (advertiseoptl.isPresent())
             if (userTo != null)
                 if (userTo.getId() == advertiseoptl.get().getId()) ;

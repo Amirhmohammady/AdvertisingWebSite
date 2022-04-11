@@ -17,9 +17,11 @@ public interface AdvertiseService {
 
     Optional<AdvertiseTo> getAdvertiseById(Long id);
 
-    Page<AdvertiseTo> getPageAdvertises(int page);
+    Page<AdvertiseTo> getPageNotAcceptedAdvertises(int page);
 
-    Page<AdvertiseTo> getPageAdvertises(int page, String search);
+    Page<AdvertiseTo> getPageAcceptedAdvertises(int page);
+
+    Page<AdvertiseTo> getPageAcceptedAdvertises(int page, String search);
 
     int deleteAdvertiseById(Long id);
 }

@@ -7,7 +7,7 @@ import com.mycompany.advertising.model.to.UserTo;
  */
 public interface AuthenticationFacade {
 
-    UserTo getUserToDetails();
+    UserTo getCurrentUser();
     boolean hasRole(String role);
     String getDomainName();
 }
