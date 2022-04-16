@@ -332,13 +332,13 @@
 								<div class="panel-body bio-graph-info">
 									<h1> Profile Info</h1>
 
-									<form class="form-horizontal" role="form">
+									<div class="form-horizontal" role="form">
 										<div class="form-group">
 											<label class="col-lg-2 control-label">User Name</label>
 
 											<div class="col-lg-6">
 												<input type="text" th:value="${userTo.profilename}"
-													   class="form-control" id="f-name">
+													   class="form-control" id="epprofilename">
 											</div>
 										</div>
 										<div class="form-group">
@@ -346,14 +346,14 @@
 
 											<div class="col-lg-6">
 												<input type="text" th:value="${userTo.fullname}"
-													   class="form-control" id="l-name">
+													   class="form-control" id="epfullname">
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-lg-2 control-label">About Me</label>
 
 											<div class="col-lg-10">
-												<textarea name="" class="form-control" cols="30" rows="5">[[${userTo.aboutme}]]</textarea>
+												<textarea name="" class="form-control" cols="30" rows="5" id="epaboutme">[[${userTo.aboutme}]]</textarea>
 											</div>
 										</div>
 										<div class="form-group">
@@ -361,7 +361,7 @@
 
 											<div class="col-lg-6">
 												<input type="text" th:value="${userTo.email}"
-													   class="form-control" id="email">
+													   class="form-control" id="epemail">
 											</div>
 										</div>
 										<div class="form-group">
@@ -369,7 +369,7 @@
 
 											<div class="col-lg-6">
 												<input type="text" th:value="${userTo.username}"
-													   class="form-control" id="mobile">
+													   class="form-control" id="epusername">
 											</div>
 										</div>
 										<div class="form-group">
@@ -377,14 +377,14 @@
 
 											<div class="col-lg-6">
 												<input type="text" th:value="${userTo.websiteurl}"
-													   class="form-control" id="url">
+													   class="form-control" id="epwebsiteurl">
 											</div>
 										</div>
 										<div class="form-group">
 											<label class="col-lg-2 control-label">Password</label>
 
 											<div class="col-lg-6">
-												<input type="password" class="form-control" id="url">
+												<input type="password" class="form-control" id="eppassword">
 											</div>
 										</div>
 										<div class="form-group">
@@ -392,7 +392,7 @@
 
 											<div class="col-lg-6">
 												<input placeholder="**********" type="password"
-													   class="form-control" id="url">
+													   class="form-control" id="epnewpassword">
 											</div>
 										</div>
 										<div class="form-group">
@@ -400,17 +400,17 @@
 
 											<div class="col-lg-6">
 												<input placeholder="**********" type="password"
-													   class="form-control" id="url">
+													   class="form-control" id="epconfirmpassword">
 											</div>
 										</div>
 
 										<div class="form-group">
 											<div class="col-lg-offset-2 col-lg-10">
-												<button type="submit" class="btn btn-primary">Save</button>
+												<button type="submit" onclick="editUser()" class="btn btn-primary">Save</button>
 												<button type="button" class="btn btn-danger">Cancel</button>
 											</div>
 										</div>
-									</form>
+									</div>
 								</div>
 							</section>
 						</div>

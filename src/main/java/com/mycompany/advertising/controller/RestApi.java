@@ -71,9 +71,9 @@ public class RestApi {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping(value = "/editUser")
 //, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    public String updateUser(@RequestBody Map<String, Object> body) {
+    public String editUser(@RequestBody Map<String, Object> body) {
         UserTo userTo = new UserTo();
-        String confirmpass;
+        String pass = "";
         try {
         /*try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -87,12 +87,12 @@ public class RestApi {
             userTo.setUsername(newpn);
             userTo.setProfilename((String) body.get("profilename"));
             userTo.setFullname((String) body.get("fullname"));
-            String pass = (String) body.get("password");
-            if (pass != null && !pass.equals("")) userTo.setPassword(pass);
+            pass = (String) body.get("password");
+            String newpass = (String) body.get("newpass");
+            if (newpass != null && !newpass.equals("")) userTo.setPassword(newpass);
             userTo.setAboutme((String) body.get("aboutme"));
             userTo.setWebsiteurl((String) body.get("websiteurl"));
             userTo.setEmail((String) body.get("email"));
-            confirmpass = (String) body.get("confirmpass");
         } catch (Exception e) {
             return e.getMessage();
         }
@@ -100,7 +100,7 @@ public class RestApi {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!(principal instanceof UserTo)) return ("Error in editing user! can not find current user!");
         UserTo cuser = (UserTo) principal;
-        if (!passwordEncoder.matches(confirmpass, cuser.getPassword())) return "password is not correct";
+        if (!passwordEncoder.matches(pass, cuser.getPassword())) return "password is not correct";
         try {
             userservice.editUser(cuser, userTo);
             return "profile edited successfully";

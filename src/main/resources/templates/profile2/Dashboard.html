@@ -46,7 +46,7 @@
     </header>
     <!--header end-->
     <span sec:authorize="hasAuthority('ROLE_ADMIN')" th:insert="fragments/sidebarAdmin.html"  th:remove="tag"> </span>
-    <span sec:authorize="!hasAuthority('ROLE_ADMIN' AND hasAuthority('ROLE_USER')" th:insert="fragments/sidebarUser.html"  th:remove="tag"> </span>
+    <span sec:authorize="!hasAuthority('ROLE_ADMIN') AND hasAuthority('ROLE_USER')" th:insert="fragments/sidebarUser.html"  th:remove="tag"> </span>
 
     <!--main content start-->
     <section id="main-content" th:insert="'fragments/' + ${pfragment01} + '.html'"> </section>
@@ -65,23 +65,13 @@
     </div>
 </section>
 <!-- container section end -->
-<!-- javascripts -->
-<script th:src="@{/share/niceAdmin/js/jquery.js}"></script>
-<script th:src="@{/share/niceAdmin/js/bootstrap.min.js}"></script>
-<!-- nice scroll -->
-<script th:src="@{/share/niceAdmin/js/jquery.scrollTo.min.js}"></script>
-<script th:src="@{/share/niceAdmin/js/jquery.nicescroll.js}" type="text/javascript"></script>
-<!-- jquery knob -->
-<script th:src="@{/share/niceAdmin/assets/jquery-knob/js/jquery.knob.js}"></script>
-<!--custome script for all page-->
-<script th:src="@{/share/niceAdmin/js/scripts.js}"></script>
+<span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
 
 <script>
     //knob
     $(".knob").knob();
 </script>
-
-
+<span  sec:authorize="isAuthenticated()" th:insert="jsFragments/editProfile.js" th:remove="tag"> </span>
 </body>
 
 </html>
