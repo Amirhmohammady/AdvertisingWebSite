@@ -71,7 +71,7 @@ public class RestApi {
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PostMapping(value = "/editUser")
 //, headers = "Accept=application/json", consumes = "application/json", produces = "application/json")
-    public String editUser(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<String> editUser(@RequestBody Map<String, Object> body) {
         UserTo userTo = new UserTo();
         String pass = "";
         try {
@@ -94,18 +94,18 @@ public class RestApi {
             userTo.setWebsiteurl((String) body.get("websiteurl"));
             userTo.setEmail((String) body.get("email"));
         } catch (Exception e) {
-            return e.getMessage();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         logger.info("try to edit user " + userTo);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!(principal instanceof UserTo)) return ("Error in editing user! can not find current user!");
+        if (!(principal instanceof UserTo)) return new ResponseEntity<>("Error in editing user! can not find current user!", HttpStatus.NOT_ACCEPTABLE);
         UserTo cuser = (UserTo) principal;
-        if (!passwordEncoder.matches(pass, cuser.getPassword())) return "password is not correct";
+        if (!passwordEncoder.matches(pass, cuser.getPassword())) return new ResponseEntity<>("password is not correct", HttpStatus.NOT_ACCEPTABLE);
         try {
             userservice.editUser(cuser, userTo);
-            return "profile edited successfully";
+            return new ResponseEntity<>("profile edited successfully", HttpStatus.OK);
         } catch (Exception e) {
-            return e.getMessage();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

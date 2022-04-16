@@ -1,7 +1,12 @@
 <script>
     function editUser() {
         var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
+        xhttp.onload = function () {
+			let stts01 = this.status;
+            if (stts01 != 200) {
+				document.getElementById("statusbar01").getElementsByTagName('span')[0].textContent = this.responseText;
+				document.getElementById("statusbar01").style.display="block";
+			} else window.location.reload();
         };
 		let user = {};
 		user["username"] = document.getElementById("epusername").value;
@@ -20,6 +25,3 @@
         xhttp.send(user);
     }
 </script>
-
-
-
