@@ -7,7 +7,7 @@
     <meta name="description" content="Creative - Bootstrap 3 Responsive Admin Template">
     <meta name="author" content="GeeksLabs">
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="shortcut icon" th:href="@{/share/niceAdmin/img/icons/favicon.png}">
 
     <title>Profile | Creative - Bootstrap 3 Responsive Admin Template</title>
 
@@ -22,6 +22,7 @@
     <!-- Custom styles -->
     <link th:href="@{/share/niceAdmin/css/style.css}" rel="stylesheet">
     <link th:href="@{/share/niceAdmin/css/style-responsive.css}" rel="stylesheet"/>
+    <link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -67,6 +68,7 @@
 <!-- container section end -->
 <span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
 
+<script th:src="@{/share/niceAdmin/assets/jquery-knob/js/jquery.knob.js}"></script>
 <script>
     //knob
     $(".knob").knob();

@@ -1,6 +1,7 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
+import com.mycompany.advertising.controller.utils.PageCalculator;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
@@ -134,7 +135,7 @@ public class MainController {
         model.addAttribute("adminMessage", adminMessageService.getLastMessage());
         if (pagenumber > advertiseTos.getTotalPages()) return "index_notfound";
         model.addAttribute("advertises", advertiseTos);//.getContent());
-        model.addAttribute("pages", getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
+        model.addAttribute("pages", PageCalculator.getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
         return "index";
     }
 
@@ -154,23 +155,5 @@ public class MainController {
     @GetMapping("/allPages")
     public String allPagesget() {
         return "allPages";
-    }
-
-    int[] getMyPage(int totalpages, int currentpage, int pagelength) {
-        int[] result = new int[2];
-        if (totalpages < pagelength) {
-            result[0] = 1;
-            result[1] = totalpages;
-        } else if (currentpage <= pagelength / 2) {
-            result[0] = 1;
-            result[1] = pagelength;
-        } else if (currentpage + pagelength / 2 > totalpages) {
-            result[0] = totalpages - pagelength + 1;
-            result[1] = totalpages;
-        } else {
-            result[1] = currentpage + pagelength / 2;
-            result[0] = result[1] - pagelength + 1;
-        }
-        return result;
     }
 }

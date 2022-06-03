@@ -1,12 +1,16 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.components.api.AuthenticationFacade;
+import com.mycompany.advertising.controller.utils.PageCalculator;
 import com.mycompany.advertising.model.to.AdminMessageTo;
+import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
+import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +33,8 @@ public class UserController {
     private final static Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
+    AdvertiseService advertiseService;
+    @Autowired
     AdminMessageService adminMessageService;
     @Autowired
     UserService userService;
@@ -47,7 +53,7 @@ public class UserController {
     @Secured("ROLE_ADMIN")
     public String adminMessageGet(Model model) {
         model.addAttribute("pfragment01", "adminMessage");
-        return "profile2/DashboardAdmin";
+        return "profile2/Dashboard";
     }
 
     @PostMapping("/adminMessage")
@@ -64,7 +70,7 @@ public class UserController {
             logger.info("message added: " + message);
         } else logger.warn("message NOT added: " + message);
         model.addAttribute("pfragment01", "adminMessage");
-        return "profile2/DashboardAdmin";
+        return "profile2/Dashboard";
     }
 
     @GetMapping("/userlist")
@@ -81,8 +87,12 @@ public class UserController {
 
     @GetMapping("/Dashboard/unAcceptedAdvs")
     @Secured({"ROLE_ADMIN"})
-    public String unAcceptedAdvsGet() {
-        return "profile2/unAcceptedAdvs";
+    public String unAcceptedAdvsGet(Model model) {
+        Page<AdvertiseTo> advertiseToPage = advertiseService.getPageNotAcceptedAdvertises(1);
+        model.addAttribute("pages", PageCalculator.getMyPage(advertiseToPage.getTotalPages(), 1, 7));
+        model.addAttribute("pfragment01", "unAcceptedAdvs");
+        model.addAttribute("currentPage", 1);
+        return "profile2/Dashboard";
     }
 
     @GetMapping("/Dashboard")

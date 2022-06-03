@@ -24,6 +24,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     @Autowired
     AdvertiseRepository advertiseRepository;
     private int advPerPagee = 20;
+    private int unAcceptedAdvPerPagee = 20;
 
     @Override
     public Page<AdvertiseTo> getPageAcceptedAdvertises(int page) {
@@ -58,7 +59,10 @@ public class AdvertiseServiceImpl implements AdvertiseService {
 
     @Override
     public Page<AdvertiseTo> getPageNotAcceptedAdvertises(int page) {
-        return null;
+        Pageable pageable = PageRequest.of(page - 1, unAcceptedAdvPerPagee);//, Sort.by("text")
+        Page<AdvertiseTo> result = advertiseRepository.findAllByStatusOrderByStartdateDesc(AdvertiseStatus.Not_Accepted, pageable);//.getContent();
+        logger.info("get unaccepted advertises at page " + page + " reult: " + result.getTotalElements());
+        return result;
     }
     /*public List<MessageTo> getMessagesById(Long id) {
         return messageRepository.findAllById(id);
