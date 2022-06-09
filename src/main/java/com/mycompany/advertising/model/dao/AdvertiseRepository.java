@@ -23,6 +23,7 @@ public interface AdvertiseRepository extends JpaRepository<AdvertiseTo, Long> {
     Page<AdvertiseTo> findAllByStatusAndTextContainingOrTitleContainingOrderByStartdateDesc(AdvertiseStatus status, String text, String title, Pageable pageable);
 
     Page<AdvertiseTo> findAllByStatusOrderByStartdateDesc(AdvertiseStatus status, Pageable page);
+    Page<AdvertiseTo> findAllByStatusOrderByStartdateAsc(AdvertiseStatus status, Pageable page);
 
     Page<AdvertiseTo> findAll(Pageable page);
 

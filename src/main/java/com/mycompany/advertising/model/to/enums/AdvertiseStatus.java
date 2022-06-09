@@ -4,8 +4,10 @@ package com.mycompany.advertising.model.to.enums;
  * Created by Amir on 4/9/2022.
  */
 public enum AdvertiseStatus {
-    Not_Accepted,
     Accepted,
-    Deleted,
+    Not_Accepted,
+    Rejected,
+    Deleted_By_Admin,
+    Deleted_By_User,
     Expired
 }

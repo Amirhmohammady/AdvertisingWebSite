@@ -1,5 +1,6 @@
 package com.mycompany.advertising.service;
 
+import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.model.dao.AdvertiseRepository;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
@@ -22,8 +23,10 @@ import java.util.Optional;
 public class AdvertiseServiceImpl implements AdvertiseService {
     private static final Logger logger = Logger.getLogger(AdvertiseServiceImpl.class);
     @Autowired
+    AuthenticationFacade authenticationFacade;
+    @Autowired
     AdvertiseRepository advertiseRepository;
-    private int advPerPagee = 20;
+    private int advPerPagee = 14;
     private int unAcceptedAdvPerPagee = 20;
 
     @Override
@@ -58,9 +61,35 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     }
 
     @Override
+    public Optional<AdvertiseTo> acceptAdvertiseById(Long id) {
+        logger.info("Admin id:" + authenticationFacade.getCurrentUser().getId() + " try to accept advertise id:" + id);
+        AdvertiseTo advertise = advertiseRepository.getOne(id);
+        if (advertise == null || advertise.getStatus() != AdvertiseStatus.Not_Accepted) {
+            logger.warn("can not accept advertise by id:" + id);
+            return Optional.empty();
+        }
+        advertise.setStatus(AdvertiseStatus.Accepted);
+        logger.info("advertise by id:" + id + " accepted successfully");
+        return Optional.of(advertiseRepository.save(advertise));
+    }
+
+    @Override
+    public Optional<AdvertiseTo> rejectAdvertiseById(Long id) {
+        logger.info("Admin id:" + authenticationFacade.getCurrentUser().getId() + " try to reject advertise id:" + id);
+        AdvertiseTo advertise = advertiseRepository.getOne(id);
+        if (advertise == null || advertise.getStatus() != AdvertiseStatus.Not_Accepted) {
+            logger.warn("can not reject advertise by id:" + id);
+            return Optional.empty();
+        }
+        advertise.setStatus(AdvertiseStatus.Rejected);
+        logger.info("advertise by id:" + id + " rejected successfully");
+        return Optional.of(advertiseRepository.save(advertise));
+    }
+
+    @Override
     public Page<AdvertiseTo> getPageNotAcceptedAdvertises(int page) {
         Pageable pageable = PageRequest.of(page - 1, unAcceptedAdvPerPagee);//, Sort.by("text")
-        Page<AdvertiseTo> result = advertiseRepository.findAllByStatusOrderByStartdateDesc(AdvertiseStatus.Not_Accepted, pageable);//.getContent();
+        Page<AdvertiseTo> result = advertiseRepository.findAllByStatusOrderByStartdateAsc(AdvertiseStatus.Not_Accepted, pageable);//.getContent();
         logger.info("get unaccepted advertises at page " + page + " reult: " + result.getTotalElements());
         return result;
     }

@@ -16,10 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -85,13 +82,20 @@ public class UserController {
         return "user_list";
     }
 
-    @GetMapping("/Dashboard/unAcceptedAdvs")
+    @GetMapping("/Dashboard/unAcceptedAdvs/{pageNumber}")
     @Secured({"ROLE_ADMIN"})
-    public String unAcceptedAdvsGet(Model model) {
-        Page<AdvertiseTo> advertiseToPage = advertiseService.getPageNotAcceptedAdvertises(1);
-        model.addAttribute("pages", PageCalculator.getMyPage(advertiseToPage.getTotalPages(), 1, 7));
-        model.addAttribute("pfragment01", "unAcceptedAdvs");
-        model.addAttribute("currentPage", 1);
+    public String unAcceptedAdvsGet(Model model, @PathVariable Integer pageNumber) {
+        if (pageNumber == null || pageNumber < 1) pageNumber = 1;
+        Page<AdvertiseTo> advertiseToPage = advertiseService.getPageNotAcceptedAdvertises(pageNumber);
+        model.addAttribute("currentPage", pageNumber);
+        if (advertiseToPage.getTotalPages() == 0)
+            model.addAttribute("pfragment01", "unAcceptedAdvs_notFound");
+        else {
+            if (pageNumber > advertiseToPage.getTotalPages()) pageNumber = advertiseToPage.getTotalPages();
+            model.addAttribute("advertises", advertiseToPage);
+            model.addAttribute("pfragment01", "unAcceptedAdvs");
+            model.addAttribute("pages", PageCalculator.getMyPage(advertiseToPage.getTotalPages(), pageNumber, 7));
+        }
         return "profile2/Dashboard";
     }
 

@@ -17,6 +17,10 @@ public interface AdvertiseService {
 
     Optional<AdvertiseTo> getAdvertiseById(Long id);
 
+    Optional<AdvertiseTo> acceptAdvertiseById(Long id);
+
+    Optional<AdvertiseTo> rejectAdvertiseById(Long id);
+
     Page<AdvertiseTo> getPageNotAcceptedAdvertises(int page);
 
     Page<AdvertiseTo> getPageAcceptedAdvertises(int page);

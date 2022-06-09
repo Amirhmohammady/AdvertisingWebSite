@@ -41,6 +41,19 @@ public class AdvertiseController {
     @GetMapping("/showAdvertise/id={id}")
     public String showAdvertise(Model model, @PathVariable Long id) {
         Optional<AdvertiseTo> advertise = advertiseService.getAdvertiseById(id);
+        if (!advertise.isPresent() || advertise.get().getStatus() != AdvertiseStatus.Accepted) {
+            return errorfolder + "error-404";
+        }
+/*        if (!authenticationFacade.hasRole("ROLE_ADMIN") && advertise.get().getStatus() != AdvertiseStatus.Accepted)
+            return errorfolder + "error-403";*/
+        model.addAttribute("advertise", advertise.get());
+        return "showAdvertise";
+    }
+
+    @Secured({"ROLE_ADMIN", "ROLE_OWNER"})
+    @GetMapping("/showAdvertiseAdminMode/id={id}")
+    public String showAdvertiseAdminMode(Model model, @PathVariable Long id) {
+        Optional<AdvertiseTo> advertise = advertiseService.getAdvertiseById(id);
         if (!advertise.isPresent()) {
             return errorfolder + "error-404";
         }
