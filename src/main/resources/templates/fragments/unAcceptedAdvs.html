@@ -29,9 +29,9 @@
 					<tr  th:each="advertise : ${advertises.getContent()}" th:id=" 'adv' + ${advertise.id}">
 						<td th:text="${advertise.userTo.profilename}"></td>
 						<td th:text="${#temporals.format(advertise.startdate, 'yyyy-MM-dd')}"></td>
-						<td th:if="${advertise.title == null || advertise.title==''}"><a th:text="'-No Tiile-'" th:href="${'/showAdvertiseAdminMode/id=' + advertise.id}"></a></td>
-						<td th:unless="${advertise.title == null || advertise.title==''}"><a th:text="${advertise.title}" th:href="${'/showAdvertiseAdminMode/id=' + advertise.id}"></a></td>
-						<td><a th:text="${advertise.text}" th:href="${'/showAdvertiseAdminMode/id=' + advertise.id}"></a></td>
+						<td th:if="${advertise.title == null || advertise.title==''}"><a th:text="'-No Tiile-'" th:href="@{'/showAdvertiseAdminMode/id=' + ${advertise.id}}"></a></td>
+						<td th:unless="${advertise.title == null || advertise.title==''}"><a th:text="${advertise.title}" th:href="@{'/showAdvertiseAdminMode/id=' + ${advertise.id}}"></a></td>
+						<td><a th:text="${advertise.text}" th:href="@{'/showAdvertiseAdminMode/id=' + ${advertise.id}}"></a></td>
 						<td th:text="${advertise.userTo.username}"></td>
 						<td>
 							<div class="btn-group">

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<!-- amir css core CSS -->
+	<link th:href="@{/share/css/Amir-Style-Class.css}" rel="stylesheet">
+</head>
+
+<body>
+<div class="ah01-margin5_inner_childs ah01-show_childs_column_center">
+	<h2>Update Advertise</h2>
+	<p>Please update your advertise below.</p>
+	<br>
+	<form class="ah01-margin5_inner_childs" style="width: 100%;" method="POST" enctype="multipart/form-data"
+		  th:action="@{'/editAdvertise/id=' + ${advertise.id}}">
+		<p>Title:</p>
+		<input th:value="${advertise.title}" class="ah01-border_style01" type="text" name="title" />
+		<br>
+		<img th:src="${advertise.imageUrl1}" class="ah01-border_style01" style="border: 0px;" alt="Card image cap">
+		<p>Main Message Picture:</p>
+		<input class="ah01-border_style01" type="file" name="pic1" accept="image/*" />
+		<br>
+		<p>Description:</p>
+		<textarea class="ah01-border_style01" style="height: 170px;" name="description">[[${advertise.text}]]</textarea>
+		<!--size="100"-->
+		<p>Telegram Link:</p>
+		<input th:value="${advertise.webSiteLink}" class="ah01-border_style01" type="text" name="tel_link" />
+		<br>
+		<img th:src="${advertise.imageUrl2}" class="ah01-border_style01" style="border: 0px;" alt="second image">
+		<p>Second Message Picture:</p>
+		<input class="ah01-border_style01" type="file" name="pic2" accept="image/*" />
+		<br>
+		<input class="ah01-border_style01" style="width: 100px;margin: 0 auto;" type="submit" value="Update →" />
+	</form>
+	<p th:if="${succsessmessage}">[[${succsessmessage}]]</p>
+</div>
+
+</body>
+</html>

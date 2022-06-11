@@ -9,7 +9,9 @@
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <!--link rel="shortcut icon" th:href="@{/share/niceAdmin/img/favicon.png}"-->
 
-    <title th:text="'بازارچه -  ' + (${advertise.title!=null and advertise.title!=''}?${advertise.title}:'آگهی بدون عنوان')"></title>
+    <title
+            th:text="'بازارچه -  ' + (${pfragment01 != null}?'صفحه تایید ادمین- ':'') + (${advertise.title!=null and advertise.title!=''}?${advertise.title}:'آگهی بدون عنوان')">
+    </title>
 
     <!-- Bootstrap CSS -->
     <link th:href="@{/share/niceAdmin/css/bootstrap.min.css}" rel="stylesheet">
@@ -46,18 +48,33 @@
     <header class="header dark-bg" th:insert="fragments/navbar.html">
     </header>
     <!--header end-->
-    <span th:insert="fragments/topPageBar.html" th:remove="tag"/>
+    <span th:insert="fragments/topPageBar.html" th:remove="tag" />
     <!--main content start-->
     <section class="wrapper" style="margin-top: 0px;">
         <!-- page start-->
         <div class="row">
             <div class="col-lg-9" style="margin: 0 auto;float: none;">
-                <section class="panel ah01-margin15_all_childs ah01-show_childs_column_center" div style="padding:30px;margin: 20px;color: #111;">
+                <section class="panel ah01-margin15_all_childs ah01-show_childs_column_center" div
+                         style="padding:30px;margin: 20px;color: #111;">
                     <h1 th:text="${advertise.title}"></h1>
                     <img th:src="${advertise.imageUrl1}" style="width: 100%;" alt="Card image cap">
                     <p th:text="${advertise.text}"></p>
                     <a th:href="${advertise.webSiteLink}">Web Site Link</a>
                     <img th:src="${advertise.imageUrl2}" style="width: 100%;" alt="Card image cap">
+                    <div>
+                        ADVERTISE STATUS : [[${advertise.status}]]
+                    </div>
+                    <div
+                            th:if="${pfragment01 != null && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
+                        <div class="btn-group">
+                            <a class="btn btn-success" style="margin: 0;" href="javascript:void(0)"
+                               th:attr="onclick=|activeAdvertise(${advertise.id})|"><i
+                                    class="icon_check_alt2"></i></a>
+                            <a class="btn btn-danger" style="margin: 0;" href="javascript:void(0)"
+                               th:attr="onclick=|rejectAdvertise(${advertise.id})|"><i
+                                    class="icon_close_alt2"></i></a>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>
@@ -68,10 +85,10 @@
     <div class="text-right">
         <div class="credits">
             <!--
-  All the links in the footer should remain intact.
-  You can delete the links only if you purchased the pro version.
-  Licensing information: https://bootstrapmade.com/license/
-  Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
+All the links in the footer should remain intact.
+You can delete the links only if you purchased the pro version.
+Licensing information: https://bootstrapmade.com/license/
+Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
 -->
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
@@ -87,6 +104,29 @@
 <!--custome script for all page-->
 <script th:src="@{/share/niceAdmin/js/scripts.js}"></script>
 
+<script
+        th:if="${pfragment01 != null && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
+    function activeAdvertise(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            /*let stts01 = this.status;
+             if (stts01 == 200) */
+            document.getElementById('adv' + id).remove();
+        };
+        xhttp.open("PATCH", "[[@{/api/advertises/acceptbyid=}]]" + id, true);
+        xhttp.send();
+    }
+    function rejectAdvertise(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            /*let stts01 = this.status;
+             if (stts01 == 200) */
+            document.getElementById('adv' + id).remove();
+        };
+        xhttp.open("PATCH", "[[@{/api/advertises/rejectbyid=}]]" + id, true);
+        xhttp.send();
+    }
+</script>
 </body>
 
 </html>

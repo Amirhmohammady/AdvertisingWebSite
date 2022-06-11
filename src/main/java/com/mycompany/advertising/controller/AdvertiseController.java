@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -58,6 +57,7 @@ public class AdvertiseController {
             return errorfolder + "error-404";
         }
         model.addAttribute("advertise", advertise.get());
+        model.addAttribute("pfragment01", "showAdvertiseAdminMode");
         return "showAdvertise";
     }
 
@@ -74,54 +74,102 @@ public class AdvertiseController {
                                @RequestParam(required = false) String tel_link,
                                @RequestParam(required = true) String title,
                                @RequestParam(required = false) MultipartFile pic2) {
+        String succsessMessage = new String();
+        UserTo userTo = authenticationFacade.getCurrentUser();
+        AdvertiseTo advertiseTo = new AdvertiseTo();
+        List<String> files;
         if (pic1 != null && !pic1.isEmpty()) {
-            UserTo userTo = authenticationFacade.getCurrentUser();
-            List<String> files;
-            AdvertiseTo advertiseTo = new AdvertiseTo();
-            String succsessmessage = new String();
             try {
                 files = storageService.storeImage(pic1);
-                succsessmessage += "Successfully uploaded 1st pic";
+                succsessMessage += "Successfully uploaded 1st pic";
                 advertiseTo.setImageUrl1(files.get(0));
                 advertiseTo.setSmallImageUrl1(files.get(1));
-            } catch (IOException e) {
-                succsessmessage += "Error uploading 1nd pic:" + e.getMessage();
+            } catch (Exception e) {
+                succsessMessage += "Error uploading 1nd pic:" + e.getMessage();
                 e.printStackTrace();
             }
-            advertiseTo.setWebSiteLink(tel_link);
-            advertiseTo.setStatus(AdvertiseStatus.Not_Accepted);
-            advertiseTo.setText(description);
-            advertiseTo.setTitle(title);
-            advertiseTo.setUserTo(userTo);
-            advertiseTo.setStartdate(LocalDateTime.now());
-            if (pic2 != null && !pic2.isEmpty()) {
-                try {
-                    files = storageService.storeImage(pic2);
-                    succsessmessage += "\nSuccessfully uploaded 2nd pic";
-                    advertiseTo.setImageUrl2(files.get(0));
-                    advertiseTo.setSmallImageUrl2(files.get(1));
-                } catch (IOException e) {
-                    succsessmessage += "\nError uploading 2nd pic:" + e.getMessage();
-                    e.printStackTrace();
-                }
-            }
-            advertiseService.addAdvertise(advertiseTo);
-            succsessmessage += "\nSuccessfully added advertise";
-            model.addAttribute("succsessmessage", succsessmessage);
         }
+        if (pic2 != null && !pic2.isEmpty()) {
+            try {
+                files = storageService.storeImage(pic2);
+                succsessMessage += "\nSuccessfully uploaded 2nd pic";
+                advertiseTo.setImageUrl2(files.get(0));
+                advertiseTo.setSmallImageUrl2(files.get(1));
+            } catch (Exception e) {
+                succsessMessage += "\nError uploading 2nd pic:" + e.getMessage();
+                e.printStackTrace();
+            }
+        }
+        advertiseTo.setWebSiteLink(tel_link);
+        advertiseTo.setStatus(AdvertiseStatus.Not_Accepted);
+        advertiseTo.setText(description);
+        advertiseTo.setTitle(title);
+        advertiseTo.setUserTo(userTo);
+        advertiseTo.setStartdate(LocalDateTime.now());
+        advertiseService.saveAdvertise(advertiseTo);
+        succsessMessage += "\nSuccessfully added advertise";
+        model.addAttribute("succsessmessage", succsessMessage);
         return "add_advertise";
     }
 
-    @GetMapping("/editAdvertise/id={id}")
+    @GetMapping(value = "/editAdvertise/id={id}")//, method = {RequestMethod.GET, RequestMethod.POST})
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    public String edit(Model model, @PathVariable Long id,
-                       @RequestParam(required = true, name = "pLink") String previouslink) {
+    public String editAdvertiseGet(Model model, @PathVariable Long id) {
         Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
+        if (!advertiseoptl.isPresent()) return errorfolder + "error-404";
         UserTo userTo = authenticationFacade.getCurrentUser();
-        if (advertiseoptl.isPresent())
-            if (userTo != null)
-                if (userTo.getId() == advertiseoptl.get().getId()) ;
-        return "redirect:" + previouslink;
+        if (userTo == null || userTo.getId() != advertiseoptl.get().getUserTo().getId()) return errorfolder + "error-403";
+        model.addAttribute("advertise", advertiseoptl.get());
+        return "editAdvertise";
+    }
+
+    @PostMapping(value = "/editAdvertise/id={id}")//, method = {RequestMethod.GET, RequestMethod.POST})
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    public String editAdvertisePost(Model model, @PathVariable Long id,
+                                    @RequestParam(required = false) MultipartFile pic1,
+                                    @RequestParam(required = false) String description,
+                                    @RequestParam(required = false) String tel_link,
+                                    @RequestParam(required = true) String title,
+                                    @RequestParam(required = false) MultipartFile pic2) {
+        Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
+        if (!advertiseoptl.isPresent()) return errorfolder + "error-404";
+        UserTo userTo = authenticationFacade.getCurrentUser();
+        if (userTo == null || userTo.getId() != advertiseoptl.get().getUserTo().getId()) return errorfolder + "error-403";
+        AdvertiseTo advertise = advertiseoptl.get();
+        //==========
+        String succsessMessage = new String();
+        List<String> files;
+        if (pic1 != null && !pic1.isEmpty()) {
+            try {
+                files = storageService.storeImage(pic1);
+                succsessMessage += "Successfully uploaded 1st pic";
+                advertise.setImageUrl1(files.get(0));
+                advertise.setSmallImageUrl1(files.get(1));
+            } catch (Exception e) {
+                succsessMessage += "Error uploading 1nd pic:" + e.getMessage();
+                e.printStackTrace();
+            }
+        }
+        if (pic2 != null && !pic2.isEmpty()) {
+            try {
+                files = storageService.storeImage(pic2);
+                succsessMessage += "\nSuccessfully uploaded 2nd pic";
+                advertise.setImageUrl2(files.get(0));
+                advertise.setSmallImageUrl2(files.get(1));
+            } catch (Exception e) {
+                succsessMessage += "\nError uploading 2nd pic:" + e.getMessage();
+                e.printStackTrace();
+            }
+        }
+        advertise.setWebSiteLink(tel_link);
+        advertise.setText(description);
+        advertise.setTitle(title);
+        advertiseService.saveAdvertise(advertise);
+        succsessMessage += "\nSuccessfully updated advertise";
+        model.addAttribute("succsessmessage", succsessMessage);
+        model.addAttribute("advertise", advertise);
+        return "editAdvertise";
     }
 }

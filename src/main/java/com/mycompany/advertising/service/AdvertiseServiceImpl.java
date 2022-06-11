@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,9 +46,9 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     }
 
     @Override
-    public Long addAdvertise(AdvertiseTo messageTo) {
-        advertiseRepository.save(messageTo);
-        return messageTo.getId();
+    public AdvertiseTo saveAdvertise(AdvertiseTo advertise) {
+        return advertiseRepository.save(advertise);
+        //return messageTo.getId();
     }
 
     @Override
@@ -69,6 +70,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             return Optional.empty();
         }
         advertise.setStatus(AdvertiseStatus.Accepted);
+        advertise.setStartdate(LocalDateTime.now());
         logger.info("advertise by id:" + id + " accepted successfully");
         return Optional.of(advertiseRepository.save(advertise));
     }
@@ -82,6 +84,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             return Optional.empty();
         }
         advertise.setStatus(AdvertiseStatus.Rejected);
+        advertise.setStartdate(LocalDateTime.now());
         logger.info("advertise by id:" + id + " rejected successfully");
         return Optional.of(advertiseRepository.save(advertise));
     }
@@ -102,4 +105,11 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     public int deleteAdvertiseById(Long id) {
         return advertiseRepository.deleteByIdCount(id);
     }
+
+    /*@Override
+    public Optional<AdvertiseTo> editAdvertises(AdvertiseTo advertise) {
+        Optional<AdvertiseTo> advertiseopt = advertiseRepository.findById(advertise.getId());
+        if (!advertiseopt.isPresent()) return Optional.empty();
+        return Optional.of(advertiseRepository.save(advertise));
+    }*/
 }

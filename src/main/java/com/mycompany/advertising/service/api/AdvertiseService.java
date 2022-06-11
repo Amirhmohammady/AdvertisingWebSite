@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public interface AdvertiseService {
 
-    Long addAdvertise(AdvertiseTo advertiseTo);
+    AdvertiseTo saveAdvertise(AdvertiseTo advertise);
 
     List<AdvertiseTo> getAllAdvertises();
 
@@ -28,4 +28,6 @@ public interface AdvertiseService {
     Page<AdvertiseTo> getPageAcceptedAdvertises(int page, String search);
 
     int deleteAdvertiseById(Long id);
+
+    //Optional<AdvertiseTo> editAdvertises(AdvertiseTo advertise);
 }
