@@ -70,6 +70,13 @@
 <!-- container section end -->
 <span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
 
+<span th:if="${pfragment01.equals('manageTags')}" th:remove="tag">
+	<!--custom tagsinput-->
+	<script th:src="@{/share/niceAdmin/js/jquery.tagsinput.js}"></script>
+	<!-- custom form component script for this page-->
+	<script th:src="@{/share/niceAdmin/js/form-component.js}"></script>
+</span>
+
 <script th:src="@{/share/niceAdmin/assets/jquery-knob/js/jquery.knob.js}"></script>
 <script>
     //knob

@@ -45,8 +45,7 @@
 <!-- container section start -->
 <section id="container" class="">
     <!--header start-->
-    <header class="header dark-bg" th:insert="fragments/navbar.html">
-    </header>
+    <span th:insert="fragments/navbar.html" th:remove="tag"/>
     <!--header end-->
     <!--main content start-->
     <section class="wrapper" style="margin-top: 0px;">
@@ -65,10 +64,10 @@
             <div class="col-lg-9" style="margin: 0 auto;float: none;">
                 <section class="panel" div style="padding:30px;margin: 20px;color: #111;">
                     <div class="ah01-padding15_inner_childs ah01-border_style01_no_width">
-                        <div th:text="${adminMessage.title}" class="ah01-row_wrap_space_between"
+                        <div dir="auto" th:text="${adminMessage.title}" class="ah01-row_wrap_space_between"
                              style="border-bottom: 1px solid rgba(0,0,0,.125);font-size: large;">
                         </div>
-                        <div th:text="${adminMessage.message}"
+                        <div dir="auto" th:text="${adminMessage.message}"
                              style="border-bottom: 1px solid rgba(0,0,0,.125);font-size: medium;">
                         </div>
                         <div class="ah01-row_wrap_space_between ah01-margin5_inner_childs"
@@ -94,7 +93,7 @@
                             <div class="validation"></div>
                         </div>
                         <div class="form-group">
-                                <textarea class="form-control" name="message" rows="5" data-rule="required"
+                                <textarea dir="auto" class="form-control" name="message" rows="5" data-rule="required"
                                           data-msg="Please write something for us" placeholder="Message"></textarea>
                             <div class="validation"></div>
                         </div>
@@ -119,7 +118,7 @@
                                    title="Bootstrap 3 themes generator">[[#{delete.text}]]</a>
                             </div>
                         </div>
-                        <div th:text="${comment.message}"></div>
+                        <div dir="auto" th:text="${comment.message}"></div>
                     </div>
                 </section>
             </div>

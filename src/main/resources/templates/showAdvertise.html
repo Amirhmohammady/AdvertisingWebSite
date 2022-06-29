@@ -45,10 +45,14 @@
 <!-- container section start -->
 <section id="container" class="">
     <!--header start-->
-    <header class="header dark-bg" th:insert="fragments/navbar.html">
-    </header>
+    <span th:insert="fragments/navbar.html" th:remove="tag"/>
     <!--header end-->
-    <span th:insert="fragments/topPageBar.html" th:remove="tag" />
+    <!--page bar start-->
+    <section class="wrapper" style="margin-top: 0px;">
+        <span th:insert="fragments/topPageBar.html" th:remove="tag"/>
+    </section>
+    <!--page bar end-->
+
     <!--main content start-->
     <section class="wrapper" style="margin-top: 0px;">
         <!-- page start-->
@@ -56,16 +60,15 @@
             <div class="col-lg-9" style="margin: 0 auto;float: none;">
                 <section class="panel ah01-margin15_all_childs ah01-show_childs_column_center" div
                          style="padding:30px;margin: 20px;color: #111;">
-                    <h1 th:text="${advertise.title}"></h1>
+                    <h1 dir="auto" th:text="${advertise.title}"></h1>
                     <img th:src="${advertise.imageUrl1}" style="width: 100%;" alt="Card image cap">
-                    <p th:text="${advertise.text}"></p>
+                    <p dir="auto" th:text="${advertise.text}"></p>
                     <a th:href="${advertise.webSiteLink}">Web Site Link</a>
                     <img th:src="${advertise.imageUrl2}" style="width: 100%;" alt="Card image cap">
-                    <div>
+                    <div th:if="${pfragment01 != null}">
                         ADVERTISE STATUS : [[${advertise.status}]]
                     </div>
-                    <div
-                            th:if="${pfragment01 != null && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
+                    <div th:if="${pfragment01 != null && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
                         <div class="btn-group">
                             <a class="btn btn-success" style="margin: 0;" href="javascript:void(0)"
                                th:attr="onclick=|activeAdvertise(${advertise.id})|"><i

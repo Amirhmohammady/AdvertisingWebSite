@@ -133,7 +133,7 @@ public class MainController {
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pagenumber);
         model.addAttribute("adminMessage", adminMessageService.getLastMessage());
-        if (pagenumber > advertiseTos.getTotalPages()) return "index_notfound";
+        if (pagenumber > advertiseTos.getTotalPages()) return "index";
         model.addAttribute("advertises", advertiseTos);//.getContent());
         model.addAttribute("pages", PageCalculator.getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
         return "index";

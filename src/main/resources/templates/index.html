@@ -28,20 +28,26 @@
 
 <body>
 <!--header start-->
-<header class="header dark-bg" th:insert="fragments/navbar.html">
-</header>
+<span th:insert="fragments/navbar.html" th:remove="tag"/>
 <!--header end-->
-<span th:insert="fragments/topPageBar.html" th:remove="tag"/>
-<div class="ah01-show_in_row_center ah01-adver_body">
+<!--page bar start-->
+<section class="wrapper" style="margin-top: 0px;">
+    <span th:insert="fragments/topPageBar.html" th:remove="tag"/>
+</section>
+<!--page bar end-->
+<div th:if="${advertises == null}" class="ah01-show_in_row_center">
+    <h2>موردی برای نمایش وجود ندارد</h2>
+</div>
+<div th:if="${advertises != null}" class="ah01-show_in_row_center ah01-adver_body">
     <div th:each="advertise : ${advertises.getContent()}" th:id="'adverCard' + ${advertise.id}">
         <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
             <img th:src="${advertise.smallImageUrl1}" alt="Card image cap">
         </a>
 
         <div>
-            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}"></a>
+            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}" dir="auto"></a>
 
-            <p>[[${advertise.text}]]</p>
+            <p dir="auto" th:text="${advertise.text}"></p>
 
             <div class="ah01-row_wrap_space_between">
                 <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">[[#{link.text}]]</a>
@@ -58,7 +64,7 @@
     </div>
 </div>
 
-<div class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
+<div th:if="${advertises != null}" class="ah01-show_in_row_center dataTables_paginate paging_simple_numbers" id="example1_paginate">
     <ul th:if="${pages.firstPage!=1 OR pages.lastPage!=1}" class="pagination">
         <li class="paginate_button page-item previous" th:classappend="${currentPage==1} ? 'disabled'"
             id="example1_previous"><a

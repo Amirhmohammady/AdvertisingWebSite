@@ -82,7 +82,7 @@ public class UserController {
         return "user_list";
     }
 
-    @GetMapping("/Dashboard/unAcceptedAdvs/{pageNumber}")
+    @GetMapping("/unAcceptedAdvs/{pageNumber}")
     @Secured({"ROLE_ADMIN"})
     public String unAcceptedAdvsGet(Model model, @PathVariable Integer pageNumber) {
         if (pageNumber == null || pageNumber < 1) pageNumber = 1;
@@ -101,10 +101,20 @@ public class UserController {
 
     @GetMapping("/Dashboard")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String dashboard(Model model, HttpServletRequest request) {
+    public String dashboard(Model model){//}, HttpServletRequest request) {
         UserTo userTo = authenticationFacade.getCurrentUser();
         model.addAttribute("userTo", userTo);
         model.addAttribute("pfragment01", "profile");
+        //if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
+        //if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
+        return "profile2/Dashboard";
+    }
+
+    @GetMapping("/manageTags")
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    public String manageTags(Model model) {
+        UserTo userTo = authenticationFacade.getCurrentUser();
+        model.addAttribute("pfragment01", "manageTags");
         //if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
         //if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
         return "profile2/Dashboard";

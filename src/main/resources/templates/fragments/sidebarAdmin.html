@@ -3,7 +3,7 @@
     <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu">
-            <li class="active"><a href="index.html"> <em class="icon_house_alt"></em> Profile</a></li>
+            <li class="active"><a th:href="@{/User/Dashboard}"> <em class="icon_house_alt"></em> Profile</a></li>
             <li class="sub-menu">
                 <a href="javascript:;" class="">
                     <i class="icon_desktop"></i>
@@ -15,8 +15,9 @@
                     <li><a class="" href="buttons.html">Baned Users</a></li>
                 </ul>
             </li>
-            <li><a th:href="@{/User/Dashboard/unAcceptedAdvs/1}"> <em class="icon_genius"></em> UA Advertieses </a></li>
-            <li><a href="adminMessage" class=""><i class="icon_documents_alt"></i><span>Admin Message</span></a></li>
+            <li><a th:href="@{/User/unAcceptedAdvs/1}"> <em class="icon_genius"></em> UA Advertieses </a></li>
+            <li><a th:href="@{/User/adminMessage}" class=""><i class="icon_documents_alt"></i><span>Admin Message</span></a></li>
+            <li><a th:href="@{/User/manageTags}" class=""><i class="icon_pushpin_alt"></i><span>Tags</span></a></li>
         </ul>
         <!-- sidebar menu end-->
     </div>

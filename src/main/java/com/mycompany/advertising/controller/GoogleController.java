@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -52,7 +54,11 @@ public class GoogleController {
         result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
                 "<urlset xmlns:image=\"http://www.google.com/schemas/sitemap-image/1.1\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\" xmlns:video=\"http://www.google.com/schemas/sitemap-video/1.1\">";
         for (AdminMessageTo a : adminMessageTos) {
-            result += "<url><lastmod>" + a.getDate() + "</lastmod><loc>" + authenticationFacade.getDomainName() + "/adminMessages/" + a.getId() + "</loc></url>";
+            LocalDateTime lastmod = a.getDate();
+            if (a.getComments() != null && a.getComments().size() > 0) {
+                lastmod = a.getComments().stream().max(Comparator.comparing(c -> c.getDate())).get().getDate();
+            }
+            result += "<url><lastmod>" + lastmod + "</lastmod><loc>" + authenticationFacade.getDomainName() + "/adminMessages/" + a.getId() + "</loc></url>";
         }
         result += "</urlset>";
         return result;//new ResponseEntity<>(xmlUrlSet, HttpStatus.OK);

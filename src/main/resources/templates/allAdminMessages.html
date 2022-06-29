@@ -27,8 +27,7 @@
 
 <body>
 <!--header start-->
-<header class="header dark-bg" th:insert="fragments/navbar.html">
-</header>
+<span th:insert="fragments/navbar.html" th:remove="tag"/>
 <!--header end-->
 <main role="main" style="margin-top: 30px;">
     <table class="table" style="margin-top:0px;width:95%;margin-top:30px;max-width: 1000px;">
@@ -37,10 +36,10 @@
             <td scope="row">
                 <div class="recent">
                     <a th:href="@{'/adminMessages/' + ${adminMessage.id}}">
-                        <h3 th:text="${adminMessage.title}"></h3>
+                        <h3 dir="auto" th:text="${adminMessage.title}"></h3>
                     </a>
                 </div>
-                <h4 th:text="${adminMessage.message}" style="font-weight: unset;"></h4>
+                <h4 dir="auto" th:text="${adminMessage.message}" style="font-weight: unset;"></h4>
                 <div class="ah01-row_wrap_space_between ah01-margin5_inner_childs" style="background: #d3ebff;">
                     <h6 th:text="${adminMessage.date}"></h6>
                     <a th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"

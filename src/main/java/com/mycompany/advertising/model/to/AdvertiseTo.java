@@ -1,24 +1,29 @@
 package com.mycompany.advertising.model.to;
 
 import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Created by Amir on 10/28/2019.
  */
 @Entity
+//@Proxy(lazy=false)
 public class AdvertiseTo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     private Long id;
-    @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = UserTo.class, fetch = FetchType.LAZY)
     @JoinColumn(nullable = true)//cuz cascade is restricted
     private UserTo userTo;
-    @Column(length = 100)
+    @Column(length = 64)
     private String title;
-    @Column(nullable = false, columnDefinition = "TEXT", length = 2048)
+    @Column(nullable = false, columnDefinition = "TEXT", length = 512)
     private String text;
     private String webSiteLink;
     @Column(nullable = false)
@@ -31,8 +36,21 @@ public class AdvertiseTo {
     private String smallImageUrl2;
     @Enumerated(EnumType.STRING)
     private AdvertiseStatus status;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "junction_table_advertise_category",
+            joinColumns = @JoinColumn(name = "advertise_id", unique = false),
+            inverseJoinColumns = @JoinColumn(name = "category_id", unique = false))
+    private Set<AdvertiseCategoryTo> categories;
 
     public AdvertiseTo() {
+    }
+
+    public Set<AdvertiseCategoryTo> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<AdvertiseCategoryTo> categories) {
+        this.categories = categories;
     }
 
     public String getSmallImageUrl2() {
