@@ -1,11 +1,14 @@
 package com.mycompany.advertising.model.to;
 
-import org.hibernate.annotations.Cascade;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by Amir on 6/23/2022.
@@ -15,13 +18,30 @@ public class AdvertiseCategoryTo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String category;
-    @OneToOne
+    @OneToMany(targetEntity = MultiLanguageCategoryTo.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "advertiseCategory")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<MultiLanguageCategoryTo> category;
+    @OneToOne(optional = true)
+    @JoinColumn(nullable = true)
     private AdvertiseCategoryTo parent;
     private int depth;
     //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<AdvertiseTo> advertiseTos;
+    @JsonIgnore
+    @Transient
+    private Map<String, String> languagesAsMap;
+
+    @Override
+    public String toString() {
+        return "AdvertiseCategoryTo{" +
+                "id=" + id +
+                ", category=" + category +
+                ", parent=" + parent.getId() +
+                ", advertiseTos=" + advertiseTos +
+                '}';
+    }
 
     public Set<AdvertiseTo> getAdvertiseTos() {
         return advertiseTos;
@@ -39,11 +59,11 @@ public class AdvertiseCategoryTo {
         this.id = id;
     }
 
-    public String getCategory() {
+    public List<MultiLanguageCategoryTo> getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(List<MultiLanguageCategoryTo> category) {
         this.category = category;
     }
 
@@ -61,5 +81,11 @@ public class AdvertiseCategoryTo {
 
     public void setDepth(int depth) {
         this.depth = depth;
+    }
+
+    public Map<String, String> getLanguagesAsMap() {
+        if (languagesAsMap == null)
+            languagesAsMap = category.stream().collect(Collectors.toMap(M -> M.getLanguage().toString(), MultiLanguageCategoryTo::getText));
+        return languagesAsMap;
     }
 }

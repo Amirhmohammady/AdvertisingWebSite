@@ -11,8 +11,6 @@
 
     <title>Profile | Creative - Bootstrap 3 Responsive Admin Template</title>
 
-    <!-- Bootstrap CSS -->
-    <link th:href="@{/share/css/bootstrap.min.css}" rel="stylesheet">
     <!-- bootstrap theme -->
     <link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
     <!--external css-->
@@ -69,14 +67,29 @@
 </section>
 <!-- container section end -->
 <span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
-
-<span th:if="${pfragment01.equals('manageTags')}" th:remove="tag">
-	<!--custom tagsinput-->
-	<script th:src="@{/share/niceAdmin/js/jquery.tagsinput.js}"></script>
-	<!-- custom form component script for this page-->
-	<script th:src="@{/share/niceAdmin/js/form-component.js}"></script>
-</span>
-
+<th:block th:if="${pfragment01.equals('manageTags')}">
+    <script>
+        function clickTag(id){
+            var editBtn = document.querySelector("a[href='#myModal-1'");
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) console.log(this.responseText);
+                editBtn.style.display = 'unset';
+                editBtn.text = 'Edit/Delete Category ' + 'dsf';
+            };
+            xhttp.open("GET", "[[@{/api/advCatecory?id=}]]" + id, true);
+            xhttp.send();
+        }
+        function test(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) console.log(this.responseText);
+            };
+            xhttp.open("GET", "[[@{/api/advCatecories?id=3}]]"+"&lan=en_US", true);
+            xhttp.send();
+        }
+    </script>
+</th:block>
 <script th:src="@{/share/niceAdmin/assets/jquery-knob/js/jquery.knob.js}"></script>
 <script>
     //knob

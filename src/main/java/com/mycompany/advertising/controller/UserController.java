@@ -6,6 +6,7 @@ import com.mycompany.advertising.model.to.AdminMessageTo;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.service.api.AdminMessageService;
+import com.mycompany.advertising.service.api.AdvCategoryService;
 import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
@@ -29,6 +30,8 @@ import java.time.LocalDateTime;
 public class UserController {
     private final static Logger logger = Logger.getLogger(UserController.class);
 
+    @Autowired
+    AdvCategoryService advCategoryService;
     @Autowired
     AdvertiseService advertiseService;
     @Autowired
@@ -115,6 +118,7 @@ public class UserController {
     public String manageTags(Model model) {
         UserTo userTo = authenticationFacade.getCurrentUser();
         model.addAttribute("pfragment01", "manageTags");
+        model.addAttribute("rootCategories", advCategoryService.getRootCtegories());
         //if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
         //if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
         return "profile2/Dashboard";

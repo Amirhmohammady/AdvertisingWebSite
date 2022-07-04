@@ -3789,6 +3789,32 @@ table.sliders tr td {
     opacity: 1;
     display: block\9;
 }
+.tagsinput .tag:hover .tagsinput-edit-link {
+    color: #ffffff;
+    opacity: 1;
+    display: block\9;
+}
+.tagsinput-edit-link {
+    bottom: 0;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    padding: 7px 7px 5px 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    text-decoration: none;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+    display: none\9;
+}
+.tagsinput-edit-link:before {
+    color: #ffffff;
+    content: "\f044";
+    font-family: "FontAwesome";
+}
 .tagsinput input {
     background: transparent;
     border: none;

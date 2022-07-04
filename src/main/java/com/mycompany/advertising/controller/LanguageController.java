@@ -19,6 +19,7 @@ public class LanguageController {
     @GetMapping("/lan={language}")
     public String setLanguage(HttpServletRequest request, HttpServletResponse response
             , @PathVariable String language) {
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + language);
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
         localeResolver.setLocale(request, response, StringUtils.parseLocaleString(language));
         String referer = request.getHeader("Referer");
