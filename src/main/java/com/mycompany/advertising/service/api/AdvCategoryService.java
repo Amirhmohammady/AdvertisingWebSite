@@ -1,7 +1,7 @@
 package com.mycompany.advertising.service.api;
 
 import com.mycompany.advertising.model.to.AdvertiseCategoryTo;
-import com.mycompany.advertising.model.to.enums.Language;
+import com.mycompany.advertising.service.language.Language;
 import com.mycompany.advertising.service.Dto.CategoryIdPair;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface AdvCategoryService {
     boolean editCategory(AdvertiseCategoryTo category);
 
-    AdvertiseCategoryTo saveCategory(AdvertiseCategoryTo category);
+    AdvertiseCategoryTo addCategory(AdvertiseCategoryTo category);
 
     Optional<AdvertiseCategoryTo> getCategoryById(Long id);
 
@@ -22,6 +22,8 @@ public interface AdvCategoryService {
     int deleteByIdCostum(Long id);
 
     List<AdvertiseCategoryTo> getRootCtegories();
+
+    List<CategoryIdPair> getRootCtegories(Language language);
 
     List<AdvertiseCategoryTo> getChildCtegories(Long parentId);
 

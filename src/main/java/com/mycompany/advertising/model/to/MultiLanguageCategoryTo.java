@@ -1,12 +1,9 @@
 package com.mycompany.advertising.model.to;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mycompany.advertising.model.to.enums.Language;
+import com.mycompany.advertising.service.language.Language;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by Amir on 6/30/2022.
@@ -14,6 +11,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class MultiLanguageCategoryTo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
     private Long id;
     private String text;
     private Language language;

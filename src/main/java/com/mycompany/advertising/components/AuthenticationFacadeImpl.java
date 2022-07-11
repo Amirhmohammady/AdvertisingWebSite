@@ -2,6 +2,7 @@ package com.mycompany.advertising.components;
 
 import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.model.to.UserTo;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collection;
+import java.util.Locale;
 
 /**
  * Created by Amir on 6/24/2020.
@@ -46,6 +48,11 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     @Override
     public String getDomainName() {
         return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+    }
+
+    @Override
+    public Locale getCurrentLocale() {
+        return LocaleContextHolder.getLocale();
     }
     /*@Override
     public UserTo getUserToDetails2() {

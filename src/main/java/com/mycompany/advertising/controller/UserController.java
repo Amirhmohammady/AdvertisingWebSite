@@ -9,6 +9,7 @@ import com.mycompany.advertising.service.api.AdminMessageService;
 import com.mycompany.advertising.service.api.AdvCategoryService;
 import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.UserService;
+import com.mycompany.advertising.service.language.LngManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
 /**
@@ -104,7 +104,7 @@ public class UserController {
 
     @GetMapping("/Dashboard")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String dashboard(Model model){//}, HttpServletRequest request) {
+    public String dashboard(Model model) {//}, HttpServletRequest request) {
         UserTo userTo = authenticationFacade.getCurrentUser();
         model.addAttribute("userTo", userTo);
         model.addAttribute("pfragment01", "profile");
@@ -114,11 +114,10 @@ public class UserController {
     }
 
     @GetMapping("/manageTags")
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN"})
     public String manageTags(Model model) {
-        UserTo userTo = authenticationFacade.getCurrentUser();
         model.addAttribute("pfragment01", "manageTags");
-        model.addAttribute("rootCategories", advCategoryService.getRootCtegories());
+        model.addAttribute("rootCategories", advCategoryService.getRootCtegories(LngManager.whatLanguage(authenticationFacade.getCurrentLocale().toString())));
         //if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
         //if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
         return "profile2/Dashboard";

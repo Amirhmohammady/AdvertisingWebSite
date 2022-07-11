@@ -2,27 +2,8 @@
 	<h3 class="page-header"><i class="fa fa-user-md"></i>Manage Tags</h3>
 	<span th:insert="fragments/topPageBar.html" th:remove="tag"/>
 
-	<section class="panel">
-		<header class="panel-heading">
-			Tags Input
-		</header>
-		<div id="tagsinput_tagsinput" class="tagsinput " style="height: 100%;">
-			<span th:attr="onclick=|clickTag(${rc.id})|" th:each="rc:${rootCategories}" class="tag"><span>[[${rc.languagesAsMap.get(#locale.language + '_' + #locale.country)}]]&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span onclick="test()" class="tag"><span>[[${#locale.getLanguage() + '_' + #locale.getCountry()}]]&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>[[${#locale.getLanguage() + '_' + #locale.getCountry()}]]&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>[[${rootCategories.get(0).category.get(0).language}]]&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>[[${rootCategories.get(0).category.get(1).language}]]&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span th:if="${#locale.language.equals(rootCategories.get(0).category.get(1).language.toString())}" class="tag"><span>111111111&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>Theme&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>Bootstrap&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>Responsive&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>Retina&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<span class="tag"><span>[[${rootCategories.get(0).languagesAsMap.get(#locale.language + '_' + #locale.country)}]]&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>
-			<div class="tagsinput-add-container" id="tagsinput_addTag">
-				<a href="#myModal-2" data-toggle="modal"><div class="tagsinput-add"></div></a>
-			</div>
-		</div>
-	</section>
+	<div id="allCategories">
+	</div>
 
 	<div class="row">
 		<div class="col-lg-6">
@@ -38,21 +19,21 @@
 							<div class="modal-content">
 								<div class="modal-header">
 									<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-									<h4 class="modal-title">Add new category for Zambi</h4>
+									<h4 class="modal-title"></h4>
 								</div>
 								<div class="modal-body">
 
 									<form class="form-horizontal" role="form">
-										<div th:each="language : ${T(com.mycompany.advertising.model.to.enums.Language).values()}" class="form-group">
+										<div th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}" class="form-group">
 											<label for="inputEmail1" class="col-lg-2 control-label" th:text="${language + ':'}"></label>
 											<div class="col-lg-10">
-												<input type="text" class="form-control" id="inputEmail4">
+												<input th:id="${'editCat_' + language}" type="text" class="form-control">
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="col-lg-offset-2 col-lg-10">
-												<button type="submit" class="btn btn-info">Save</button>
-												<button type="submit" class="btn btn-danger">Delete</button>
+												<button type="submit" data-dismiss="modal" class="btn btn-info">Save</button>
+												<button type="submit" data-dismiss="modal" class="btn btn-danger">Delete</button>
 											</div>
 										</div>
 									</form>
@@ -72,16 +53,16 @@
 								<div class="modal-body">
 
 									<form class="form-horizontal" role="form">
-										<div th:each="language : ${T(com.mycompany.advertising.model.to.enums.Language).values()}" class="form-group">
+										<div th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}" class="form-group">
 											<label for="inputEmail1" class="col-lg-2 control-label" th:text="${language + ':'}"></label>
 											<div class="col-lg-10">
-												<input type="text" class="form-control" id="inputEmail4">
+												<input th:id="${'addCat_' + language}" type="text" class="form-control">
 											</div>
 										</div>
 										<div class="form-group">
 											<div class="col-lg-offset-2 col-lg-10">
-												<button type="submit" class="btn btn-info">Add Category</button>
-												<button type="submit" class="btn btn-danger">Cancel</button>
+												<button type="submit" data-dismiss="modal" class="btn btn-info">Add Category</button>
+												<button type="submit" data-dismiss="modal" class="btn btn-danger">Cancel</button>
 											</div>
 										</div>
 									</form>

@@ -1,5 +1,6 @@
 package com.mycompany.advertising.controller;
 
+import com.mycompany.advertising.service.language.LngManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,8 @@ public class LanguageController {
     @GetMapping("/lan={language}")
     public String setLanguage(HttpServletRequest request, HttpServletResponse response
             , @PathVariable String language) {
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$" + language);
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-        localeResolver.setLocale(request, response, StringUtils.parseLocaleString(language));
+        localeResolver.setLocale(request, response, StringUtils.parseLocaleString(LngManager.whatLanguage(language).toString()));
         String referer = request.getHeader("Referer");
         if (referer == null) return "redirect:/index";
         return "redirect:" + referer;

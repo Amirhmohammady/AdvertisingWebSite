@@ -24,10 +24,11 @@ public class AdvertiseCategoryTo {
     @OneToOne(optional = true)
     @JoinColumn(nullable = true)
     private AdvertiseCategoryTo parent;
+    @JsonIgnore
     private int depth;
     //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "categories", fetch = FetchType.LAZY)
     @JsonIgnore
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Set<AdvertiseTo> advertiseTos;
     @JsonIgnore
     @Transient
@@ -38,8 +39,7 @@ public class AdvertiseCategoryTo {
         return "AdvertiseCategoryTo{" +
                 "id=" + id +
                 ", category=" + category +
-                ", parent=" + parent.getId() +
-                ", advertiseTos=" + advertiseTos +
+                ", parent=" + (parent != null ? parent.getId() : null) +
                 '}';
     }
 

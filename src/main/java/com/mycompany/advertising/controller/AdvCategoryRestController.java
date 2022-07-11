@@ -1,9 +1,9 @@
 package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.model.to.AdvertiseCategoryTo;
-import com.mycompany.advertising.model.to.enums.Language;
 import com.mycompany.advertising.service.Dto.CategoryIdPair;
 import com.mycompany.advertising.service.api.AdvCategoryService;
+import com.mycompany.advertising.service.language.LngManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +26,12 @@ public class AdvCategoryRestController {
 
     @PostMapping("/advCatecory")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<String> addCategory(@RequestBody AdvertiseCategoryTo category) {
+    public ResponseEntity<Map<String, String>> addCategory(@RequestBody AdvertiseCategoryTo category) {
         category.setId(null);
         System.out.println(category);
-        advCategoryService.saveCategory(category);
-        return new ResponseEntity<>("Advertise category saved successfully", HttpStatus.OK);
+        AdvertiseCategoryTo rslt = advCategoryService.addCategory(category);
+        if (rslt != null) return new ResponseEntity<>(rslt.getLanguagesAsMap(), HttpStatus.OK);
+        else return new ResponseEntity<>((Map<String, String>)null, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @PatchMapping("/advCatecory")
@@ -51,9 +52,9 @@ public class AdvCategoryRestController {
 
     @GetMapping("/advCatecories")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<List<CategoryIdPair>> getCategoriesByParentId(@RequestParam(required = true) Long id,
+    public ResponseEntity<List<CategoryIdPair>> getCategoriesByParentId(@RequestParam(required = true) Long parentId,
                                                                      @RequestParam(required = true) String lan) {
-        return new ResponseEntity<>(advCategoryService.getChildsByLanguageAndId(Language.valueOf(lan), id), HttpStatus.OK);
+        return new ResponseEntity<>(advCategoryService.getChildsByLanguageAndId(LngManager.whatLanguage(lan), parentId), HttpStatus.OK);
     }
 
     @GetMapping("/advCatecory")
