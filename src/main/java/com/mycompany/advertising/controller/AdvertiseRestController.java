@@ -26,7 +26,7 @@ import java.util.Optional;
  * Created by Amir on 6/5/2022.
  */
 @RestController
-@RequestMapping("/api/advertises")
+@RequestMapping("/api")
 public class AdvertiseRestController {
     @Autowired
     AdvCategoryService advCategoryService;
@@ -38,7 +38,7 @@ public class AdvertiseRestController {
     private StorageService storageService;
 
     @Secured({"ROLE_ADMIN"})
-    @PatchMapping(value = "/acceptbyid={id}")
+    @PatchMapping(value = "/advertises/acceptbyid={id}")
     public ResponseEntity<String> acceptAdvertise(@PathVariable long id) {
         Optional<AdvertiseTo> adv = advertiseService.acceptAdvertiseById(id);
         if (adv.isPresent()) return new ResponseEntity<>("Advertise accepted successfully", HttpStatus.OK);
@@ -46,14 +46,14 @@ public class AdvertiseRestController {
     }
 
     @Secured({"ROLE_ADMIN"})
-    @PatchMapping(value = "/rejectbyid={id}")
+    @PatchMapping(value = "/advertises/rejectbyid={id}")
     public ResponseEntity<String> rejectAdvertise(@PathVariable long id) {
         Optional<AdvertiseTo> adv = advertiseService.rejectAdvertiseById(id);
         if (adv.isPresent()) return new ResponseEntity<>("Advertise rejected successfully", HttpStatus.OK);
         else return new ResponseEntity<>("Can not reject advertise", HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @PostMapping("/")
+    @PostMapping("/advertises")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<String>> addAdvertise(Model model, @RequestParam(required = true) MultipartFile pic1,
                                                      @RequestParam(required = true) String advContent
