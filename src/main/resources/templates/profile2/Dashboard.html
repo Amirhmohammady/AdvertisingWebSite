@@ -70,7 +70,7 @@
 <th:block th:if="${pfragment01.equals('manageTags')}">
     <script th:inline="javascript" type="text/javascript">
         function clickTag(id, depth){
-            var editBtn = document.querySelector("a[href='#myModal-1'")
+            var editBtn = document.querySelector("a[href='#myModal-1']")
                     ,editForm =  document.getElementById('myModal-1');
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -98,15 +98,32 @@
             xhttp.open("GET", [[@{/api/advCatecory?id=}]] + id, true);
             xhttp.send();
         }
-        function test(){
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) console.log(this.responseText);
-            };
-            xhttp.open("GET", [[@{/api/advCatecories?id=3}]]+"&lan=en_US", true);
-            xhttp.send();
-        }
         function editCategory(id){
+            var xhttp = new XMLHttpRequest();
+            let advCat = {}, catLangs = [] , catLang = {};
+            /*<![CDATA[*/
+            /*[# th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}"]*/
+            catLang.language = [[${language}]];
+            catLang.text = document.getElementById([[${'editCat_' + language}]]).value;
+            catLangs.push({...catLang});
+        /*[/]*/
+        /*]]>*/
+        advCat.category = catLangs;
+        advCat.id = id;
+        console.log(JSON.stringify(advCat));
+        var advCatStringify = JSON.stringify(advCat);
+
+        xhttp.onload = function () {
+            if (this.status == 200) {
+                var currentLang = [[${T(com.mycompany.advertising.service.language.LngManager).whatLanguage(@authenticationFacadeImpl.getCurrentLocale())}]];
+                let obj = JSON.parse(this.responseText);
+                console.log(obj);
+                document.getElementById("cat_"+id).firstChild.innerHTML = obj[currentLang] + '&nbsp;&nbsp;';
+            }
+        };
+        xhttp.open("PATCH", [[@{/api/advCatecory}]], true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(advCatStringify);
         }
         function deleteCategory(id){
             var xhttp = new XMLHttpRequest();
@@ -120,9 +137,7 @@
         }
 
         function addCategory(parentid, depth){
-            console.log("+++++++++++++");
-            var editForm =  document.getElementById('myModal-1')
-                    ,xhttp = new XMLHttpRequest();
+            var xhttp = new XMLHttpRequest();
             let advCat = {} , parent = {} , catLangs = [] , catLang = {};
             /*<![CDATA[*/
             /*[# th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}"]*/
@@ -145,11 +160,11 @@
                 let obj = JSON.parse(this.responseText);
                 console.log(obj);
                 var child = document.createElement('div');
-                child.innerHTML = '<span onclick="clickTag(' + obj.id + ',' + depth + ')" id="cat_' + obj.id +'" class="tag"><span>' + obj[currentLang] + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
+                obj.id
+                child.innerHTML = '<span onclick="clickTag(' + obj.CatId + ',' + (depth+1) + ')" id="cat_' + obj.CatId +'" class="tag"><span>' + obj[currentLang] + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
                 child = child.firstChild;
                 var parent = document.getElementById("cats_" + parentid).querySelector(".tagsinput");
                 parent.insertBefore(child, parent.children[parent.children.length-1]);
-                console.log('1111111111111111111111');
             }
         };
         xhttp.open("POST", [[@{/api/advCatecory}]], true);
@@ -164,11 +179,8 @@
 </th:block>
 <script>
     function addCategoriesSection(pid, ptext, depth){
-        console.log('==============='+(2+3));
-        console.log(depth);
         //delete all
         var allCats = document.getElementById("allCategories").children;
-        console.log(allCats.length);
         for (var i = 0; i < allCats.length; i++) {
             if (allCats[i].getAttribute("depth") > depth) {
                 allCats[i].remove();
@@ -183,8 +195,7 @@
                 let obj = JSON.parse(this.responseText);
                 var childStr = '<section depth="' + (depth+1) + '" id="cats_' + pid +'" class="panel"><header class="panel-heading">Category:: ' + ptext + '</header><div class="tagsinput " style="height: 100%;">';
                 obj.forEach(function(item){
-                    childStr += '<span onclick="clickTag(' + item.id + ',' + (depth+1) + ')" id="cat_' + item.id +'" class="tag"><span>' + item.text + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
-                    console.log(item.text);
+                    childStr += '<span onclick="clickTag(' + item.id + ',' + (depth+1) + ')" id="cat_' + item.id +'" class="tag"><span>' + (item.text != null?item.text:'+undefined+') + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
                 });
                 childStr += '<div class="tagsinput-add-container"><a href="#myModal-2" onclick="clickAddTag(' + pid +',' + depth + ')"data-toggle="modal"><div class="tagsinput-add"></div></a></div></div>';
                 document.getElementById("allCategories").insertAdjacentHTML('beforeend', childStr);

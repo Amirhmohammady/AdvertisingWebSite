@@ -26,10 +26,6 @@
 		<p>Telegram Link:</p>
 		<input th:value="${advertise.webSiteLink}" class="ah01-border_style01" type="text" name="tel_link" />
 		<br>
-		<img th:src="${advertise.imageUrl2}" class="ah01-border_style01" style="border: 0px;" alt="second image">
-		<p>Second Message Picture:</p>
-		<input class="ah01-border_style01" type="file" name="pic2" accept="image/*" />
-		<br>
 		<input class="ah01-border_style01" style="width: 100px;margin: 0 auto;" type="submit" value="Update →" />
 	</form>
 	<p th:if="${succsessmessage}">[[${succsessmessage}]]</p>

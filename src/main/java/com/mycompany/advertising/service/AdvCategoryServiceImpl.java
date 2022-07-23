@@ -2,9 +2,11 @@ package com.mycompany.advertising.service;
 
 import com.mycompany.advertising.model.dao.AdvCategoryRepository;
 import com.mycompany.advertising.model.to.AdvertiseCategoryTo;
+import com.mycompany.advertising.model.to.MultiLanguageCategoryTo;
 import com.mycompany.advertising.service.Dto.CategoryIdPair;
 import com.mycompany.advertising.service.api.AdvCategoryService;
 import com.mycompany.advertising.service.language.Language;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,17 +19,32 @@ import java.util.Optional;
  */
 @Service
 public class AdvCategoryServiceImpl implements AdvCategoryService {
+    private static final Logger logger = Logger.getLogger(AdvCategoryServiceImpl.class);
+
     @Autowired
     AdvCategoryRepository advCategoryRepository;
 
     @Override
     @Transactional
-    public boolean editCategory(AdvertiseCategoryTo category) {
-        if (existsById(category.getId())) {
-            advCategoryRepository.save(category);
-            return true;
+    public AdvertiseCategoryTo editCategory(AdvertiseCategoryTo category) {
+        Optional<AdvertiseCategoryTo> advTo = advCategoryRepository.findById(category.getId());
+        if (!advTo.isPresent()) return null;
+        List<MultiLanguageCategoryTo> multiLanguageCategoryTos = advTo.get().getCategory();
+        for (MultiLanguageCategoryTo mlcInput : category.getCategory()) {
+            boolean isFound = false;
+            for (MultiLanguageCategoryTo mlc : multiLanguageCategoryTos)
+                if (mlc.getLanguage().equals(mlcInput.getLanguage())) {
+                    mlc.setText(mlcInput.getText());
+                    isFound = true;
+                    break;
+                }
+            if (!isFound) {
+                mlcInput.setAdvertiseCategory(advTo.get());
+                multiLanguageCategoryTos.add(mlcInput);
+            }
         }
-        return false;
+        System.out.println(advTo);
+        return advCategoryRepository.save(advTo.get());
     }
 
     @Override
@@ -61,7 +78,9 @@ public class AdvCategoryServiceImpl implements AdvCategoryService {
 
     @Override
     public List<CategoryIdPair> getRootCtegories(Language language) {
-        return advCategoryRepository.getChildsByLanguageByNullId(language);
+        List<CategoryIdPair> rslt = advCategoryRepository.getChildsByLanguageByNullId(language);
+        logger.info("Root Categories in " + language + " are: " + rslt);
+        return rslt;
     }
 
     @Override

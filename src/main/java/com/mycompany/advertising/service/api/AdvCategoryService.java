@@ -11,7 +11,7 @@ import java.util.Optional;
  * Created by Amir on 6/27/2022.
  */
 public interface AdvCategoryService {
-    boolean editCategory(AdvertiseCategoryTo category);
+    AdvertiseCategoryTo editCategory(AdvertiseCategoryTo category);
 
     AdvertiseCategoryTo addCategory(AdvertiseCategoryTo category);
 

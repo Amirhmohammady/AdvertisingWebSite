@@ -1,6 +1,5 @@
 package com.mycompany.advertising.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -46,7 +45,7 @@ public class MainConfig implements WebMvcConfigurer {
     //set language to save in cookie and set cookie name
     public LocaleResolver localeResolver() {
         CookieLocaleResolver r = new CookieLocaleResolver();
-        r.setDefaultLocale(new Locale("fa_IR"));//Locale.US);//new Locale("fa")
+        r.setDefaultLocale(new Locale("fa", "IR"));//Locale.US);//new Locale("fa")
         r.setCookieName("localeInfo");
         //if set to -1, the cookie is deleted when browser shuts down
         //r.setCookieMaxAge(24*60*60);
@@ -91,7 +90,6 @@ public class MainConfig implements WebMvcConfigurer {
     public ApplicationEventMulticaster simpleApplicationEventMulticaster() {
         SimpleApplicationEventMulticaster eventMulticaster =
                 new SimpleApplicationEventMulticaster();
-
         eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
         return eventMulticaster;
     }
@@ -100,7 +98,6 @@ public class MainConfig implements WebMvcConfigurer {
     public ServletListenerRegistrationBean<MySessionListener> sessionListener() {
         ServletListenerRegistrationBean<MySessionListener> listenerRegBean =
                 new ServletListenerRegistrationBean<>();
-
         listenerRegBean.setListener(new MySessionListener(maxinactiveinterval));
         return listenerRegBean;
     }

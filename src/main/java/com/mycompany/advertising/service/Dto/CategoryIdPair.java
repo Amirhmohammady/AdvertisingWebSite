@@ -12,6 +12,14 @@ public class CategoryIdPair {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "CategoryIdPair{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }

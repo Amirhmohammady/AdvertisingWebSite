@@ -1,13 +1,11 @@
 package com.mycompany.advertising.model.to;
 
 import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Amir on 10/28/2019.
@@ -32,41 +30,24 @@ public class AdvertiseTo {
     private LocalDateTime expiredate;
     private String imageUrl1;
     private String smallImageUrl1;
-    private String imageUrl2;
-    private String smallImageUrl2;
     @Enumerated(EnumType.STRING)
     private AdvertiseStatus status;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "junction_table_advertise_category",
             joinColumns = @JoinColumn(name = "advertise_id", unique = false),
             inverseJoinColumns = @JoinColumn(name = "category_id", unique = false))
-    private Set<AdvertiseCategoryTo> categories;
+    private @Size(min = 0, max = 10)
+    List<AdvertiseCategoryTo> categories;
 
     public AdvertiseTo() {
     }
 
-    public Set<AdvertiseCategoryTo> getCategories() {
+    public List<AdvertiseCategoryTo> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<AdvertiseCategoryTo> categories) {
+    public void setCategories(List<AdvertiseCategoryTo> categories) {
         this.categories = categories;
-    }
-
-    public String getSmallImageUrl2() {
-        return smallImageUrl2;
-    }
-
-    public void setSmallImageUrl2(String smallImageUrl2) {
-        this.smallImageUrl2 = smallImageUrl2;
-    }
-
-    public String getImageUrl2() {
-        return imageUrl2;
-    }
-
-    public void setImageUrl2(String imageUrl2) {
-        this.imageUrl2 = imageUrl2;
     }
 
     public String getTitle() {

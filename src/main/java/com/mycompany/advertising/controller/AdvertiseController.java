@@ -67,51 +67,6 @@ public class AdvertiseController {
         return "add_advertise";
     }
 
-    @PostMapping("/addAdvertise")
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public String addAdvertise(Model model, @RequestParam(required = true) MultipartFile pic1,
-                               @RequestParam(required = false) String description,
-                               @RequestParam(required = false) String tel_link,
-                               @RequestParam(required = true) String title,
-                               @RequestParam(required = false) MultipartFile pic2) {
-        String succsessMessage = new String();
-        UserTo userTo = authenticationFacade.getCurrentUser();
-        AdvertiseTo advertiseTo = new AdvertiseTo();
-        List<String> files;
-        if (pic1 != null && !pic1.isEmpty()) {
-            try {
-                files = storageService.storeImage(pic1);
-                succsessMessage += "Successfully uploaded 1st pic";
-                advertiseTo.setImageUrl1(files.get(0));
-                advertiseTo.setSmallImageUrl1(files.get(1));
-            } catch (Exception e) {
-                succsessMessage += "Error uploading 1nd pic:" + e.getMessage();
-                e.printStackTrace();
-            }
-        }
-        if (pic2 != null && !pic2.isEmpty()) {
-            try {
-                files = storageService.storeImage(pic2);
-                succsessMessage += "\nSuccessfully uploaded 2nd pic";
-                advertiseTo.setImageUrl2(files.get(0));
-                advertiseTo.setSmallImageUrl2(files.get(1));
-            } catch (Exception e) {
-                succsessMessage += "\nError uploading 2nd pic:" + e.getMessage();
-                e.printStackTrace();
-            }
-        }
-        advertiseTo.setWebSiteLink(tel_link);
-        advertiseTo.setStatus(AdvertiseStatus.Not_Accepted);
-        advertiseTo.setText(description);
-        advertiseTo.setTitle(title);
-        advertiseTo.setUserTo(userTo);
-        advertiseTo.setStartdate(LocalDateTime.now());
-        advertiseService.saveAdvertise(advertiseTo);
-        succsessMessage += "\nSuccessfully added advertise";
-        model.addAttribute("succsessmessage", succsessMessage);
-        return "add_advertise";
-    }
-
     @GetMapping(value = "/editAdvertise/id={id}")//, method = {RequestMethod.GET, RequestMethod.POST})
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     //@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
@@ -149,17 +104,6 @@ public class AdvertiseController {
                 advertise.setSmallImageUrl1(files.get(1));
             } catch (Exception e) {
                 succsessMessage += "Error uploading 1nd pic:" + e.getMessage();
-                e.printStackTrace();
-            }
-        }
-        if (pic2 != null && !pic2.isEmpty()) {
-            try {
-                files = storageService.storeImage(pic2);
-                succsessMessage += "\nSuccessfully uploaded 2nd pic";
-                advertise.setImageUrl2(files.get(0));
-                advertise.setSmallImageUrl2(files.get(1));
-            } catch (Exception e) {
-                succsessMessage += "\nError uploading 2nd pic:" + e.getMessage();
                 e.printStackTrace();
             }
         }

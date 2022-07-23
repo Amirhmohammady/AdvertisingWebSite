@@ -64,11 +64,10 @@
                     <img th:src="${advertise.imageUrl1}" style="width: 100%;" alt="Card image cap">
                     <p dir="auto" th:text="${advertise.text}"></p>
                     <a th:href="${advertise.webSiteLink}">Web Site Link</a>
-                    <img th:src="${advertise.imageUrl2}" style="width: 100%;" alt="Card image cap">
-                    <div th:if="${pfragment01 != null}">
+                    <div th:if="${pfragment01 != null && pfragment01.equals('showAdvertiseAdminMode')}">
                         ADVERTISE STATUS : [[${advertise.status}]]
                     </div>
-                    <div th:if="${pfragment01 != null && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
+                    <div th:if="${pfragment01 != null && pfragment01.equals('showAdvertiseAdminMode') && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
                         <div class="btn-group">
                             <a class="btn btn-success" style="margin: 0;" href="javascript:void(0)"
                                th:attr="onclick=|activeAdvertise(${advertise.id})|"><i
@@ -108,7 +107,7 @@ Purchase the pro version form: https://bootstrapmade.com/buy/?theme=NiceAdmin
 <script th:src="@{/share/niceAdmin/js/scripts.js}"></script>
 
 <script
-        th:if="${pfragment01 != null && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
+        th:if="${pfragment01 != null && pfragment01.equals('showAdvertiseAdminMode') && advertise.status == T(com.mycompany.advertising.model.to.enums.AdvertiseStatus).Not_Accepted}">
     function activeAdvertise(id) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {

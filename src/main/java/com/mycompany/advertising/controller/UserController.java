@@ -117,7 +117,6 @@ public class UserController {
     @Secured({"ROLE_ADMIN"})
     public String manageTags(Model model) {
         model.addAttribute("pfragment01", "manageTags");
-        model.addAttribute("rootCategories", advCategoryService.getRootCtegories(LngManager.whatLanguage(authenticationFacade.getCurrentLocale().toString())));
         //if (request.isUserInRole("ROLE_ADMIN")) return "profile2/DashboardAdmin";
         //if (request.isUserInRole("ROLE_USER")) return "profile2/DashboardUser";
         return "profile2/Dashboard";

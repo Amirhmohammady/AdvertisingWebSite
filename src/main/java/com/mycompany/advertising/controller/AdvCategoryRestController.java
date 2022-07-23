@@ -27,19 +27,32 @@ public class AdvCategoryRestController {
     @PostMapping("/advCatecory")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<Map<String, String>> addCategory(@RequestBody AdvertiseCategoryTo category) {
-        category.setId(null);
-        System.out.println(category);
         AdvertiseCategoryTo rslt = advCategoryService.addCategory(category);
         if (rslt != null) return new ResponseEntity<>(rslt.getLanguagesAsMap(), HttpStatus.OK);
-        else return new ResponseEntity<>((Map<String, String>)null, HttpStatus.NOT_ACCEPTABLE);
+        else return new ResponseEntity<>((Map<String, String>) null, HttpStatus.NOT_ACCEPTABLE);
     }
 
+    /*@PutMapping
+    @PreAuthorize("#post.getCreator() == authentication.getName()")
+    public void update(@RequestBody Post post, Authentication authentication) {
+        service.updatePost(post);
+    }
+
+    @Autowired
+    private CreatorCheck creatorCheck;
+
+    @PutMapping
+    @PreAuthorize("@creatorChecker.check(#post,authentication)")
+    public void update(@RequestBody Post post, Authentication authentication) {
+        service.updatePost(post);
+    }*/
     @PatchMapping("/advCatecory")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<String> updateCategory(@RequestBody AdvertiseCategoryTo category) {
-        if (advCategoryService.editCategory(category))
-            return new ResponseEntity<>("Advertise category updated successfully", HttpStatus.OK);
-        return new ResponseEntity<>("failed to update advertise category", HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<Map<String, String>> updateCategory(@RequestBody AdvertiseCategoryTo category) {
+        AdvertiseCategoryTo advCategoryTo = advCategoryService.editCategory(category);
+        if (advCategoryTo != null)
+            return new ResponseEntity<>(advCategoryTo.getLanguagesAsMap(), HttpStatus.OK);
+        return new ResponseEntity<>((Map<String, String>) null, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @DeleteMapping("/advCatecory")
@@ -53,7 +66,7 @@ public class AdvCategoryRestController {
     @GetMapping("/advCatecories")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<List<CategoryIdPair>> getCategoriesByParentId(@RequestParam(required = true) Long parentId,
-                                                                     @RequestParam(required = true) String lan) {
+                                                                        @RequestParam(required = true) String lan) {
         return new ResponseEntity<>(advCategoryService.getChildsByLanguageAndId(LngManager.whatLanguage(lan), parentId), HttpStatus.OK);
     }
 

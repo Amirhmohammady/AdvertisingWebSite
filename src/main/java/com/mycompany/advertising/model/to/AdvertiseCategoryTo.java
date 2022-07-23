@@ -24,8 +24,6 @@ public class AdvertiseCategoryTo {
     @OneToOne(optional = true)
     @JoinColumn(nullable = true)
     private AdvertiseCategoryTo parent;
-    @JsonIgnore
-    private int depth;
     //@ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "categories", fetch = FetchType.LAZY)
     @JsonIgnore
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
@@ -75,17 +73,11 @@ public class AdvertiseCategoryTo {
         this.parent = parent;
     }
 
-    public int getDepth() {
-        return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
     public Map<String, String> getLanguagesAsMap() {
-        if (languagesAsMap == null)
+        if (languagesAsMap == null) {
             languagesAsMap = category.stream().collect(Collectors.toMap(M -> M.getLanguage().toString(), MultiLanguageCategoryTo::getText));
+            languagesAsMap.put("CatId", String.valueOf(id));
+        }
         return languagesAsMap;
     }
 }
