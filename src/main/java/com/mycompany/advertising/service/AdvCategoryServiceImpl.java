@@ -2,7 +2,6 @@ package com.mycompany.advertising.service;
 
 import com.mycompany.advertising.model.dao.AdvCategoryRepository;
 import com.mycompany.advertising.model.to.AdvertiseCategoryTo;
-import com.mycompany.advertising.model.to.MultiLanguageCategoryTo;
 import com.mycompany.advertising.service.Dto.CategoryIdPair;
 import com.mycompany.advertising.service.api.AdvCategoryService;
 import com.mycompany.advertising.service.language.Language;
@@ -27,9 +26,10 @@ public class AdvCategoryServiceImpl implements AdvCategoryService {
     @Override
     @Transactional
     public AdvertiseCategoryTo editCategory(AdvertiseCategoryTo category) {
+        logger.info("try to edit category" + category);
         Optional<AdvertiseCategoryTo> advTo = advCategoryRepository.findById(category.getId());
         if (!advTo.isPresent()) return null;
-        List<MultiLanguageCategoryTo> multiLanguageCategoryTos = advTo.get().getCategory();
+        /*List<MultiLanguageCategoryTo> multiLanguageCategoryTos = advTo.get().getCategory();
         for (MultiLanguageCategoryTo mlcInput : category.getCategory()) {
             boolean isFound = false;
             for (MultiLanguageCategoryTo mlc : multiLanguageCategoryTos)
@@ -42,16 +42,19 @@ public class AdvCategoryServiceImpl implements AdvCategoryService {
                 mlcInput.setAdvertiseCategory(advTo.get());
                 multiLanguageCategoryTos.add(mlcInput);
             }
-        }
-        System.out.println(advTo);
+        }*/
+        advTo.get().getCategory().keySet().forEach(e->{if(category.getCategory().get(e)!=null) advTo.get().getCategory().put(e,category.getCategory().get(e));});
+
+        //advTo.get().setCategory(category.getCategory());
+        logger.info("try to edit category222222" + advTo);
         return advCategoryRepository.save(advTo.get());
     }
 
     @Override
     @Transactional
     public AdvertiseCategoryTo addCategory(AdvertiseCategoryTo category) {
-        for (int i = 0; i < category.getCategory().size(); i++)
-            category.getCategory().get(i).setAdvertiseCategory(category);
+//        for (int i = 0; i < category.getCategory().size(); i++)
+//            category.getCategory().get(i).setAdvertiseCategory(category);
         return advCategoryRepository.save(category);
     }
 

@@ -92,8 +92,6 @@
                             </div>
                         </form>
                     </div>
-
-
                 </div>
                 <div class="widget-foot">
                     <!-- Footer goes here -->
@@ -108,7 +106,7 @@
             <div style="background: white;padding-bottom: 30px;">
                 <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/card.jpg" style="width: 100%;" alt="...">
                 <div style="margin: 22px;">
-                    <h2>Card with an image on top</h2>
+                    <h3 style="margin: 0;">Card with an image on top</h3>
                     <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
             </div>
@@ -117,7 +115,7 @@
             <div style="background: white;padding-bottom: 30px;">
                 <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/card.jpg" style="width: 100%;" alt="...">
                 <div style="margin: 22px;">
-                    <h2>Card with an image on top</h2>
+                    <h3>Card with an image on top</h3>
                     <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
             </div>
@@ -169,7 +167,7 @@
         <div style="background: white;padding-bottom: 30px;">
             <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/card.jpg" style="width: 100%;" alt="...">
             <div style="margin: 22px;">
-                <h2>Card with an image on top</h2>
+                <h3>Card with an image on top</h3>
                 <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
         </div>
@@ -178,7 +176,7 @@
         <div style="background: white;padding-bottom: 30px;">
             <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/card.jpg" style="width: 100%;" alt="...">
             <div style="margin: 22px;">
-                <h2>Card with an image on top</h2>
+                <h3>Card with an image on top</h3>
                 <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
         </div>
@@ -187,7 +185,7 @@
         <div style="background: white;padding-bottom: 30px;">
             <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/card.jpg" style="width: 100%;" alt="...">
             <div style="margin: 22px;">
-                <h2>Card with an image on top</h2>
+                <h3>Card with an image on top</h3>
                 <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
         </div>
@@ -196,7 +194,7 @@
         <div style="background: white;padding-bottom: 30px;">
             <img src="https://bootstrapmade.com/demo/templates/NiceAdmin/assets/img/card.jpg" style="width: 100%;" alt="...">
             <div style="margin: 22px;">
-                <h2>Card with an image on top</h2>
+                <h3>Card with an image on top</h3>
                 <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             </div>
         </div>
@@ -232,11 +230,12 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200){
                 const cat = JSON.parse(this.responseText);
-                var currentLang = [[${T(com.mycompany.advertising.service.language.LngManager).whatLanguage(@authenticationFacadeImpl.getCurrentLocale())}]];
-                addCategoriesSection(id, cat[currentLang], depth);
+                var currentLang = [[${@authenticationFacadeImpl.getCurrentLanguage()}]];
+                console.log(currentLang);
+                addCategoriesSection(id, cat.category[currentLang], depth);
             }
         };
-        xhttp.open("GET", [[@{/api/advCatecory?id=}]] + id, true);
+        xhttp.open("GET", [[@{/api/advCategory?id=}]] + id, true);
         xhttp.send();
     }
     function addCat(id){
@@ -244,15 +243,15 @@
         cat.id = id;
         if (!advCats.some(item => item.id === id) && advCats.length<5){
             var selCat = document.getElementById('cat_' + id);
-            advCats.push({...cat});
+            advCats.push(JSON.parse(JSON.stringify(cat)));
 
-        var catText = selCat.querySelector('.btn-primary').text;
-        var childStr = '<div id="advCat_' + id + '" class="btn-group"><a style="float: left;background-color: olive;border: 1px solid;border-color: olive;border-radius: 4px 0px 0px 4px;padding: 6px 12px;text-align: center;color: aliceblue;">' + catText + '</a><a class="btn btn-danger" onclick="removeCat(' + id + ')" href="javascript:void(0)"><i class="icon_close_alt2"></i></a></div>';
-        document.getElementById("advCatsDiv").insertAdjacentHTML('beforeend', childStr);
+            var catText = selCat.querySelector('.btn-primary').text;
+            var childStr = '<div id="advCat_' + id + '" class="btn-group"><a style="float: left;background-color: olive;border: 1px solid;border-color: olive;border-radius: 4px 0px 0px 4px;padding: 6px 12px;text-align: center;color: aliceblue;">' + catText + '</a><a class="btn btn-danger" onclick="removeCat(' + id + ')" href="javascript:void(0)"><i class="icon_close_alt2"></i></a></div>';
+            document.getElementById("advCatsDiv").insertAdjacentHTML('beforeend', childStr);
 
-        selCat.querySelector('.btn-success').remove();
-        selCat.insertAdjacentHTML('beforeend', '<a class="btn btn-danger" onclick="removeCat(' + id + ')" href="javascript:void(0)"><i class="icon_close_alt2"></i></a>');
-    }
+            selCat.querySelector('.btn-success').remove();
+            selCat.insertAdjacentHTML('beforeend', '<a class="btn btn-danger" onclick="removeCat(' + id + ')" href="javascript:void(0)"><i class="icon_close_alt2"></i></a>');
+        }
     }
     function removeCat(id){
         for (var i = 0; i < advCats.length; i++) {
@@ -284,18 +283,18 @@
             if (this.readyState == 4 && this.status == 200){
                 console.log(this.responseText);
                 let obj = JSON.parse(this.responseText);
-
+                console.log(this.responseText);
                 if (obj.length>0){
-                    var childStr = '<section depth="' + (depth+1) + '" id="cats_' + pid +'" class="panel"><header class="panel-heading">Category:: ' + ptext + '</header><div  id="allCategories" class="tagsinput ah01-margin5_inner_childs" style="height: 100%;">';
+                    var childStr = '<section depth="' + (depth+1).toString() + '" id="cats_' + pid +'" class="panel" style="margin-bottom: 5px;"><header class="panel-heading">Category:: ' + ptext + '</header><div  id="allCategories" class="tagsinput ah01-margin5_inner_childs" style="height: 100%;">';
                     obj.forEach(function(item){
-                        childStr += '<div id="cat_' + item.id +'" class="btn-group"><a onclick="clickTag(' + item.id + ',' + (depth+1) + ')" class="btn btn-primary" href="javascript:void(0)">' + (item.text != null?item.text:'+undefined+') + '</a>' + (pid > 0 ?((advCats.some(item2 => item2.id === item.id)) ?'<a class="btn btn-danger" onclick="removeCat(' + item.id + ')" href="javascript:void(0)"><i class="icon_close_alt2"></i></a>':'<a class="btn btn-success" onclick="addCat(' + item.id + ')" href="javascript:void(0)"><i class="icon_check_alt2"></i></a>'):'') + '</div>';
+                        childStr += '<div id="cat_' + item.id +'" class="btn-group"><a onclick="clickTag(' + item.id + ',' + (depth+1).toString() + ')" class="btn btn-primary" href="javascript:void(0)">' + (item.text != null?item.text:'+undefined+') + '</a>' + (pid > 0 ?((advCats.some(item2 => item2.id === item.id)) ?'<a class="btn btn-danger" onclick="removeCat(' + item.id + ')" href="javascript:void(0)"><i class="icon_close_alt2"></i></a>':'<a class="btn btn-success" onclick="addCat(' + item.id + ')" href="javascript:void(0)"><i class="icon_check_alt2"></i></a>'):'') + '</div>';
                     });
                     childStr += '</div></section>';
                     document.getElementById("allCategories").insertAdjacentHTML('beforeend', childStr);
                 }
             }
         };
-        xhttp.open("GET", "[[@{/api/advCatecories?parentId=}]]"+pid+"&lan=[[${@authenticationFacadeImpl.getCurrentLocale()}]]", true);
+        xhttp.open("GET", "[[@{/api/advCategories?parentId=}]]"+pid+"&lan=[[${@authenticationFacadeImpl.getCurrentLocale()}]]", true);
         xhttp.send();
         //add list
     }

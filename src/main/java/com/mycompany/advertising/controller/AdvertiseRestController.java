@@ -8,7 +8,9 @@ import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
 import com.mycompany.advertising.service.api.AdvCategoryService;
 import com.mycompany.advertising.service.api.AdvertiseService;
+import com.mycompany.advertising.service.api.OnlineAdvertiseDataService;
 import com.mycompany.advertising.service.api.StorageService;
+import com.mycompany.advertising.service.util.OnlineAdvertiseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class AdvertiseRestController {
+    @Autowired
+    OnlineAdvertiseDataService onlineService;
     @Autowired
     AdvCategoryService advCategoryService;
     @Autowired
@@ -97,6 +103,14 @@ public class AdvertiseRestController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<List<String>>(succsessMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/advertises/onlineData")
+    ResponseEntity<OnlineAdvertiseData> getOnlineData(@RequestParam URL url){
+        try {
+            return new ResponseEntity<>(onlineService.getData(url),HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>((OnlineAdvertiseData)null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

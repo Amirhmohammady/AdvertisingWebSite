@@ -2,6 +2,8 @@ package com.mycompany.advertising.service.util;
 
 import com.mycompany.advertising.model.to.enums.Role;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.api.LockerApiService;
+import com.mycompany.advertising.service.api.StorageService;
 import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ import java.time.LocalDateTime;
 public class ScheduledTasks {
     private final static Logger logger = Logger.getLogger(ScheduledTasks.class);
     @Autowired
+    LockerApiService lockerApiService;
+    @Autowired
+    StorageService storageService;
+    @Autowired
     private UserService userservice;
     /*    @Scheduled(cron = "0 * * * * ?")
         public void doEveryMinute() {
@@ -44,6 +50,8 @@ public class ScheduledTasks {
         //deleteUserTocken
         userservice.deleteAllExiredToken(LocalDateTime.now());
         logger.info("all expired token deleted");
+        lockerApiService.deleteAllExpiredLocker();
+        logger.info("all expired saved method in memoty");
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
@@ -52,8 +60,9 @@ public class ScheduledTasks {
     }
 
     @EventListener
-    public void addAdminUser(ApplicationReadyEvent event) {
+    public void initializeServer(ApplicationReadyEvent event) {
         createAdminAtStartup();
+        storageService.init();
     }
 
     private void createAdminAtStartup(){

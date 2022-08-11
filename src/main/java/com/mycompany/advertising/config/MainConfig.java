@@ -27,17 +27,17 @@ import java.util.Locale;
 @Configuration
 public class MainConfig implements WebMvcConfigurer {
     @Autowired
-    StorageProperties storageproperties;
+    StorageProperties storageProperties;
     @Value("${max.inactive.interval.seconds}")
     private int maxinactiveinterval;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/t/**")
-                .addResourceLocations("file:/" + storageproperties.getRecourcefolder(), "file:/" + storageproperties.getWebinflocation())
+                .addResourceLocations("file:/" + storageProperties.getRecourcefolder(), "file:/" + storageProperties.getWebinflocation())
                 .setCachePeriod(31556926);
         /*registry.addResourceHandler("/.well-known/pki-validation*//**")
-         .addResourceLocations("file:/" + storageproperties.getCertfolder())
+         .addResourceLocations("file:/" + storageProperties.getCertfolder())
          .setCachePeriod(31556926);*/
     }
 

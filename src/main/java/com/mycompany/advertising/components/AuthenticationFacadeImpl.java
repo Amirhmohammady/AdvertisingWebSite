@@ -2,11 +2,15 @@ package com.mycompany.advertising.components;
 
 import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.language.Language;
+import com.mycompany.advertising.service.language.LngManager;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collection;
@@ -53,6 +57,17 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     @Override
     public Locale getCurrentLocale() {
         return LocaleContextHolder.getLocale();
+    }
+
+    @Override
+    public Language getCurrentLanguage() {
+        return LngManager.whatLanguage(LocaleContextHolder.getLocale().toString());
+    }
+
+    @Override
+    public String getCurrentClientIp() {
+        return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest().getRemoteAddr();
     }
     /*@Override
     public UserTo getUserToDetails2() {

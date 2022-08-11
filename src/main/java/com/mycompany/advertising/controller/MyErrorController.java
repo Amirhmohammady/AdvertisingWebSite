@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class MyErrorController implements ErrorController {
     @Value("${amir.error.folder}")
     String errorfolder;
 
-    @RequestMapping("/error")
+    @RequestMapping(produces = MediaType.APPLICATION_XML_VALUE, value = "/error")
     public String handleError(Model model, HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         if (status != null) {

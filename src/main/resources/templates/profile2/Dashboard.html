@@ -76,54 +76,53 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200){
                     const cat = JSON.parse(this.responseText);
-                    var currentLang = [[${T(com.mycompany.advertising.service.language.LngManager).whatLanguage(@authenticationFacadeImpl.getCurrentLocale())}]];
+                    var currentLang = [[${@authenticationFacadeImpl.getCurrentLanguage()}]];
                     console.log(currentLang);
                     console.log([[${@authenticationFacadeImpl.getCurrentLocale()}]]);
                     console.log([[${#locale.getLanguage() + '_' + #locale.getCountry()}]]);
                     console.log(cat.[(${#locale.getLanguage() + '_' + #locale.getCountry()})]);
+                    console.log(JSON.stringify(cat));
                     editBtn.style.display = 'unset';
-                    editBtn.text = 'Edit/Delete Category:: ' + cat[currentLang];
+                    editBtn.text = 'Edit/Delete Category:: ' + cat.category[currentLang];
                     //console.log(editForm.querySelector('.modal-title'));
-                    editForm.querySelector('.modal-title').textContent = 'Edit Category:: ' + cat[currentLang];
+                    editForm.querySelector('.modal-title').textContent = 'Edit Category:: ' + cat.category[currentLang];
                     editForm.querySelector(".btn.btn-info").setAttribute("onclick","editCategory("+id+")");
                     editForm.querySelector(".btn.btn-danger").setAttribute("onclick","deleteCategory("+id+")")
                     /*<![CDATA[*/
                     /*[# th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}"]*/
-                    document.getElementById([[${'editCat_' + language}]]).value = cat.[(${language})];
+                    document.getElementById([[${'editCat_' + language}]]).value = cat.category.[(${language})];
                     /*[/]*/
                     /*]]>*/
-                    addCategoriesSection(id, cat[currentLang], depth);
+                    addCategoriesSection(id, cat.category[currentLang], depth);
                 }
             };
-            xhttp.open("GET", [[@{/api/advCatecory?id=}]] + id, true);
+            xhttp.open("GET", [[@{/api/advCategory?id=}]] + id, true);
             xhttp.send();
         }
         function editCategory(id){
             var xhttp = new XMLHttpRequest();
-            let advCat = {}, catLangs = [] , catLang = {};
+            let advCat = {}, catLang = {};
             /*<![CDATA[*/
             /*[# th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}"]*/
-            catLang.language = [[${language}]];
-            catLang.text = document.getElementById([[${'editCat_' + language}]]).value;
-            catLangs.push({...catLang});
-        /*[/]*/
-        /*]]>*/
-        advCat.category = catLangs;
-        advCat.id = id;
-        console.log(JSON.stringify(advCat));
-        var advCatStringify = JSON.stringify(advCat);
+            catLang.[(${language})] = document.getElementById([[${'editCat_' + language}]]).value;
+            /*[/]*/
+            /*]]>*/
+            advCat.category = catLang;
+            advCat.id = id;
+            console.log(JSON.stringify(advCat));
+            var advCatStringify = JSON.stringify(advCat);
 
-        xhttp.onload = function () {
-            if (this.status == 200) {
-                var currentLang = [[${T(com.mycompany.advertising.service.language.LngManager).whatLanguage(@authenticationFacadeImpl.getCurrentLocale())}]];
-                let obj = JSON.parse(this.responseText);
-                console.log(obj);
-                document.getElementById("cat_"+id).firstChild.innerHTML = obj[currentLang] + '&nbsp;&nbsp;';
-            }
-        };
-        xhttp.open("PATCH", [[@{/api/advCatecory}]], true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(advCatStringify);
+            xhttp.onload = function () {
+                if (this.status == 200) {
+                    var currentLang = [[${@authenticationFacadeImpl.getCurrentLanguage()}]];
+                    let obj = JSON.parse(this.responseText);
+                    console.log(obj);
+                    document.getElementById("cat_"+id).firstChild.innerHTML = obj.category[currentLang] + '&nbsp;&nbsp;';
+                }
+            };
+            xhttp.open("PATCH", [[@{/api/advCategory}]], true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(advCatStringify);
         }
         function deleteCategory(id){
             var xhttp = new XMLHttpRequest();
@@ -132,44 +131,41 @@
                     document.getElementById('cat_' + id).remove();
                 }
             };
-            xhttp.open("DELETE", [[@{/api/advCatecory?id=}]]+id, true);
+            xhttp.open("DELETE", [[@{/api/advCategory?id=}]]+id, true);
             xhttp.send();
         }
 
         function addCategory(parentid, depth){
             var xhttp = new XMLHttpRequest();
-            let advCat = {} , parent = {} , catLangs = [] , catLang = {};
+            let advCat = {} , parent = {} , catLang = {};
             /*<![CDATA[*/
             /*[# th:each="language : ${T(com.mycompany.advertising.service.language.Language).values()}"]*/
-            catLang.language = [[${language}]];
-            catLang.text = document.getElementById([[${'addCat_' + language}]]).value;
-            catLangs.push({...catLang});
-        /*[/]*/
-        /*]]>*/
-        advCat.category = catLangs;
-        if (parentid != 0){
-            parent.id = parentid;
-            advCat.parent = parent;
-        } else advCat.parent = null;
-        console.log(JSON.stringify(advCat));
-        var advCatStringify = JSON.stringify(advCat);
+            catLang.[(${language})] = document.getElementById([[${'addCat_' + language}]]).value;
+            /*[/]*/
+            /*]]>*/
+            advCat.category = catLang;
+            if (parentid != 0){
+                parent.id = parentid;
+                advCat.parent = parent;
+            } else advCat.parent = null;
+            console.log(JSON.stringify(advCat));
+            var advCatStringify = JSON.stringify(advCat);
 
-        xhttp.onload = function () {
-            if (this.status == 200) {
-                var currentLang = [[${T(com.mycompany.advertising.service.language.LngManager).whatLanguage(@authenticationFacadeImpl.getCurrentLocale())}]];
-                let obj = JSON.parse(this.responseText);
-                console.log(obj);
-                var child = document.createElement('div');
-                obj.id
-                child.innerHTML = '<span onclick="clickTag(' + obj.CatId + ',' + (depth+1) + ')" id="cat_' + obj.CatId +'" class="tag"><span>' + obj[currentLang] + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
-                child = child.firstChild;
-                var parent = document.getElementById("cats_" + parentid).querySelector(".tagsinput");
-                parent.insertBefore(child, parent.children[parent.children.length-1]);
-            }
-        };
-        xhttp.open("POST", [[@{/api/advCatecory}]], true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(advCatStringify);
+            xhttp.onload = function () {
+                if (this.status == 200) {
+                    var currentLang = [[${@authenticationFacadeImpl.getCurrentLanguage()}]];
+                    let obj = JSON.parse(this.responseText);
+                    console.log(obj);
+                    var child = document.createElement('div');
+                    child.innerHTML = '<span onclick="clickTag(' + obj.id + ',' + (depth+1).toString() + ')" id="cat_' + obj.id +'" class="tag"><span>' + obj.category[currentLang] + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
+                    child = child.firstChild;
+                    var parent = document.getElementById("cats_" + parentid).querySelector(".tagsinput");
+                    parent.insertBefore(child, parent.children[parent.children.length-1]);
+                }
+            };
+            xhttp.open("POST", [[@{/api/advCategory}]], true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(advCatStringify);
         }
 
         function clickAddTag(parentid, depth){
@@ -193,15 +189,15 @@
             if (this.readyState == 4 && this.status == 200){
                 console.log(this.responseText);
                 let obj = JSON.parse(this.responseText);
-                var childStr = '<section depth="' + (depth+1) + '" id="cats_' + pid +'" class="panel"><header class="panel-heading">Category:: ' + ptext + '</header><div class="tagsinput " style="height: 100%;">';
+                var childStr = '<section depth="' + (depth+1).toString() + '" id="cats_' + pid +'" class="panel"><header class="panel-heading">Category:: ' + ptext + '</header><div class="tagsinput " style="height: 100%;">';
                 obj.forEach(function(item){
-                    childStr += '<span onclick="clickTag(' + item.id + ',' + (depth+1) + ')" id="cat_' + item.id +'" class="tag"><span>' + (item.text != null?item.text:'+undefined+') + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
+                    childStr += '<span onclick="clickTag(' + item.id + ',' + (depth+1).toString() + ')" id="cat_' + item.id +'" class="tag"><span>' + (item.text != null?item.text:'+undefined+') + '&nbsp;&nbsp;</span><a class="tagsinput-edit-link"></a></span>';
                 });
                 childStr += '<div class="tagsinput-add-container"><a href="#myModal-2" onclick="clickAddTag(' + pid +',' + depth + ')"data-toggle="modal"><div class="tagsinput-add"></div></a></div></div>';
                 document.getElementById("allCategories").insertAdjacentHTML('beforeend', childStr);
             }
         };
-        xhttp.open("GET", "[[@{/api/advCatecories?parentId=}]]"+pid+"&lan=[[${@authenticationFacadeImpl.getCurrentLocale()}]]", true);
+        xhttp.open("GET", "[[@{/api/advCategories?parentId=}]]"+pid+"&lan=[[${@authenticationFacadeImpl.getCurrentLocale()}]]", true);
         xhttp.send();
         //add list
     }

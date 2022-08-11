@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public interface AdvertiseRepository extends JpaRepository<AdvertiseTo, Long> {
     Page<AdvertiseTo> findAllByStatusAndTextContainingOrTitleContainingOrderByStartdateDesc(AdvertiseStatus status, String text, String title, Pageable pageable);
 
     Page<AdvertiseTo> findAllByStatusOrderByStartdateDesc(AdvertiseStatus status, Pageable page);
+
     Page<AdvertiseTo> findAllByStatusOrderByStartdateAsc(AdvertiseStatus status, Pageable page);
 
     Page<AdvertiseTo> findAll(Pageable page);
@@ -32,7 +34,11 @@ public interface AdvertiseRepository extends JpaRepository<AdvertiseTo, Long> {
     @Modifying
     @Query(value = "DELETE FROM AdvertiseTo adv where adv.id = ?1")
     int deleteByIdCount(Long id);
+
     //List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
+//    @Query(nativeQuery = true, value = "SELECT jt.advertise_id AS id FROM junction_table_advertise_category jt WHERE jt.category_id IN (SELECT jt2.category_id FROM junction_table_advertise_category jt2 WHERE jt2.advertise_id= :advId) AND jt.advertise_id != :advId GROUP BY jt.advertise_id ORDER BY COUNT(jt.category_id) DESC LIMIT :listLimit")
+    @Query(nativeQuery = true, value = "SELECT * FROM advertise_to adv INNER JOIN junction_table_advertise_category jt ON adv.id = jt.advertise_id AND jt.category_id IN (SELECT jt2.category_id FROM junction_table_advertise_category jt2 WHERE jt2.advertise_id = :advId) AND adv.id != :advId GROUP BY jt.advertise_id ORDER BY COUNT(jt.category_id) DESC LIMIT :listLimit")
+    List<AdvertiseTo> getCommonsAdvertisesByCategory(@Param("advId") Long advId, @Param("listLimit") int listLimit);
 }
 
 

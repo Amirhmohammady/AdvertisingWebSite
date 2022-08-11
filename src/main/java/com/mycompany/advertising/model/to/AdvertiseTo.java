@@ -129,4 +129,7 @@ public class AdvertiseTo {
     public void setWebSiteLink(String webSiteLink) {
         this.webSiteLink = webSiteLink;
     }
+     /*public List<String> getCatagoriesByLangguage(Language language){
+         return categories.stream().map(c->c.getLanguagesAsMap().get(language.toString())).collect(Collectors.toList());
+     }*/
 }

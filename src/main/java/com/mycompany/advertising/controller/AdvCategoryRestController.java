@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -24,12 +22,12 @@ public class AdvCategoryRestController {
     @Autowired
     AdvCategoryService advCategoryService;
 
-    @PostMapping("/advCatecory")
+    @PostMapping("/advCategory")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Map<String, String>> addCategory(@RequestBody AdvertiseCategoryTo category) {
+    public ResponseEntity<AdvertiseCategoryTo> addCategory(@RequestBody AdvertiseCategoryTo category) {
         AdvertiseCategoryTo rslt = advCategoryService.addCategory(category);
-        if (rslt != null) return new ResponseEntity<>(rslt.getLanguagesAsMap(), HttpStatus.OK);
-        else return new ResponseEntity<>((Map<String, String>) null, HttpStatus.NOT_ACCEPTABLE);
+        if (rslt != null) return new ResponseEntity<>(rslt, HttpStatus.OK);
+        else return new ResponseEntity<>((AdvertiseCategoryTo) null, HttpStatus.NOT_ACCEPTABLE);
     }
 
     /*@PutMapping
@@ -46,16 +44,16 @@ public class AdvCategoryRestController {
     public void update(@RequestBody Post post, Authentication authentication) {
         service.updatePost(post);
     }*/
-    @PatchMapping("/advCatecory")
+    @PatchMapping("/advCategory")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Map<String, String>> updateCategory(@RequestBody AdvertiseCategoryTo category) {
+    public ResponseEntity<AdvertiseCategoryTo> updateCategory(@RequestBody AdvertiseCategoryTo category) {
         AdvertiseCategoryTo advCategoryTo = advCategoryService.editCategory(category);
         if (advCategoryTo != null)
-            return new ResponseEntity<>(advCategoryTo.getLanguagesAsMap(), HttpStatus.OK);
-        return new ResponseEntity<>((Map<String, String>) null, HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(advCategoryTo, HttpStatus.OK);
+        return new ResponseEntity<>((AdvertiseCategoryTo) null, HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @DeleteMapping("/advCatecory")
+    @DeleteMapping("/advCategory")
     @Secured({"ROLE_ADMIN"})
     public ResponseEntity<String> deleteCategory(@RequestParam(required = true) Long id) {
         int rows = advCategoryService.deleteByIdCostum(id);
@@ -63,19 +61,19 @@ public class AdvCategoryRestController {
         return new ResponseEntity<>("failed to delete Advertise category", HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @GetMapping("/advCatecories")
-    @Secured({"ROLE_ADMIN"})
+    @GetMapping("/advCategories")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ResponseEntity<List<CategoryIdPair>> getCategoriesByParentId(@RequestParam(required = true) Long parentId,
                                                                         @RequestParam(required = true) String lan) {
         return new ResponseEntity<>(advCategoryService.getChildsByLanguageAndId(LngManager.whatLanguage(lan), parentId), HttpStatus.OK);
     }
 
-    @GetMapping("/advCatecory")
-    @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<Map<String, String>> getCategoryById(@RequestParam(required = true) Long id) {
+    @GetMapping("/advCategory")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    public ResponseEntity<AdvertiseCategoryTo> getCategoryById(@RequestParam(required = true) Long id) {
         Optional<AdvertiseCategoryTo> category = advCategoryService.getCategoryById(id);
         if (category.isPresent())
-            return new ResponseEntity<>(category.get().getLanguagesAsMap(), HttpStatus.OK);
-        return new ResponseEntity<>(new HashMap<>(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(category.get(), HttpStatus.OK);
+        return new ResponseEntity<>((AdvertiseCategoryTo) null, HttpStatus.NOT_ACCEPTABLE);
     }
 }

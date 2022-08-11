@@ -14,6 +14,8 @@
     <link th:href="@{/share/css/Amir-flag.css}" rel="stylesheet">
     <!-- bootstrap theme -->
     <link th:href="@{/share/niceAdmin/css/bootstrap-theme.css}" rel="stylesheet">
+    <!--fonts-->
+    <link th:href="@{/share/css/Amir-font.css}" rel="stylesheet">
     <!--external css-->
     <!-- font icon -->
     <link th:href="@{/share/niceAdmin/css/elegant-icons-style.css}" rel="stylesheet"/>
@@ -36,28 +38,58 @@
 <div th:if="${advertises == null}" class="ah01-show_in_row_center">
     <h2>موردی برای نمایش وجود ندارد</h2>
 </div>
-<div th:if="${advertises != null}" class="ah01-show_in_row_center ah01-adver_body">
-    <div th:each="advertise : ${advertises.getContent()}" th:id="'adverCard' + ${advertise.id}">
-        <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}">
-            <img th:src="${advertise.smallImageUrl1}" alt="Card image cap">
-        </a>
-
-        <div>
-            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" th:text="${advertise.title}" dir="auto"></a>
-
-            <p dir="auto" th:text="${advertise.text}"></p>
-
-            <div class="ah01-row_wrap_space_between">
-                <a class="ah01_button_style01" th:href="${advertise.webSiteLink}">[[#{link.text}]]</a>
-                <a class="ah01_button_style01"
-                   th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
-                   th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
-                    [[#{edit.text}]]</a>
-                <a class="ah01_button_style01_no_background btn-danger"
-                   th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
-                   th:attr="onclick=|deleteAdvertise(${advertise.id})|" href="javascript:void(0)">
-                    [[#{delete.text}]]</a>
+<div th:if="${advertises != null}" class="ah01-show_in_row_center">
+    <div th:each="advertise : ${advertises.getContent()}"  th:id="'adverCard' + ${advertise.id}" class="ah01-margin5_inner_childs" style="width: 300px;
+background-color: white;
+margin: 20px;
+font-family: sans-serif;
+color: black;
+background-size: contain;
+background-repeat: no-repeat;
+background-image: linear-gradient(#ffffff88, #688a7e88), url('share/Images/AdvertiseWeb.jpg');
+border-radius: 20px 0px 0px 0px;">
+        <div class="ah01-margin5_inner_childs" style="display: flex; flex-flow: wrap;">
+            <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" style="width: 145px;height: 145px;
+margin: -20px 15px 10px -20px;
+border-radius: 50%;"><img style="width: 100%;
+height: 100%;
+border-radius: 50%;" th:src="${advertise.smallImageUrl1}"
+                          alt="..."></a>
+            <div style="width: 140px;">
+                <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}" style="color: black;"><h3 style="margin:0px;font-family: 'BFarnaz';" th:text="${advertise.title}" dir="auto"></h3></a>
+                <div style="font-weight: bold;">
+                    <div>
+                        <span>members:&nbsp;&nbsp;</span>
+                        <span class="badge bg-important">not found</span>
+                    </div>
+                    <div>
+                        <span>online:&nbsp;&nbsp;</span>
+                        <span class="badge bg-important">not found</span>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div class="ah01-margin5_inner_childs" style="display: flex; flex-flow: wrap; border-bottom: 1px solid #868686;height: 100px;overflow: hidden;">
+            <span style="font-family: 'BBardiya';
+font-size: 17px;
+font-weight: bold;" th:text="${advertise.text}" dir="auto"></span>
+        </div>
+        <div class="ah01-margin5_inner_childs" style="border-bottom: 1px solid #868686;height: 100px;overflow: hidden;">
+            <span style="font-family: 'B Bardiya';
+font-size: 17px;
+font-weight: bold;">online description not found</span>
+        </div>
+        <div class="ah01-margin5_inner_childs" style="display: flex; flex-flow: wrap;">
+            <span th:each="category: ${advertise.categories}" th:text="${category.category.get(@authenticationFacadeImpl.getCurrentLanguage())}" class="label label-primary" style="background-color: olive;"></span>
+        </div>
+        <div class="ah01-margin5_inner_childs" style="display: flex; flex-flow: wrap;">
+            <a class="btn btn-primary  btn-sm" href="javascript:;" th:href="${advertise.webSiteLink}">[[#{link.text}]]</a>
+            <a class="btn btn-primary  btn-sm" th:if="${!#authentication.principal.equals('anonymousUser') AND (#authentication.principal.id== advertise.userTo.id)}"
+               th:href="@{'/editAdvertise/id=' + ${advertise.id}}">
+                [[#{edit.text}]]</a>
+            <a class="btn btn-danger  btn-sm" th:if="${!#authentication.principal.equals('anonymousUser') AND (#authorization.expression('hasRole(''ROLE_ADMIN'')') OR #authentication.getPrincipal().getId() == advertise.userTo.id)}"
+               th:attr="onclick=|deleteAdvertise(${advertise.id})|" href="javascript:void(0)">
+                [[#{delete.text}]]</a>
         </div>
     </div>
 </div>
@@ -116,6 +148,33 @@
         xhttp.open("DELETE", "[[@{/restapi/advertise/}]]" + id, true);
         xhttp.send();
     }
+</script>
+<script>
+    function setAdvData(id,url){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let onlineData = JSON.parse(this.responseText);
+                console.log(onlineData.description);
+                var advCard = document.getElementById('adverCard' + id);
+                advCard.getElementsByTagName("span")[1].textContent = onlineData.members;
+                advCard.getElementsByTagName("span")[3].textContent = onlineData.onlineMembers;
+                advCard.getElementsByTagName("div")[6].innerHTML = onlineData.description;
+                //advCard.getElementsByTagName("img")[0].setAttribute("src", onlineData.imageUrl);
+            }
+        };
+        xhttp.open("GET", "[[@{/api/advertises/onlineData?url=}]]" + encodeURIComponent(url), true);
+        xhttp.send();
+    }
+</script>
+<script th:inline="javascript" type="text/javascript">
+    window.onload = function () {
+        /*<![CDATA[*/
+        /*[# th:each="advertise : ${advertises.getContent()}"]*/
+        setAdvData([[${advertise.id}]],[[${advertise.webSiteLink}]]);
+        /*[/]*/
+        /*]]>*/
+    };
 </script>
 </body>
 </html>

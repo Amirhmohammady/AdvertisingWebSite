@@ -7,6 +7,7 @@ import com.mycompany.advertising.model.to.enums.AdvertiseStatus;
 import com.mycompany.advertising.service.api.AdvertiseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,12 +28,13 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     AuthenticationFacade authenticationFacade;
     @Autowired
     AdvertiseRepository advertiseRepository;
-    private int advPerPagee = 14;
+    @Value("${advertises.per.index.page}")
+    private int advPerPage;
     private int unAcceptedAdvPerPagee = 20;
 
     @Override
     public Page<AdvertiseTo> getPageAcceptedAdvertises(int page) {
-        Pageable pageable = PageRequest.of(page - 1, advPerPagee);//, Sort.by("text")
+        Pageable pageable = PageRequest.of(page - 1, advPerPage);//, Sort.by("text")
         Page<AdvertiseTo> result = advertiseRepository.findAllByStatusOrderByStartdateDesc(AdvertiseStatus.Accepted, pageable);//.getContent();
         logger.info("get advertises at page " + page + " reult: " + result.getTotalElements());
         return result;
@@ -40,7 +42,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
 
     @Override
     public Page<AdvertiseTo> getPageAcceptedAdvertises(int page, String search) {
-        Pageable pageable = PageRequest.of(page - 1, advPerPagee);//, Sort.by("text")
+        Pageable pageable = PageRequest.of(page - 1, advPerPage);//, Sort.by("text")
         //messageRepository.findAllByTextOrTelegramlink(search, search, pageable).getTotalPages();
         return advertiseRepository.findAllByStatusAndTextContainingOrTitleContainingOrderByStartdateDesc(AdvertiseStatus.Accepted, search, search, pageable);//.getContent();
     }

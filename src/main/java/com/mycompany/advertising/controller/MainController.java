@@ -2,13 +2,16 @@ package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
 import com.mycompany.advertising.controller.utils.PageCalculator;
+import com.mycompany.advertising.controller.utils.annotations.LockApiByVariable;
+import com.mycompany.advertising.controller.utils.annotations.LockerWaitType;
+import com.mycompany.advertising.controller.utils.annotations.ReturnType;
+import com.mycompany.advertising.controller.utils.annotations.TimeLimiter;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.enums.Role;
-import com.mycompany.advertising.service.api.AdminMessageService;
-import com.mycompany.advertising.service.api.AdvertiseService;
-import com.mycompany.advertising.service.api.UserService;
+import com.mycompany.advertising.service.api.*;
+import com.mycompany.advertising.service.util.OnlineAdvertiseData;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +25,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.invoke.MethodHandles;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.stream.Collectors;
 //import org.springframework.context.MessageSource;
 
 /**
@@ -32,17 +41,21 @@ import java.net.URLEncoder;
  */
 @Controller
 public class MainController {
-    private final static Logger logger = Logger.getLogger(MainController.class);
+    private final static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     /*@Autowired
     private MessageSource messages;*/
     @Autowired
-    AdminMessageService adminMessageService;
+    private LockerApiService lockerApiService;
+    @Autowired
+    private AdminMessageService adminMessageService;
     @Value("${amir.error.folder}")
-    String errorfolder;
+    private String errorfolder;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
     @Autowired
     private AdvertiseService messageService;
+    @Autowired
+    OnlineAdvertiseDataService onlineService;
     @Autowired
     private UserService userService;
 
@@ -52,10 +65,19 @@ public class MainController {
     }
 
     @PostMapping("/login")
-    public String loginPost(HttpServletRequest request) {//Model model, HttpServletRequest request
-        //System.out.println("+++++++++++++++++++++++++" + request.getAttribute("phonenumber"));
-        //Object username = request.getAttribute("SPRING_SECURITY_LAST_USERNAME_KEY");
-        return "login";
+    @LockApiByVariable(timeLimiter = @TimeLimiter(maxRequest = 2, inSeconds = 16), variableName = "username", waitOrErr = LockerWaitType.ERROR, returnType = ReturnType.HTML)
+    public String loginPost(Model model, HttpServletRequest request, String username, String password) {//Model model, HttpServletRequest request
+        try {
+            request.login(username, password);
+            logger.info("user " + username + " successfully logged in");
+            lockerApiService.removeLastLockByVariable(new Object(){}.getClass().getEnclosingMethod(), username);
+            return "redirect:/";
+        } catch (ServletException e) {
+            model.addAttribute("lastPhoneNumber", username);
+            model.addAttribute("phoneNoStatus", userService.getUserStatuseByPhoneNumber(username));
+            logger.info("user " + username + " failed to login");
+            return "login";
+        }
     }
 
     /*@GetMapping("/login_error")
@@ -63,16 +85,17 @@ public class MainController {
         return "login";
     }*/
 
-    @PostMapping("/login_error")
+    /*@PostMapping("/login_error")
     public String loginError(Model model, HttpServletRequest request) {
-        String lastphonenumber = (String) request.getParameter("phonenumber");
+        System.out.println("loginError++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        String lastphonenumber = (String) request.getParameter("username");
         if (lastphonenumber != null) {
             if (lastphonenumber.charAt(0) != '0') lastphonenumber = '0' + lastphonenumber;
             model.addAttribute("lastPhoneNumber", lastphonenumber);
             model.addAttribute("phoneNoStatus", userService.getUserStatuseByPhoneNumber(lastphonenumber));
         }
         return "login";
-    }
+    }*/
 
     @GetMapping("/signup")
     public String signUp() {
@@ -130,14 +153,26 @@ public class MainController {
         } else {
             advertiseTos = messageService.getPageAcceptedAdvertises(pagenumber, search);
         }
-        model.addAttribute("search", search);
-        model.addAttribute("currentPage", pagenumber);
-        model.addAttribute("adminMessage", adminMessageService.getLastMessage());
-        if (pagenumber > advertiseTos.getTotalPages()) return "index";
-        model.addAttribute("advertises", advertiseTos);//.getContent());
-        model.addAttribute("pages", PageCalculator.getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
-        return "index";
-    }
+        List<OnlineAdvertiseData> onlineAdvertiseDatas = advertiseTos.getContent().stream().map(adv -> {
+            OnlineAdvertiseData rslt;
+            try {
+                rslt = onlineService.getData(new URL(adv.getWebSiteLink()));
+            } catch (IOException e) {
+                e.printStackTrace();
+                logger.info("can not get data for ");
+                return null;
+            }
+            return rslt;
+        }).collect(Collectors.toList());
+            model.addAttribute("onlineadvs", onlineAdvertiseDatas);
+            model.addAttribute("search", search);
+            model.addAttribute("currentPage", pagenumber);
+            model.addAttribute("adminMessage", adminMessageService.getLastMessage());
+            if (pagenumber > advertiseTos.getTotalPages()) return "index";
+            model.addAttribute("advertises", advertiseTos);//.getContent());
+            model.addAttribute("pages", PageCalculator.getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
+            return "index";
+        }
 
     /*@GetMapping("/index/page={pagenumber}")
     public String indexByPage(Model model, @PathVariable int pagenumber) {
@@ -145,8 +180,7 @@ public class MainController {
         model.addAttribute("advertises", messageService.getPageMessages(pagenumber));
         return "index";
     }*/
-
-    @GetMapping("/regitrationConfirm/phonenumber={phonenumber}")
+        @GetMapping("/regitrationConfirm/phonenumber={phonenumber}")
     public String confirmRegistration(Model model, @PathVariable String phonenumber) {
         model.addAttribute("phonenumber", phonenumber);
         return "confirmRegistration";

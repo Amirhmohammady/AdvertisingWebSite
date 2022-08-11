@@ -27,8 +27,8 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    AuthenticationFailureHandler authenticationFailureHandler;
+//    @Autowired
+//    AuthenticationFailureHandler authenticationFailureHandler;
     @Value("${max.inactive.interval.seconds.remember.me}")
     private int rememberMeSessionTimeout;
     //@Autowired
@@ -81,16 +81,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .anyRequest().permitAll().and()
-                .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/").and()
-                .formLogin()//.successHandler(authenticationSuccessHandler)
+                .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/")//.and()
+                //.formLogin().loginPage("/login")//.loginProcessingUrl("/login")//.successHandler(authenticationSuccessHandler)
                 //maybe for controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
-                .failureUrl("/login_error").failureHandler(authenticationFailureHandler).loginPage("/login")
-                .permitAll()//.usernameParameter("phonenumber")
+                //.failureUrl("/login_error").failureHandler(authenticationFailureHandler)
+                //.permitAll()//.usernameParameter("phonenumber")
                 .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
                 .tokenValiditySeconds(rememberMeSessionTimeout).tokenRepository(persistentTokenRepository())
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         //for enabling multipart sending and handling logout
         http.csrf().disable();
+        //http.httpBasic().disable();
+        //http.formLogin().disable();
     }
 
     @Bean

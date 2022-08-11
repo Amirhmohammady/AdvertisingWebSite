@@ -1,6 +1,7 @@
 package com.mycompany.advertising.components.api;
 
 import com.mycompany.advertising.model.to.UserTo;
+import com.mycompany.advertising.service.language.Language;
 
 import java.util.Locale;
 
@@ -13,4 +14,6 @@ public interface AuthenticationFacade {
     boolean hasRole(String role);
     String getDomainName();
     Locale getCurrentLocale();
+    Language getCurrentLanguage();
+    String getCurrentClientIp();
 }

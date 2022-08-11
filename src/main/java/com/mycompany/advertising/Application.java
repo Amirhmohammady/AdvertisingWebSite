@@ -1,14 +1,11 @@
 package com.mycompany.advertising;
 
-import com.mycompany.advertising.config.StorageProperties;
-import com.mycompany.advertising.service.api.StorageService;
-import org.springframework.boot.CommandLineRunner;
+//import com.mycompany.advertising.config.StorageProperties;
+//import com.mycompany.advertising.service.api.StorageService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
@@ -16,10 +13,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SpringBootApplication
-@EnableConfigurationProperties(StorageProperties.class)
+//@EnableConfigurationProperties(StorageProperties.class)
 @PropertySources({
         //@PropertySource(value = "file:../amirExtraFiles/adv-web/log4j.properties", ignoreResourceNotFound= false),
-        @PropertySource(value = "file:../amirExtraFiles/adv-web/application.properties", ignoreResourceNotFound= false)
+        @PropertySource(value = "file:../amirExtraFiles/adv-web/application.properties", ignoreResourceNotFound= true)
 })
 /*@PropertySources({
         @PropertySource(value = "file:/applsication.properties", ignoreResourceNotFound = true)
@@ -41,14 +38,14 @@ public class Application extends SpringBootServletInitializer {
         return application;
     }
 
-    @Bean
+    /*@Bean
     CommandLineRunner init(StorageService storageService) {
         return (args) -> {
             //
             // storageService.deleteAll();
             storageService.init();
         };
-    }
+    }*/
 }
 /*@Component
 class DemoCommandLineRunner implements CommandLineRunner {
