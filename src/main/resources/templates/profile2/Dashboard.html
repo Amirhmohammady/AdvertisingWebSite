@@ -210,7 +210,7 @@
     //knob
     $(".knob").knob();
 </script>
-<span  sec:authorize="isAuthenticated()" th:insert="jsFragments/editProfile.js" th:remove="tag"> </span>
+<script th:if="${pfragment01.equals('profile')}" th:src="@{/share/ah01js/editProfile.js}"></script>
 </body>
 
 </html>
