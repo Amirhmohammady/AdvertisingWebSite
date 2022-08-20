@@ -13,6 +13,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.invoke.MethodHandles;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
  */
 @Service
 public class SmsSeviceImpl implements SmsService {
-    final static Logger logger = Logger.getLogger(SmsSeviceImpl.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     private final RestTemplate restTemplate;
     @Autowired
     SSLRESTClient<String> sslrestclient;

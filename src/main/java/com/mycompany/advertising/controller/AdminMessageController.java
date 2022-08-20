@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.invoke.MethodHandles;
 import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -23,7 +24,7 @@ import java.util.Optional;
  */
 @Controller
 public class AdminMessageController {
-    Logger logger = Logger.getLogger(AdminMessageController.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Autowired
     AdminMessageService adminMessageService;
     @Value("${amir.error.folder}")

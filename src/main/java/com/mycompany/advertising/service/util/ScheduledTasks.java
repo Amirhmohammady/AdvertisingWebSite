@@ -14,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 
 
@@ -24,7 +25,7 @@ import java.time.LocalDateTime;
 @Configuration
 @EnableScheduling
 public class ScheduledTasks {
-    private final static Logger logger = Logger.getLogger(ScheduledTasks.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Autowired
     LockerApiService lockerApiService;
     @Autowired

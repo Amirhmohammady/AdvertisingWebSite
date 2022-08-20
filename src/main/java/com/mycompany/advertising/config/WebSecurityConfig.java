@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -27,15 +28,15 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    AuthenticationFailureHandler authenticationFailureHandler;
     @Value("${max.inactive.interval.seconds.remember.me}")
     private int rememberMeSessionTimeout;
     //@Autowired
     //@Qualifier("persistentTokenRepository")
     //private PersistentTokenRepository persistentTokenRepository;
-    //@Autowired
-    //AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Autowired
+    AuthenticationSuccessHandler authenticationSuccessHandler;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -80,11 +81,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .contentSecurityPolicy("script-src 'self'");*/
         http
                 .authorizeRequests()
-                .anyRequest().permitAll().and()
-                .logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/")//.and()
-                //.formLogin().loginPage("/login")//.loginProcessingUrl("/login")//.successHandler(authenticationSuccessHandler)
+                .antMatchers("/authenticated/**").authenticated().anyRequest().permitAll()//antMatchers should be before anyRequest i don't know why!!!
+                .and().logout().logoutUrl("/logout").permitAll().logoutSuccessUrl("/")
+                .and().formLogin().loginPage("/login").successHandler(authenticationSuccessHandler)////.loginProcessingUrl("/login")
                 //maybe for controlling error exception Search Login Failure Handler https://www.codejava.net/frameworks/spring-boot/spring-boot-security-customize-login-and-logout
-                //.failureUrl("/login_error").failureHandler(authenticationFailureHandler)
+                .failureUrl("/login_error").failureHandler(authenticationFailureHandler)
                 //.permitAll()//.usernameParameter("phonenumber")
                 .and().rememberMe().userDetailsService(userDetailsService)//.key("uniqueAndSecret")
                 .tokenValiditySeconds(rememberMeSessionTimeout).tokenRepository(persistentTokenRepository())

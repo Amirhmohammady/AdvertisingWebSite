@@ -15,7 +15,9 @@ public @interface LockApiByVariable {
 
     String variableName();
 
-    LockerWaitType waitOrErr();
+    Class<? extends Exception> excptionType();
+    String exceptionMsg();
+//    LockerWaitType waitOrErr();
 
-    ReturnType returnType();
+//    ReturnType returnType();
 }

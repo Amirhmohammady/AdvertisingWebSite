@@ -24,7 +24,7 @@ import java.util.Random;
  */
 @Service
 public class TokenForChangePhoneNumberServiceImpl implements TokenForChangePhoneNumberService {
-    Logger logger = Logger.getLogger(TokenForChangePhoneNumberServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(TokenForChangePhoneNumberServiceImpl.class);
 
     @Autowired
     SmsService smsService;

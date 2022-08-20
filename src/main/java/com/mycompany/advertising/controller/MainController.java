@@ -2,10 +2,6 @@ package com.mycompany.advertising.controller;
 
 import com.mycompany.advertising.controller.events.OnSigningUpCompleteEvent;
 import com.mycompany.advertising.controller.utils.PageCalculator;
-import com.mycompany.advertising.controller.utils.annotations.LockApiByVariable;
-import com.mycompany.advertising.controller.utils.annotations.LockerWaitType;
-import com.mycompany.advertising.controller.utils.annotations.ReturnType;
-import com.mycompany.advertising.controller.utils.annotations.TimeLimiter;
 import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
@@ -17,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
@@ -41,11 +40,9 @@ import java.util.stream.Collectors;
  */
 @Controller
 public class MainController {
-    private final static Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     /*@Autowired
     private MessageSource messages;*/
-    @Autowired
-    private LockerApiService lockerApiService;
     @Autowired
     private AdminMessageService adminMessageService;
     @Value("${amir.error.folder}")
@@ -64,6 +61,9 @@ public class MainController {
         return "login";
     }
 
+    /*
+    @Autowired
+    private LockerApiService lockerApiService;
     @PostMapping("/login")
     @LockApiByVariable(timeLimiter = @TimeLimiter(maxRequest = 2, inSeconds = 16), variableName = "username", waitOrErr = LockerWaitType.ERROR, returnType = ReturnType.HTML)
     public String loginPost(Model model, HttpServletRequest request, String username, String password) {//Model model, HttpServletRequest request
@@ -78,24 +78,43 @@ public class MainController {
             logger.info("user " + username + " failed to login");
             return "login";
         }
-    }
+    }*/
 
     /*@GetMapping("/login_error")
-    public String login_error() {
+    public String loginErrorGet(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            AuthenticationException ex = (AuthenticationException) session
+                    .getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+            if (ex != null) {
+                model.addAttribute("errorMessage", ex.getMessage());
+            }
+        }
+        String username = request.getParameter("username");
+        model.addAttribute("failedUsername", username);
+        model.addAttribute("phoneNoStatus", userService.getUserStatuseByPhoneNumber(username));
+        logger.info("user " + username + " failed to login");
         return "login";
     }*/
 
-    /*@PostMapping("/login_error")
-    public String loginError(Model model, HttpServletRequest request) {
-        System.out.println("loginError++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        String lastphonenumber = (String) request.getParameter("username");
-        if (lastphonenumber != null) {
-            if (lastphonenumber.charAt(0) != '0') lastphonenumber = '0' + lastphonenumber;
-            model.addAttribute("lastPhoneNumber", lastphonenumber);
-            model.addAttribute("phoneNoStatus", userService.getUserStatuseByPhoneNumber(lastphonenumber));
+    @PostMapping("/login_error")
+    public String loginErrorPost(Model model, HttpServletRequest request) {
+        String username = request.getParameter("username");
+        if (username != null) {
+            if (username.charAt(0) != '0') username = '0' + username;
+            model.addAttribute("failedUsername", username);
+            model.addAttribute("phoneNoStatus", userService.getUserStatuseByPhoneNumber(username));
+        }
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            AuthenticationException ex = (AuthenticationException) session.getAttribute("exception");
+            if (ex != null) {
+                if (ex instanceof BadCredentialsException) model.addAttribute("errorMessage", "UserName or Password is wrong");
+                else model.addAttribute("errorMessage", ex.getMessage());
+            }
         }
         return "login";
-    }*/
+    }
 
     @GetMapping("/signup")
     public String signUp() {
@@ -164,15 +183,15 @@ public class MainController {
             }
             return rslt;
         }).collect(Collectors.toList());
-            model.addAttribute("onlineadvs", onlineAdvertiseDatas);
-            model.addAttribute("search", search);
-            model.addAttribute("currentPage", pagenumber);
-            model.addAttribute("adminMessage", adminMessageService.getLastMessage());
-            if (pagenumber > advertiseTos.getTotalPages()) return "index";
-            model.addAttribute("advertises", advertiseTos);//.getContent());
-            model.addAttribute("pages", PageCalculator.getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
-            return "index";
-        }
+        model.addAttribute("onlineadvs", onlineAdvertiseDatas);
+        model.addAttribute("search", search);
+        model.addAttribute("currentPage", pagenumber);
+        model.addAttribute("adminMessage", adminMessageService.getLastMessage());
+        if (pagenumber > advertiseTos.getTotalPages()) return "index";
+        model.addAttribute("advertises", advertiseTos);//.getContent());
+        model.addAttribute("pages", PageCalculator.getMyPage(advertiseTos.getTotalPages(), pagenumber, 7));
+        return "index";
+    }
 
     /*@GetMapping("/index/page={pagenumber}")
     public String indexByPage(Model model, @PathVariable int pagenumber) {
@@ -180,7 +199,7 @@ public class MainController {
         model.addAttribute("advertises", messageService.getPageMessages(pagenumber));
         return "index";
     }*/
-        @GetMapping("/regitrationConfirm/phonenumber={phonenumber}")
+    @GetMapping("/regitrationConfirm/phonenumber={phonenumber}")
     public String confirmRegistration(Model model, @PathVariable String phonenumber) {
         model.addAttribute("phonenumber", phonenumber);
         return "confirmRegistration";

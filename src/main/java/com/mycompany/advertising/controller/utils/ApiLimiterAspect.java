@@ -29,7 +29,6 @@ public class ApiLimiterAspect {
     @Autowired
     LockerApiService lockerApiService;
     private Map<Method, Integer> lockApiByVariableIndexes = new HashMap<>();
-    private boolean ttt = false;
 
     @Before("@annotation(com.mycompany.advertising.controller.utils.annotations.LockApiByUser)")
     public void lockApiByUser(JoinPoint joinPoint) throws Throwable {//ProceedingJoinPoint
@@ -40,12 +39,13 @@ public class ApiLimiterAspect {
         UserTo user = authenticationFacade.getCurrentUser();
         long watingTime = lockerApiService.getMethodTimeWaitByUser(method, user, timeLimiter.maxRequest(), timeLimiter.inSeconds());
         if (watingTime > 0) {
-            if (lock.waitOrErr() == LockerWaitType.WAIT) Thread.sleep(watingTime * 1000);
+            throw lock.excptionType().getDeclaredConstructor(String.class).newInstance(lock.exceptionMsg());
+            /*if (lock.waitOrErr() == LockerWaitType.WAIT) Thread.sleep(watingTime * 1000);
             else {
                 if (lock.returnType() == ReturnType.JSON)
                     throw new CallRestApiLimitException("time limit exceeded to call " + method.getName());
                 else throw new CallWebApiLimitException("time limit exceeded to call " + method.getName());
-            }
+            }*/
         }
         lockerApiService.saveApiCalledWithUserLimit(method, user);
     }
@@ -66,12 +66,13 @@ public class ApiLimiterAspect {
         String value = joinPoint.getArgs()[lockApiByVariableIndexes.get(method)].toString();
         long watingTime = lockerApiService.getMethodTimeWaitByVariable(method, value, timeLimiter.maxRequest(), timeLimiter.inSeconds());
         if (watingTime > 0) {
-            if (lock.waitOrErr() == LockerWaitType.WAIT) Thread.sleep(watingTime * 1000);
+            throw lock.excptionType().getDeclaredConstructor(String.class).newInstance(lock.exceptionMsg());
+            /*if (lock.waitOrErr() == LockerWaitType.WAIT) Thread.sleep(watingTime * 1000);
             else {
                 if (lock.returnType() == ReturnType.JSON)
                     throw new CallRestApiLimitException("time limit exceeded to call " + method.getName());
                 else throw new CallWebApiLimitException("time limit exceeded to call " + method.getName());
-            }
+            }*/
         }
         lockerApiService.saveApiCalledWithVariableLimit(method, value);
 
@@ -110,12 +111,13 @@ public class ApiLimiterAspect {
         String IP = authenticationFacade.getCurrentClientIp();
         long watingTime = lockerApiService.getMethodTimeWaitByIP(method, IP, timeLimiter.maxRequest(), timeLimiter.inSeconds());
         if (watingTime > 0) {
-            if (lock.waitOrErr() == LockerWaitType.WAIT) Thread.sleep(watingTime * 1000);
+            throw lock.excptionType().getDeclaredConstructor(String.class).newInstance(lock.exceptionMsg());
+            /*if (lock.waitOrErr() == LockerWaitType.WAIT) Thread.sleep(watingTime * 1000);
             else {
                 if (lock.returnType() == ReturnType.JSON)
                     throw new CallRestApiLimitException("time limit exceeded to call " + method.getName());
                 else throw new CallWebApiLimitException("time limit exceeded to call " + method.getName());
-            }
+            }*/
         }
         lockerApiService.saveApiCalledWithIPLimit(method, IP);
     }

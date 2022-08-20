@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
 
 @Service
 public class StorageServiceImpl implements StorageService {
-    private final static Logger logger = Logger.getLogger(ImageResizer.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     private final Path rootLocation;
     @Autowired
     AuthenticationFacade authenticationFacade;

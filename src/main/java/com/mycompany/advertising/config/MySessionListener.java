@@ -7,12 +7,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import java.lang.invoke.MethodHandles;
 
 /**
  * Created by Amir on 12/4/2021.
  */
 public class MySessionListener implements HttpSessionListener {
-    private final static Logger logger = Logger.getLogger(MySessionListener.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     private int maxinactiveinterval;
 
     public MySessionListener(int maxinactiveinterval) {

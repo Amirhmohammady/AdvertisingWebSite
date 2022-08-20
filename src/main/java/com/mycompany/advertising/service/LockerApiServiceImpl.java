@@ -48,7 +48,7 @@ public class LockerApiServiceImpl implements LockerApiService {
         long result;
         if (methodCalls < maxReq) result = 0;
         else result = inSec - Duration.between(lastCall, LocalDateTime.now()).getSeconds();
-        logger.info("method " + method.getName() + " called " + methodCalls + " times by IP " + IP + " in last " + inSec + " seconds and you need to wait " + result + " seconds");
+        logger.info("method " + method + " called " + methodCalls + " times by IP " + IP + " in last " + inSec + " seconds and you need to wait " + result + " seconds");
         return result;
     }
 
@@ -69,7 +69,7 @@ public class LockerApiServiceImpl implements LockerApiService {
         long result;
         if (methodCalls < maxReq) result = 0;
         else result = inSec - Duration.between(lastCall, LocalDateTime.now()).getSeconds();
-        logger.info("method " + method.getName() + " called " + methodCalls + " times by User " + user + " in last " + inSec + " seconds and you need to wait " + result + " seconds");
+        logger.info("method " + method + " called " + methodCalls + " times by User " + user + " in last " + inSec + " seconds and you need to wait " + result + " seconds");
         return result;
     }
 
@@ -90,7 +90,7 @@ public class LockerApiServiceImpl implements LockerApiService {
         long result;
         if (methodCalls < maxReq) result = 0;
         else result = inSec - Duration.between(lastCall, LocalDateTime.now()).getSeconds();
-        logger.info("method " + method.getName() + " called " + methodCalls + " times by value " + var + " in last " + inSec + " seconds and you need to wait " + result + " seconds");
+        logger.info("method " + method + " called " + methodCalls + " times by value " + var + " in last " + inSec + " seconds and you need to wait " + result + " seconds");
         return result;
     }
 
@@ -158,7 +158,7 @@ public class LockerApiServiceImpl implements LockerApiService {
                 lockApiByVariableDtos.remove(i);
                 break;
             }
-        if (i >= 0) logger.info("last call method " + method.getName() + " by variable " + var + " is removed");
-        else logger.info("can not remove last call method " + method.getName() + " by variable " + var);
+        if (i >= 0) logger.info("last call method " + method + " by variable " + var + " is removed");
+        else logger.info("can not remove last call method " + method + " by variable " + var);
     }
 }

@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.invoke.MethodHandles;
 
 /**
  * Created by Amir on 5/7/2021.
  */
 @Controller
 public class MyErrorController implements ErrorController {
-    private static final Logger logger = Logger.getLogger(MyErrorController.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Value("${amir.error.folder}")
     String errorfolder;
 

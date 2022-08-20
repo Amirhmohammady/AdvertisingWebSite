@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;*/
 //@Service
 //@Transactional
 public class PersistentTokenServiceImpl{}/* implements PersistentTokenRepository {
-    private final static Logger logger = Logger.getLogger(PersistentTokenServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     PersistentLoginsRepository persistentLoginsRepository;

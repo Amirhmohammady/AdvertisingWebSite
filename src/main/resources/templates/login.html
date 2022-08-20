@@ -31,8 +31,10 @@ th:if="${phoneNoStatus != null}"-->
 			<span th:if="${phoneNoStatus != null and #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND'}">
 				<a onclick="sendSmsToLastPhone()" href="#">Click to resend verification token to [[${lastPhoneNumber}]]</a>
 			</span>
-            <span th:unless="${phoneNoStatus == null OR (#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED' OR #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND')}">
+            <!--span th:unless="${phoneNoStatus == null OR (#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED' OR #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND')}">
                 UserName or Password is wrong
+            </span-->
+            <span th:unless="${(phoneNoStatus == null OR (#strings.toString(phoneNoStatus) == 'EXIST_BUT_NOT_ACTIVATED' OR #strings.toString(phoneNoStatus) == 'EXIST_BUT_TOKEN_DID_NOT_SEND')) and errorMessage!=null}" th:text="${errorMessage}">
             </span>
         </p>
         <input class="ah01-border_style01" placeholder="Password" type="password" name="password"/>

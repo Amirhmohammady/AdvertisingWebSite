@@ -13,7 +13,9 @@ import java.lang.annotation.Target;
 public @interface LockApiByIP {
     TimeLimiter timeLimiter();
 
-    LockerWaitType waitOrErr();
+    Class<? extends Exception> excptionType();
+    String exceptionMsg();
+//    LockerWaitType waitOrErr();
 
-    ReturnType returnType();
+//    ReturnType returnType();
 }

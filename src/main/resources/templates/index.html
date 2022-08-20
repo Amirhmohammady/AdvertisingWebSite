@@ -38,7 +38,7 @@
 <div th:if="${advertises == null}" class="ah01-show_in_row_center">
     <h2>موردی برای نمایش وجود ندارد</h2>
 </div>
-<div th:if="${advertises != null}" class="ah01-row_wrap_space_around" style="padding: 0% 2% 0% 2%;">
+<div th:if="${advertises != null}" class="ah01-row_wrap_space_evenly" style="padding: 0% 2% 0% 2%;">
     <div th:each="advertise : ${advertises.getContent()}"  th:id="'adverCard' + ${advertise.id}" class="ah01-margin5_inner_childs ah01-adver_body2">
         <div class="ah01-margin5_inner_childs">
             <a th:href="@{'/showAdvertise/id=' + ${advertise.id}}"><img th:src="${advertise.smallImageUrl1}"
@@ -121,7 +121,7 @@
 </div>
 </main>
 
-<span sec:authorize="isAuthenticated()" th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
+<span th:insert="fragments/navbarJavaScripts.html" th:remove="tag"> </span>
 <script sec:authorize="isAuthenticated()">
     function deleteAdvertise(id) {
         var xhttp = new XMLHttpRequest();

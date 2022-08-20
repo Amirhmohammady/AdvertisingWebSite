@@ -13,7 +13,10 @@ import java.lang.annotation.Target;
 public @interface LockApiByUser {
     TimeLimiter timeLimiter();
 
-    LockerWaitType waitOrErr();
+    Class<? extends Exception> excptionType();
 
-    ReturnType returnType();
+    String exceptionMsg();
+//    LockerWaitType waitOrErr();
+
+//    ReturnType returnType();
 }

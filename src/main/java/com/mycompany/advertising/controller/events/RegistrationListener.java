@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * Created by Amir on 9/14/2021.
  */
 @Component
 public class RegistrationListener implements ApplicationListener<OnSigningUpCompleteEvent> {
-    final static Logger logger = Logger.getLogger(RegistrationListener.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     private SmsService smsService;
