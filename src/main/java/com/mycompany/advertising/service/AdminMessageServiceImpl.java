@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ import java.util.Optional;
  */
 @Service
 public class AdminMessageServiceImpl implements AdminMessageService {
-    private static final Logger logger = Logger.getLogger(AdminMessageServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Autowired
     UserCommentRepository userCommentRepository;
     @Autowired

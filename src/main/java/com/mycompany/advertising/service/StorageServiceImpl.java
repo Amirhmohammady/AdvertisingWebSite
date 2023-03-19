@@ -3,18 +3,22 @@ package com.mycompany.advertising.service;
 import com.mycompany.advertising.components.ImageResizer;
 import com.mycompany.advertising.components.api.AuthenticationFacade;
 import com.mycompany.advertising.config.StorageProperties;
+import com.mycompany.advertising.model.to.AdvertiseTo;
+import com.mycompany.advertising.service.api.AdvertiseService;
 import com.mycompany.advertising.service.api.StorageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -31,6 +35,8 @@ public class StorageServiceImpl implements StorageService {
     private final Path rootLocation;
     @Autowired
     AuthenticationFacade authenticationFacade;
+    @Autowired
+    AdvertiseService advertiseService;
 
     @Autowired
     public StorageServiceImpl(StorageProperties properties) {
@@ -74,8 +80,8 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public List<String> storeImage(MultipartFile file) throws IOException {
-        ArrayList<String> result = new ArrayList<String>();
+    public List<URL> storeImage(MultipartFile file) throws IOException {
+        ArrayList<URL> result = new ArrayList<URL>();
         String filename = getNextFileName(StringUtils.cleanPath(file.getOriginalFilename()), rootLocation);
         String domainName = authenticationFacade.getDomainName();
         if (file.isEmpty()) {
@@ -91,17 +97,78 @@ public class StorageServiceImpl implements StorageService {
                     StandardCopyOption.REPLACE_EXISTING);
             logger.info("Successfully stored " + filename);
         }
-        result.add(domainName + "/t/" + filename);
+        result.add(new URL(domainName + "/t/" + filename));
         String smallfilename = getFileNameWithNoExtention(filename)
                 + "Small." + getExtention(filename);
         smallfilename = getNextFileName(smallfilename, rootLocation);
         ImageResizer.resize(rootLocation.toString() + "\\" + filename,
                 rootLocation.toString() + "\\" + smallfilename, 200, 200);
-        result.add(domainName + "/t/" + smallfilename);
+        result.add(new URL(domainName + "/t/" + smallfilename));
         return result;
     }
 
     @Override
+    public List<URL> getAllImagesURL() {
+        List<URL> rslt = new ArrayList<>();
+        File file = new File(this.rootLocation.toString());
+        for (String f : file.list()) {
+            try {
+                URL tmp = new URL(authenticationFacade.getDomainName() + "/t/" + f);
+                rslt.add(tmp);
+            } catch (MalformedURLException e) {
+                logger.warn("Failed to read stored files " + f);
+                System.out.println(e.getMessage());
+            }
+        }
+        /*List<Path> pathes = Files.walk(this.rootLocation, 1)
+                    .filter(path -> !path.equals(this.rootLocation))
+                    .map(this.rootLocation::relativize).collect(Collectors.toList());*/
+        return rslt;
+    }
+
+    @Override
+    public void deleteUnusedImages() {
+        List<String> diskImages = this.getAllImagesURL().stream().map(url -> Paths.get(url.getPath()).getFileName().toString()).collect(Collectors.toList());
+        //List<URL> images = this.getAllImagesURL();
+        //Set<AdvertiseTo> advs = advertiseService.findAllByDomainNames(this.getAllDomainsName());
+        List<String> databaseImages = new ArrayList<>();
+        for (AdvertiseTo adv : advertiseService.findAllByDomainNames(this.getAllDomainsName())) {
+            if (adv.getImageUrl1() != null)
+                databaseImages.add(Paths.get(adv.getImageUrl1().getPath()).getFileName().toString());
+            if (adv.getSmallImageUrl1() != null)
+                databaseImages.add(Paths.get(adv.getSmallImageUrl1().getPath()).getFileName().toString());
+        }
+
+        for (String diskImage : diskImages)
+            if (!databaseImages.contains(diskImage)) {
+                File file = new File(rootLocation.toFile(), diskImage);
+                if (file.delete()) {
+                    logger.debug(diskImage + " was deleted successfully");
+                } else {
+                    logger.warn("can not delete file " + diskImage);
+                }
+            }
+    }
+
+    @Override
+    public void deleteImageByUrl(URL imgURL) {
+        File file = new File(rootLocation.toFile(), Paths.get(imgURL.getPath()).getFileName().toString());
+        if (file.delete()) {
+            logger.debug(imgURL + " was deleted successfully");
+        } else {
+            logger.warn("can not delete file " + imgURL);
+        }
+    }
+
+    @Override
+    public List<String> getAllDomainsName() {
+        List<String> result = new ArrayList<>();
+        result.add("127.0.0.1");
+        result.add("localhost");
+        return result;
+    }
+
+    /*@Override
     public Stream<Path> loadAll() throws IOException {
         try {
             return Files.walk(this.rootLocation, 1)
@@ -111,9 +178,9 @@ public class StorageServiceImpl implements StorageService {
             logger.error("Failed to read stored files", e);
             throw new IOException("Failed to read stored files");
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
     }
@@ -121,9 +188,9 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
-    }
+    }*/
 
-    @Override
+    @PostConstruct
     public void init() {
         try {
             Files.createDirectories(rootLocation);

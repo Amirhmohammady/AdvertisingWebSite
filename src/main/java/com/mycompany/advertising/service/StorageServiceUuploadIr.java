@@ -8,22 +8,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
+import java.lang.invoke.MethodHandles;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * Created by Amir on 1/9/2022.
  */
 //@Service
 public class StorageServiceUuploadIr implements StorageService {
-    private static final Logger logger = Logger.getLogger(StorageServiceUuploadIr.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     private Map<String, String> cookies = new HashMap<String, String>();
     @Value("${upload.website.username}")
     private String username;
@@ -31,11 +33,7 @@ public class StorageServiceUuploadIr implements StorageService {
     private String password;
 
     @Override
-    public void init() {
-    }
-
-    @Override
-    public List<String> storeImage(MultipartFile file) throws IOException {
+    public List<URL> storeImage(MultipartFile file) throws IOException {
         int i;
         for (i = 0; i < 3; i++) {
             if (isLogin()) {
@@ -48,27 +46,35 @@ public class StorageServiceUuploadIr implements StorageService {
         }
         if (i >= 3) throw new IOException("fail to login");
         String rslt = uploadInputStream(file.getInputStream(), file.getOriginalFilename());
-        java.util.List<String> result = new java.util.ArrayList<String>();
-        result.add(rslt);
+        java.util.List<URL> result = new java.util.ArrayList<>();
+        result.add(new URL(rslt));
         if (file.getOriginalFilename().lastIndexOf('.') >= 0) {
             int indx = rslt.lastIndexOf('.');
-            result.add(rslt.substring(0, indx) + "_thumb" + rslt.substring(indx));
-        } else result.add(rslt + "_thumb");
+            result.add(new URL(rslt.substring(0, indx) + "_thumb" + rslt.substring(indx)));
+        } else result.add(new URL(rslt + "_thumb"));
         return result;
     }
 
     @Override
-    public Stream<Path> loadAll() throws IOException {
+    public List<URL> getAllImagesURL() {
         return null;
     }
 
     @Override
-    public Path load(String filename) {
-        return null;
+    public void deleteUnusedImages() {
+
     }
 
     @Override
-    public void deleteAll() {
+    public void deleteImageByUrl(URL imgURL) {
+
+    }
+
+    @Override
+    public List<String> getAllDomainsName() {
+        List<String> result = new ArrayList<>();
+        result.add("UuploadIr");
+        return result;
     }
 
     private String uploadInputStream(InputStream is, String filename) throws IOException {

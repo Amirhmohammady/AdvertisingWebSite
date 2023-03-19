@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 /**
  * Created by Amir on 11/11/2021.
  */
 @Configuration
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
-    private static final Logger logger = Logger.getLogger(CustomAuthenticationFailureHandler.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
     public void onAuthenticationFailure(

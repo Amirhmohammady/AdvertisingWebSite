@@ -65,7 +65,7 @@ public class GoogleController {
     }
 
     @RequestMapping(value = "/sitemap/all/sitemap.xml", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
-//, produces = {MediaType.APPLICATION_XML_VALUE}
+//, produces = {miui install multi part apkMediaType.APPLICATION_XML_VALUE}
     @ResponseBody
     public ResponseEntity<String> allSiteMap() {//ResponseEntity<XmlUrlSet>
         String result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +

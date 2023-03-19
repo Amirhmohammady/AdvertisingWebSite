@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ import java.util.Optional;
  */
 @Service
 public class AdvCategoryServiceImpl implements AdvCategoryService {
-    private static final Logger logger = Logger.getLogger(AdvCategoryServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     AdvCategoryRepository advCategoryRepository;

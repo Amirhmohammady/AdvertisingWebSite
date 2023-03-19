@@ -58,12 +58,13 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 0 * * ?")
     public void doEveryDay() {
         System.out.println("doEveryDay");
+        storageService.deleteUnusedImages();
+        System.out.println("unused images deleted");
     }
 
     @EventListener
     public void initializeServer(ApplicationReadyEvent event) {
         createAdminAtStartup();
-        storageService.init();
     }
 
     private void createAdminAtStartup(){

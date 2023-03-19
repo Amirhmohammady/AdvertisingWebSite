@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 
 /**
@@ -28,7 +29,7 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("User")
 public class UserController {
-    private final static Logger logger = Logger.getLogger(UserController.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     AdvCategoryService advCategoryService;

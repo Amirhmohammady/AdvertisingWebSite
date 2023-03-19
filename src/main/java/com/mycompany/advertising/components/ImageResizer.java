@@ -7,13 +7,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 /**
  * Created by Amir on 7/31/2020.
  */
 
 public class ImageResizer {
-    private final static Logger logger = Logger.getLogger(ImageResizer.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     public static void resize(String inputImagePath, String outputImagePath, int scaledWidth, int scaledHeight)
             throws IOException {

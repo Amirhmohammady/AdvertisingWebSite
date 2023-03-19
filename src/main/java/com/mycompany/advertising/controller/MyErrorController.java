@@ -17,8 +17,8 @@ import java.lang.invoke.MethodHandles;
 /**
  * Created by Amir on 5/7/2021.
  */
-@Controller
-public class MyErrorController implements ErrorController {
+//@Controller
+public class MyErrorController {}/*implements ErrorController {
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Value("${amir.error.folder}")
     String errorfolder;
@@ -51,4 +51,4 @@ public class MyErrorController implements ErrorController {
         //it set in application.properties server.error.path=/error
         return null;
     }
-}
+}*/

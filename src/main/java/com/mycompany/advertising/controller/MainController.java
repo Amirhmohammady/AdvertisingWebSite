@@ -6,8 +6,10 @@ import com.mycompany.advertising.entity.UserAlreadyExistException;
 import com.mycompany.advertising.model.to.AdvertiseTo;
 import com.mycompany.advertising.model.to.UserTo;
 import com.mycompany.advertising.model.to.enums.Role;
-import com.mycompany.advertising.service.api.*;
-import com.mycompany.advertising.service.util.OnlineAdvertiseData;
+import com.mycompany.advertising.service.api.AdminMessageService;
+import com.mycompany.advertising.service.api.AdvertiseService;
+import com.mycompany.advertising.service.api.OnlineAdvertiseDataService;
+import com.mycompany.advertising.service.api.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -26,13 +27,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.invoke.MethodHandles;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.util.List;
-import java.util.stream.Collectors;
 //import org.springframework.context.MessageSource;
 
 /**
@@ -41,6 +38,8 @@ import java.util.stream.Collectors;
 @Controller
 public class MainController {
     private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
+    @Autowired
+    OnlineAdvertiseDataService onlineService;
     /*@Autowired
     private MessageSource messages;*/
     @Autowired
@@ -51,8 +50,6 @@ public class MainController {
     private ApplicationEventPublisher eventPublisher;
     @Autowired
     private AdvertiseService messageService;
-    @Autowired
-    OnlineAdvertiseDataService onlineService;
     @Autowired
     private UserService userService;
 
@@ -109,7 +106,8 @@ public class MainController {
         if (session != null) {
             AuthenticationException ex = (AuthenticationException) session.getAttribute("exception");
             if (ex != null) {
-                if (ex instanceof BadCredentialsException) model.addAttribute("errorMessage", "UserName or Password is wrong");
+                if (ex instanceof BadCredentialsException)
+                    model.addAttribute("errorMessage", "UserName or Password is wrong");
                 else model.addAttribute("errorMessage", ex.getMessage());
             }
         }
@@ -172,18 +170,6 @@ public class MainController {
         } else {
             advertiseTos = messageService.getPageAcceptedAdvertises(pagenumber, search);
         }
-        List<OnlineAdvertiseData> onlineAdvertiseDatas = advertiseTos.getContent().stream().map(adv -> {
-            OnlineAdvertiseData rslt;
-            try {
-                rslt = onlineService.getData(new URL(adv.getWebSiteLink()));
-            } catch (IOException e) {
-                e.printStackTrace();
-                logger.info("can not get data for ");
-                return null;
-            }
-            return rslt;
-        }).collect(Collectors.toList());
-        model.addAttribute("onlineadvs", onlineAdvertiseDatas);
         model.addAttribute("search", search);
         model.addAttribute("currentPage", pagenumber);
         model.addAttribute("adminMessage", adminMessageService.getLastMessage());

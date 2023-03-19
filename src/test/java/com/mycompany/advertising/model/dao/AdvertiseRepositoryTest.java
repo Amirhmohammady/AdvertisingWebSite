@@ -1,7 +1,6 @@
 package com.mycompany.advertising.model.dao;
 
 import com.mycompany.advertising.model.to.AdvertiseCategoryTo;
-import com.mycompany.advertising.service.Dto.CategoryIdPair;
 import com.mycompany.advertising.service.language.Language;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,6 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,6 +71,13 @@ public class AdvertiseRepositoryTest {
         //Assert.assertEquals(result.size(), 2);
         //System.out.println(result.get(0).getCategories());
         Assert.assertEquals(2, 2);
+    }
+
+    @Test
+    public void testGetImageByDomainName() {
+        List<String> domainNames = new ArrayList<>();
+        domainNames.add("uupload");
+        advertiseRepository.findByImageUrl1Containing_Costum(domainNames).forEach(item -> System.out.println("++++++++++++++++" + item.getId()));
     }
 
     @Test

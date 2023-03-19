@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.lang.invoke.MethodHandles;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -24,7 +25,7 @@ import java.util.Random;
  */
 @Service
 public class TokenForChangePhoneNumberServiceImpl implements TokenForChangePhoneNumberService {
-    private static final Logger logger = Logger.getLogger(TokenForChangePhoneNumberServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
     SmsService smsService;

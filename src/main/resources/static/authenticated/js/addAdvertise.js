@@ -1,7 +1,8 @@
+var isSending = false, advCats = [];
 var txtarea = document.getElementById("description")
-		, spnText = document.getElementById("spnText")
-		, titleBox = document.getElementById("titleBox")
-		, spnTitle = document.getElementById("spnTitle");
+	, spnText = document.getElementById("spnText")
+	, titleBox = document.getElementById("titleBox")
+	, spnTitle = document.getElementById("spnTitle");
 txtarea.onkeyup = txtareaSetLen;
 titleBox.onkeyup = titleSetLen;
 function txtareaSetLen(){
@@ -49,20 +50,32 @@ function publishAdv(){
 	isSending = true;
 	console.log("----------------------------------------------");
 	var xhr  = new XMLHttpRequest();
-	var data = new FormData(), advContent={};
-	advContent.categories = advCats;
-	advContent.title = document.getElementById('titleBox').value;
-	advContent.text = document.getElementById('description').value;
-	advContent.webSiteLink = document.getElementById('advLink').value;
+	var data = new FormData();
 
 	data.append("pic1",document.getElementById('pic1').files[0]);
-	data.append("advContent",JSON.stringify(advContent));
+	data.append("title",document.getElementById('titleBox').value);
+	data.append("webSiteLink",document.getElementById('advLink').value);
+	data.append("text",document.getElementById('description').value);
+	for (var i = 0; i < advCats.length; i++) {
+		data.append("categories["+i+"].id",advCats[i].id);
+	}
 
 	xhr.onload = function() {
+		var result = JSON.parse(this.response);
+		var innerText;
+		if (result.length > 0) innerText=result[0];
+		for(let i=1; i<result.length; i++)
+		{
+			innerText += ('<br>'+result[i]);
+		}
 		if (this.status == 200){
+			document.getElementById("myModal2").getElementsByClassName("modal-body")[0].innerHTML = innerText;
 			document.getElementById('clickSuccess').click();
 			resetForm();
-		} else document.getElementById('clickFail').click();
+		} else {
+			document.getElementById("myModal3").getElementsByClassName("modal-body")[0].innerHTML = innerText;
+			document.getElementById('clickFail').click();
+		}
 		isSending = false;
 	}
 	xhr.open("POST", basedomain+"api/advertises", true);
@@ -75,10 +88,9 @@ function resetForm(){
 	addCategoriesSection(0, "Root", 0);
 }
 
-var isSending = false, advCats = [];
 function clickTag(id, depth){
 	var editBtn = document.querySelector("a[href='#myModal-1']")
-			,editForm =  document.getElementById('myModal-1');
+		,editForm =  document.getElementById('myModal-1');
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200){

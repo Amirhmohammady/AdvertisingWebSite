@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/restapi")
 public class RestApi {
-    private static final Logger logger = Logger.getLogger(RestApi.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Autowired
     UserService userservice;
     @Autowired

@@ -134,6 +134,12 @@
     }
 </script>
 <script>
+    function imageExists(image_url){
+        var http = new XMLHttpRequest();
+        http.open('HEAD', image_url, false);
+        http.send();
+        return http.status != 404;
+    }
     function setAdvData(id,url){
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -144,7 +150,8 @@
                 advCard.getElementsByTagName("span")[1].textContent = onlineData.members;
                 advCard.getElementsByTagName("span")[3].textContent = onlineData.onlineMembers;
                 advCard.getElementsByTagName("div")[6].innerHTML = onlineData.description;
-                //advCard.getElementsByTagName("img")[0].setAttribute("src", onlineData.imageUrl);
+                var imgUrl = advCard.getElementsByTagName("img")[0].getAttribute("src");
+                if (imgUrl=="" || !imageExists(imgUrl)) advCard.getElementsByTagName("img")[0].setAttribute("src", onlineData.imageUrl);
             }
         };
         xhttp.open("GET", "[[@{/api/advertises/onlineData?url=}]]" + encodeURIComponent(url), true);

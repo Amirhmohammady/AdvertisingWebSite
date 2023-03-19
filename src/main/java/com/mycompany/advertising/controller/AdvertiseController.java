@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,7 +85,7 @@ public class AdvertiseController {
     public String editAdvertisePost(Model model, @PathVariable Long id,
                                     @RequestParam(required = false) MultipartFile pic1,
                                     @RequestParam(required = false) String description,
-                                    @RequestParam(required = false) String tel_link,
+                                    @RequestParam(required = false) URL tel_link,
                                     @RequestParam(required = true) String title,
                                     @RequestParam(required = false) MultipartFile pic2) {
         Optional<AdvertiseTo> advertiseoptl = advertiseService.getAdvertiseById(id);
@@ -94,7 +95,7 @@ public class AdvertiseController {
         AdvertiseTo advertise = advertiseoptl.get();
         //==========
         String succsessMessage = new String();
-        List<String> files;
+        List<URL> files;
         if (pic1 != null && !pic1.isEmpty()) {
             try {
                 files = storageService.storeImage(pic1);

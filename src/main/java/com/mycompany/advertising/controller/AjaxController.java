@@ -12,13 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.invoke.MethodHandles;
+
 /**
  * Created by Amir on 5/8/2021.
  */
 @RestController
 @RequestMapping("/ajax")
 public class AjaxController {
-    private static final Logger logger = Logger.getLogger(AjaxController.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
     @Autowired
     private UserService userService;
 

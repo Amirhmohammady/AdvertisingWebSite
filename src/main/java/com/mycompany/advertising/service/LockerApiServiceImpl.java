@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ import java.util.List;
 @Service
 @Scope(value = BeanDefinition.SCOPE_SINGLETON)
 public class LockerApiServiceImpl implements LockerApiService {
-    private static final Logger logger = Logger.getLogger(LockerApiServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     private List<LockApiByIPDto> lockApiByIPDtos = new ArrayList<>();
     private List<LockApiByUserDto> lockApiByUserDtos = new ArrayList<>();
